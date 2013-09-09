@@ -1,4 +1,3 @@
-<%= debug params %>
 <div class="contextual">
   <%= link_to l(:label_user_new), {:controller => 'people', :action => 'new', :project_id => @project, :department_id => @department}, :class => 'icon icon-add' if User.current.allowed_people_to?(:add_people, @person) %>
 </div>
@@ -66,7 +65,7 @@
 <!-- <PRO> -->
 <% other_formats_links do |f| %>
     <%# f.link_to 'CSV', url: params %>
-    <%= f.link_to 'VCF', url: params.update(no_limit: '1') %>
+    <%= f.link_to 'VCF', url: params.update(page: @people_pages.current) %>
 <% end %>
 <!-- </PRO> -->
 
