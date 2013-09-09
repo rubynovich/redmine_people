@@ -66,7 +66,7 @@
 <% other_formats_links do |f| %>
     <%# f.link_to 'CSV', url: params %>
     <%# f.link_to 'VCF', url: params.update(page_limit: 1) %>
-    <%= link_to 'VCF', params %>
+    <%= link_to 'VCF', params.update(format: 'vcf') %>
 <% end %>
 <!-- </PRO> -->
 
