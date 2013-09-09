@@ -65,8 +65,8 @@
 <!-- <PRO> -->
 <% other_formats_links do |f| %>
     <%# f.link_to 'CSV', url: params %>
-    <%= debug params %>
-    <%= f.link_to 'VCF', url: params.update(page: @people_pages.current) %>
+    <%# f.link_to 'VCF', url: params.update(page_limit: 1) %>
+    <%= link_to 'VCF', params %>
 <% end %>
 <!-- </PRO> -->
 
