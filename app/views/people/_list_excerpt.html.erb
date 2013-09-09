@@ -1,5 +1,5 @@
-<%= form_tag({}) do -%> 
-    <%= hidden_field_tag 'back_url', url_for(params) %>  
+<%= form_tag({}) do -%>
+    <%= hidden_field_tag 'back_url', url_for(params) %>
     <%= hidden_field_tag 'project_id', @project.id if @project %>
         <table class="people index">
         <tbody>
@@ -22,21 +22,20 @@
                     <div class="title_and_company" >
                         <%= h person.job_title %>
                         <% if person.department %>
-                            <%= " #{l(:label_people_at_department)} "  %> 
-                            <%= person.department %> 
+                            <%= " #{l(:label_people_at_department)} "  %>
+                            <%= person.department %>
                         <% end %>
                     </div>
                     <div class="tags">
-                        <%# render :partial => "tags_item", :collection => person.tags, :locals => {:is_note => false}  %>
+                        <%=#render :partial => "tags_item", :collection => person.tags, :locals => {:is_note => false}  %>
                     </div>
                 </td>
-            </tr> 
+            </tr>
         <% end %>
 
-        </tbody>  
+        </tbody>
       </table>
 
-<% end %>      
+<% end %>
 
 <p class="pagination"><%= pagination_links_full @people_pages, @people_count %></p>
-
