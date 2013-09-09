@@ -21,7 +21,7 @@ class PeopleController < ApplicationController
 
     respond_to do |format|
       format.html {render :partial => 'list_excerpt', :layout => false if request.xhr?}
-      format.vcf { send_data(@people.map{ |p| person_to_vcard(p) }.join("\n"), :filename => "people_#{format_date(Date.today)}.vcf", :type => 'text/x-vcard;', :disposition => 'attachment') }
+      format.vcf { send_data(@people_without_limit.map{ |p| person_to_vcard(p) }.join("\n"), :filename => "people_#{format_date(Date.today)}.vcf", :type => 'text/x-vcard;', :disposition => 'attachment') }
     end
   end
 
@@ -202,6 +202,7 @@ private
     scope = scope.where(:type => 'User')
 
     @people_count = scope.count
+    @people_without_limit = scope.all(:order => [:lastname, :firstname])
     @group = Group.find(params[:group_id]) if params[:group_id].present?
     @department = Department.find(params[:department_id]) if params[:department_id].present?
     if pages
