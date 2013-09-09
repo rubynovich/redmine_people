@@ -107,13 +107,14 @@
     <%= render :partial => 'person_data', :collection => @new_people %>
   </div>
 
+<% other_formats_links do |f| %>
+  <%= f.link_to 'VCF', :url => params %>
+<% end %>
+
 <% end %>
 
 <% content_for :header_tags do %>
     <%= javascript_include_tag :people, :plugin => 'redmine_people'  %>
 	<%= stylesheet_link_tag :people, :plugin => 'redmine_people' %>
 	<meta name = "format-detection" content = "telephone=no">
-<% other_formats_links do |f| %>
-  <%= f.link_to 'VCF', :url => params %>
-<% end %>
 <% end %>
