@@ -15,13 +15,13 @@ class Person < User
   scope :not_in_department, lambda {|department|
     department_id = department.is_a?(Department) ? department.id : department.to_i
     { :conditions => ["(#{User.table_name}.department_id != ?) OR (#{User.table_name}.department_id IS NULL)", department_id] }
-  }  
+  }
 
-  scope :seach_by_name, lambda {|search| {:conditions =>   ["(LOWER(#{Person.table_name}.firstname) LIKE ? OR 
-                                                                    LOWER(#{Person.table_name}.lastname) LIKE ? OR 
-                                                                    LOWER(#{Person.table_name}.middlename) LIKE ? OR 
-                                                                    LOWER(#{Person.table_name}.login) LIKE ? OR 
-                                                                    LOWER(#{Person.table_name}.mail) LIKE ?)", 
+  scope :seach_by_name, lambda {|search| {:conditions =>   ["(LOWER(#{Person.table_name}.firstname) LIKE ? OR
+                                                                    LOWER(#{Person.table_name}.lastname) LIKE ? OR
+                                                                    LOWER(#{Person.table_name}.middlename) LIKE ? OR
+                                                                    LOWER(#{Person.table_name}.login) LIKE ? OR
+                                                                    LOWER(#{Person.table_name}.mail) LIKE ?)",
                                                                   search.downcase + "%",
                                                                   search.downcase + "%",
                                                                   search.downcase + "%",
@@ -30,7 +30,7 @@ class Person < User
 
   validates_uniqueness_of :firstname, :scope => [:lastname, :middlename]
 
-  safe_attributes 'phone', 
+  safe_attributes 'phone',
                   'address',
                   'skype',
                   'birthday',
@@ -46,9 +46,9 @@ class Person < User
                   'appearance_date'
 
 
-  def phones                            
-    @phones || self.phone ? self.phone.split( /, */) : []
-  end  
+  def phones
+    @phones || self.phone ? self.phone.split( /, +/) : []
+  end
 
   def type
     'User'
@@ -82,8 +82,8 @@ class Person < User
   end
 
   def editable_by?(usr, prj=nil)
-    true    
-    # usr && (usr.allowed_to?(:edit_people, prj) || (self.author == usr && usr.allowed_to?(:edit_own_invoices, prj))) 
+    true
+    # usr && (usr.allowed_to?(:edit_people, prj) || (self.author == usr && usr.allowed_to?(:edit_own_invoices, prj)))
     # usr && usr.logged? && (usr.allowed_to?(:edit_notes, project) || (self.author == usr && usr.allowed_to?(:edit_own_notes, project)))
   end
 
@@ -94,5 +94,5 @@ class Person < User
   def attachments_visible?(user=User.current)
     true
   end
-      
+
 end

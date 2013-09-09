@@ -15,7 +15,7 @@
                     <h1><%= link_to person.name, person_path(person) %></h1>
                     <h2>
                         <%= mail_to person.mail %>
-                        <div><%= person.phones.first %></div>
+                        <div><%= person.phones.join(", ") %></div>
                     </h2>
                 </td>
                 <td class="info">
