@@ -13,7 +13,7 @@ class PeopleController < ApplicationController
   helper :custom_fields
 
   def index
-  	@people = find_people
+  	@people = find_people(!params[:no_limit])
     @groups = Group.all.sort
     @departments = Department.order(:name)
     @next_birthdays = Person.next_birthdays

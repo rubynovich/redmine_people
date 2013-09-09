@@ -65,7 +65,7 @@
 
 <!-- <PRO> -->
 <% other_formats_links do |f| %>
-    <% f.link_to 'CSV', url: params %>
+    <%# f.link_to 'CSV', url: params %>
     <%= f.link_to 'VCF', url: params %>
 <% end %>
 <!-- </PRO> -->
@@ -112,7 +112,7 @@
 <% end %>
 
 <% content_for :header_tags do %>
-    <%= javascript_include_tag :people, :plugin => 'redmine_people'  %>
-	<%= stylesheet_link_tag :people, :plugin => 'redmine_people' %>
-	<meta name = "format-detection" content = "telephone=no">
+  <%= javascript_include_tag :people, :plugin => 'redmine_people'  %>
+  <%= stylesheet_link_tag :people, :plugin => 'redmine_people' %>
+  <meta name = "format-detection" content = "telephone=no">
 <% end %>
