@@ -64,8 +64,9 @@
 
 <!-- <PRO> -->
 <% other_formats_links do |f| %>
-    <%= f.link_to 'CSV', :url => params %>
-<% end if false%>
+    <%= f.link_to 'CSV', url: params %>
+    <%= f.link_to 'VCF', url: params %>
+<% end %>
 <!-- </PRO> -->
 
 <% html_title l(:label_people) %>
@@ -106,10 +107,6 @@
     <h3><%= l(:label_people_new_people) %></h3>
     <%= render :partial => 'person_data', :collection => @new_people %>
   </div>
-
-<% other_formats_links do |f| %>
-  <%= f.link_to 'VCF', :url => params %>
-<% end %>
 
 <% end %>
 
