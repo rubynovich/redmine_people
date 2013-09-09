@@ -21,6 +21,7 @@ class PeopleController < ApplicationController
 
     respond_to do |format|
       format.html {render :partial => 'list_excerpt', :layout => false if request.xhr?}
+      format.vcf { send_data(@people.map{ |p| person_to_vcard(p) }.join("\n"), :filename => "people_#{fromat_date(Date.today)}.vcf", :type => 'text/x-vcard;', :disposition => 'attachment') }
     end
   end
 
