@@ -47,7 +47,15 @@ class Person < User
 
 
   def phones
-    @phones || self.phone ? self.phone.split( /, +/) : []
+    @phones || self.phone ? self.phone.split(/, +/) : []
+  end
+
+  def name
+    if middlename.present?
+      [super,"#{middlename}"].join(" ")
+    else
+      super
+    end
   end
 
   def type
