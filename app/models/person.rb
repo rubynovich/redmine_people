@@ -50,11 +50,11 @@ class Person < User
     @phones || self.phone ? self.phone.split(/, +/) : []
   end
 
-  def name
+  def name(formatter = nil)
     if middlename.present?
-      [super,"#{middlename}"].join(" ")
+      [super(formatter),"#{middlename}"].join(" ")
     else
-      super
+      super(formatter)
     end
   end
 
