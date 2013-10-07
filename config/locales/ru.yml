@@ -40,21 +40,21 @@ ru:
 
   #0.0.2
   label_people_acl_settings: Права доступа
-  label_people_visibility: Видимость 
+  label_people_visibility: Видимость
   label_people_visibility_select: Показывать сотрудников
   label_people_visibility_resistered: Для зарегистрированных пользователей
   label_people_visibility_selected: Для выбранных пользователей
   label_people_visibility_anonymous: Для анонимных пользователей
 
   #0.0.3
-  label_department_plural: Отделы
-  label_department_new: Новый отдел
-  label_department: Отдел
+  label_department_plural: Подразделения
+  label_department_new: Новое подразделение
+  label_department: Подразделение
   label_department_head: Руководитель
-  field_people_department: Отдел
+  field_people_department: Подразделение
   label_people_at_department: в
-  field_department_parent: Родительский отдел
-  people_permission_edit_departments: Редактирование отделов 
+  field_department_parent: Родительское подразделение
+  people_permission_edit_departments: Редактирование подразделений
 
   #0.1.5
-  people_permission_delete_departments: Удаление отделов 
+  people_permission_delete_departments: Удаление подразделений 
