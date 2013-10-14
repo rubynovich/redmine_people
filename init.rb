@@ -15,9 +15,9 @@ Redmine::Plugin.register :redmine_people do
     :visibility => ''
   }
 
-  menu :top_menu, :people, {:controller => 'people', :action => 'index', :project_id => nil}, :caption => :label_people, :if => Proc.new {
-    User.current.allowed_people_to?(:view_people)
-  }  
+  # menu :top_menu, :people, {:controller => 'people', :action => 'index', :project_id => nil}, :caption => :label_people, :if => Proc.new {
+  #   User.current.allowed_people_to?(:view_people)
+  # }  
 
   menu :admin_menu, :people, {:controller => 'people_settings', :action => 'index'}, :caption => :label_people
   
