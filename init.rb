@@ -8,7 +8,7 @@ Redmine::Plugin.register :redmine_people do
   url 'http://redminecrm.com/projects/people'
   author_url 'mailto:support@redminecrm.com'
 
-  requires_redmine :version_or_higher => '2.1.0'   
+  requires_redmine :version_or_higher => '2.1.0'
 
   settings :default => {
     :users_acl => {},
@@ -16,18 +16,18 @@ Redmine::Plugin.register :redmine_people do
   }
 
 
-  Redmine::MenuManager.map :top_menu do |menu| 
+  Redmine::MenuManager.map :top_menu do |menu|
 
     parent = menu.exists?(:internal_intercourse) ? :internal_intercourse : :top_menu
-    menu.push( :people, {:controller => 'people', :action => 'index', :project_id => nil}, 
+    menu.push( :people, {:controller => 'people', :action => 'index', :project_id => nil, group_id: 415},
                { :parent => parent,
-                 :caption => :label_people, 
-                 :if => Proc.new { User.current.allowed_people_to?(:view_people) }  
+                 :caption => :label_people,
+                 :if => Proc.new { User.current.allowed_people_to?(:view_people) }
                })
-    
+
   end
 
 
   menu :admin_menu, :people, {:controller => 'people_settings', :action => 'index'}, :caption => :label_people
-  
+
 end
