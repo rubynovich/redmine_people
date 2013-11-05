@@ -19,7 +19,7 @@ Redmine::Plugin.register :redmine_people do
   Redmine::MenuManager.map :top_menu do |menu|
 
     parent = menu.exists?(:internal_intercourse) ? :internal_intercourse : :top_menu
-    menu.push( :people, {:controller => 'people', :action => 'index', :project_id => nil},
+    menu.push( :people, {:controller => 'people', :action => 'index', :project_id => nil, group_id: 455},
                { :parent => parent,
                  :caption => :label_people,
                  :if => Proc.new { User.current.allowed_people_to?(:view_people) }
