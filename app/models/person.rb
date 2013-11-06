@@ -21,12 +21,16 @@ class Person < User
                                                                     LOWER(#{Person.table_name}.lastname) LIKE ? OR
                                                                     LOWER(#{Person.table_name}.middlename) LIKE ? OR
                                                                     LOWER(#{Person.table_name}.login) LIKE ? OR
-                                                                    LOWER(#{Person.table_name}.mail) LIKE ?)",
+                                                                    LOWER(#{Person.table_name}.mail) LIKE ? OR
+                                                                    LOWER(#{Person.table_name}.phone) LIKE ? )",
                                                                   search.downcase + "%",
                                                                   search.downcase + "%",
                                                                   search.downcase + "%",
                                                                   search.downcase + "%",
-                                                                  search.downcase + "%"] }}
+                                                                  search.downcase + "%",
+                                                                  '%' + search + '%'
+                                                      ] 
+    }}
 
   validates_uniqueness_of :firstname, :scope => [:lastname, :middlename]
 
