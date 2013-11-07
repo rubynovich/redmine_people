@@ -229,5 +229,4 @@ private
     render_404
   end
 
-
 end
