@@ -24,16 +24,36 @@
     </script>
 
     <h2 class="contacts_header">
-        <span id='scope_header' class="scope_title">
+      <span id='scope_header' class="scope_title">
         <%= @group ? @group.name : (@department ? @department.name : l(:label_people))  %>
-        </span>
-
-        <span class="live_search">
-            <%= text_field_tag(:name, params[:name], :autocomplete => "off", :class => "live_search_field", :placeholder => l(:label_people_search) ) %>
-
-        </span>
-
+      </span>
     </h2>
+
+    <div style="margin: 10px; padding: 10px; border: 1px solid black;">
+
+      <span class="live_search">
+        <%= text_field_tag(:name, params[:name], :autocomplete => "off", :class => "live_search_field", :placeholder => 'ФИО' ) %>
+      </span>
+
+      <span class="live_search">
+        <%= text_field_tag(:name, params[:name], :autocomplete => "off", :class => "live_search_field", :placeholder => 'Должность') %>
+      </span>
+       
+      <span class="live_search">
+        <%= text_field_tag(:name, params[:name], :autocomplete => "off", :class => "live_search_field", :placeholder => 'Телефон' ) %>
+      </span>
+     
+      <span class="live_search">
+        <%= text_field_tag(:name, params[:name], :autocomplete => "off", :class => "live_search_field", :placeholder => 'email' ) %>
+      </span>
+
+      <span class="live_search" style="font-size: 16px; font-weight: normal; margin-left: 15px;">
+        Подразделение:
+        <%= select_tag "people", department_tree_options_for_select(Department.all), prompt: 'Подразделение' %>
+      </span>
+
+    </div>
+
 
 <!-- 	<fieldset id="filters" class="collapsible <%= 'collapsed' if no_filters %>">
 		<legend onclick="toggleFieldset(this);"><%= l(:label_filter_plural) %></legend>

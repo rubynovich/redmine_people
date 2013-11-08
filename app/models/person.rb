@@ -22,23 +22,34 @@ class Person < User
 
   scope :seach_by_name, lambda {|search|
 
-    phone_search_string = search.downcase.gsub(/[-()\s—–‒]/, '')
-    phone_search_string = phone_search_string.gsub(/^8/, '+7') if phone_search_string.size == 11
-
     {:conditions =>   ["(LOWER(#{Person.table_name}.firstname) LIKE ? OR
                          LOWER(#{Person.table_name}.lastname) LIKE ? OR
                          LOWER(#{Person.table_name}.middlename) LIKE ? OR
-                         LOWER(#{Person.table_name}.login) LIKE ? OR
-                         LOWER(#{Person.table_name}.mail) LIKE ? OR 
-                         LOWER(#{Person.table_name}.sanitized_phones) LIKE ? )",
+                         LOWER(#{Person.table_name}.login) LIKE ? )",
                        search.downcase + "%",
                        search.downcase + "%",
                        search.downcase + "%",
-                       search.downcase + "%",
-                       search.downcase + "%",
-                       "%" + phone_search_string + "%"
+                       search.downcase + "%"
                       ] 
-    }}
+    }
+  }
+
+  scope :search_by_phone, lambda {|search|
+    
+    phone_search_string = search.downcase.gsub(/[-()\s—–‒]/, '')
+    phone_search_string = phone_search_string.gsub(/^8/, '+7') if phone_search_string.size == 11
+
+    {:conditions => ["( LOWER(#{Person.table_name}.sanitized_phones) LIKE ? )", "%"+phone_search_string+"%" ] } 
+
+  }
+
+  scope :search_by_mail, lambda {|search|
+    {:conditions =>   ["( LOWER(#{Person.table_name}.mail) LIKE ? )", search.downcase + "%" ] }
+  }
+
+  scope :search_by_job_title, lambda {|search|
+    {:conditions =>   ["( LOWER(#{Person.table_name}.job_title) LIKE ? )", search.downcase + "%" ] }
+  }
 
   validates_uniqueness_of :firstname, :scope => [:lastname, :middlename]
 
