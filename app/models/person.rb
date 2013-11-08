@@ -23,7 +23,7 @@ class Person < User
   scope :seach_by_name, lambda {|search|
 
     phone_search_string = search.downcase.gsub(/[-()\s—–‒]/, '')
-    # phone_search_string = phone_search_string.gsub(/^8/, '+7') if phone_search_string.size == 11
+    phone_search_string = phone_search_string.gsub(/^8/, '+7') if phone_search_string.size == 11
 
     {:conditions =>   ["(LOWER(#{Person.table_name}.firstname) LIKE ? OR
                          LOWER(#{Person.table_name}.lastname) LIKE ? OR
