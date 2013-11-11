@@ -13,7 +13,7 @@ class PeopleController < ApplicationController
   helper :custom_fields
 
   def index
-  	@people = find_people(!params[:no_limit])
+    @people = find_people(!params[:no_limit])
     @groups = Group.all.sort
     @departments = Department.order(:name)
     @next_birthdays = Person.next_birthdays
@@ -197,6 +197,9 @@ private
     @status = params[:status] || 1
     scope = Person.logged.status(@status)
     scope = scope.seach_by_name(params[:name]) if params[:name].present?
+    scope = scope.search_by_job_title(params[:job_title]) if params[:job_title].present?
+    scope = scope.search_by_phone(params[:phone]) if params[:phone].present?
+    scope = scope.search_by_mail(params[:mail]) if params[:mail].present?
     scope = scope.in_group(params[:group_id]) if params[:group_id].present?
     scope = scope.in_department(params[:department_id]) if params[:department_id].present?
     scope = scope.where(:type => 'User')
