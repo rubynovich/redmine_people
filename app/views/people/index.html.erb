@@ -34,7 +34,7 @@
 
     </script>
 
-    <div style="margin: 10px; padding: 10px; border: 1px solid black;">
+    <div style="margin: 10px 0px; padding: 10px; border: 1px solid #CCC;">
 
       <span class="live_search">
         <%= text_field_tag(:name, params[:name], :autocomplete => "off", :class => "live_search_field", :placeholder => 'ФИО', style: 'width: 150px;' ) %>
@@ -52,9 +52,9 @@
         <%= text_field_tag(:mail, params[:mail], :autocomplete => "off", :class => "live_search_field", :placeholder => 'email', style: 'width: 150px;' ) %>
       </span>
 
-      <span class="live_search" style="font-size: 16px; font-weight: normal; margin-left: 15px;">
+      <span class="live_search" style="font-weight: normal; margin-left: 15px;">
         Подразделение:
-        <%= select_tag 'department_id', department_tree_options_for_select(Department.all), prompt: 'Выберите...', class: 'live_search_field', style: 'width: 200px;', onchange: 'sendPeopleSearchForm();', selected: params[:department_id] %>
+        <%= select_tag 'department_id', department_tree_options_for_select(Department.all), prompt: l(:prompt_please_select), class: 'live_search_field', style: 'width: 200px;', onchange: 'sendPeopleSearchForm();', selected: params[:department_id] %>
       </span>
 
 

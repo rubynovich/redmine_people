@@ -46,9 +46,8 @@ class Person < User
                         LOWER(#{Person.table_name}.sanitized_phones) LIKE ? OR 
                         LOWER(#{Person.table_name}.sanitized_phones) LIKE ?)", 
                      "%" + strip_punctuation + "%", # search anywhere by substring without punctuation
-                            seven_goes_eight + "%", # search from beginning with +7/8 conversion - +7 changes to 8
-                            eight_goes_seven + "%"  # search from beginning with +7/8 conversion - 8 changes to +7
-                     
+                     "%" + seven_goes_eight + "%", # search from beginning with +7/8 conversion - +7 changes to 8
+                     "%" + eight_goes_seven + "%"  # search from beginning with +7/8 conversion - 8 changes to +7
                     ] 
     } 
 

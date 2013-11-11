@@ -94,6 +94,19 @@ table.person_data td.name h4 {
 	font-size: 16px;
 }
 
+select.live_search_field {
+    border: 1px solid #C3C3C3;
+    border-radius: 12px 12px 12px 12px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15) inset;
+    outline: medium none;
+    padding: 3px 10px !important;
+}
+
+.live_search select.live_search_field {
+	font-size: 12px;
+}
+
+
 table.people.index {
 	border-top: 1px solid rgb(239, 239, 239);
 	border-right: 1px solid rgb(239, 239, 239);
