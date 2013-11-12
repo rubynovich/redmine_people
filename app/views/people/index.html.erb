@@ -68,9 +68,7 @@
         <%= select_tag 'department_id', department_tree_options_for_select(Department.all, selected: Department.find_by_id(params[:department_id])), prompt: l(:prompt_please_select), class: 'live_search_field', style: 'width: 200px;', onchange: 'sendPeopleSearchForm();' %>
       </span>
 
-      <div style = "display: inline-block; margin-left: 15px;">
-        <%= button_to_function "сбросить", "clearPeopleForm();" %>
-      </div>
+      <%= link_to "Очистить", "#", class: "icon icon-reload", style: "margin-left: 15px;", onclick: "clearPeopleForm();" %>
 
     </div>
 
