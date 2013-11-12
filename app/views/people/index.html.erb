@@ -15,12 +15,23 @@
 
     <script type="text/javascript">
 
+      function clearPeopleForm(){
+        $("#name").val("");
+        $("#job_title").val("");
+        $("#phone").val("");
+        $("#mail").val("");
+        $("#department_id").val("");
+      }
+
       function sendPeopleSearchForm() {
             var form = $("#query_form"); // grab the form wrapping the search bar.
             var url = form.attr("action");
             var formData = form.serialize();
             $.get(url, formData, function(data) { // perform an AJAX get, the trailing function is what happens on successful get.
                 $("#people_list").html(data); // replace the "results" div with the result of action taken
+                if($("#current_department_name").val() != ""){
+                  $("#scope_header").html($("#current_department_name").val());
+                }
             });
       };
 
@@ -34,7 +45,7 @@
 
     </script>
 
-    <div style="margin: 10px 0px; padding: 10px; border: 1px solid #EFEFEF;">
+    <div style="margin: 10px 0px; padding: 10px;">
 
       <span class="live_search">
         <%= text_field_tag(:name, params[:name], :autocomplete => "off", :class => "live_search_field", :placeholder => 'ФИО', style: 'width: 150px;' ) %>
@@ -54,13 +65,14 @@
 
       <span class="live_search" style="font-weight: normal; margin-left: 15px;">
         Подразделение:
-        <%= select_tag 'department_id', department_tree_options_for_select(Department.all), prompt: l(:prompt_please_select), class: 'live_search_field', style: 'width: 200px;', onchange: 'sendPeopleSearchForm();', selected: params[:department_id] %>
+        <%= select_tag 'department_id', department_tree_options_for_select(Department.all, selected: Department.find_by_id(params[:department_id])), prompt: l(:prompt_please_select), class: 'live_search_field', style: 'width: 200px;', onchange: 'sendPeopleSearchForm();' %>
       </span>
 
-
+      <div style = "display: inline-block; margin-left: 15px;">
+        <%= button_to_function "сбросить", "clearPeopleForm();" %>
+      </div>
 
     </div>
-
 
 
 <!-- 	<fieldset id="filters" class="collapsible <%= 'collapsed' if no_filters %>">

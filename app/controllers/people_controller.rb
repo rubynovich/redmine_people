@@ -19,6 +19,8 @@ class PeopleController < ApplicationController
     @next_birthdays = Person.next_birthdays
     @new_people = Person.where("appearance_date IS NOT NULL").order("appearance_date desc").first(5)
 
+    @current_department = Department.find_by_id(params[:department_id])
+
     respond_to do |format|
       format.html {render :partial => 'list_excerpt', :layout => false if request.xhr?}
       format.vcf { send_data(@people.map{ |p| person_to_vcard(p) }.join("\n"), :filename => "people_#{format_date(Date.today)}.vcf", :type => 'text/x-vcard;', :disposition => 'attachment') }
