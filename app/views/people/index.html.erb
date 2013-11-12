@@ -15,14 +15,6 @@
 
     <script type="text/javascript">
 
-      function clearPeopleForm(){
-        $("#name").val("");
-        $("#job_title").val("");
-        $("#phone").val("");
-        $("#mail").val("");
-        $("#department_id").val("");
-      }
-
       function sendPeopleSearchForm() {
             var form = $("#query_form"); // grab the form wrapping the search bar.
             var url = form.attr("action");
@@ -40,7 +32,7 @@
         $("#job_title").observe_field(2, sendPeopleSearchForm);
         $("#phone").observe_field(2, sendPeopleSearchForm);
         $("#mail").observe_field(2, sendPeopleSearchForm);
-        $("#department_id").observe_field(2, sendPeopleSearchForm);
+        // $("#department_id").observe_field(2, sendPeopleSearchForm);
       });
 
     </script>
@@ -65,10 +57,10 @@
 
       <span class="live_search" style="font-weight: normal; margin-left: 15px;">
         Подразделение:
-        <%= select_tag 'department_id', department_tree_options_for_select(Department.all, selected: Department.find_by_id(params[:department_id])), prompt: l(:prompt_please_select), class: 'live_search_field', style: 'width: 200px;', onchange: 'sendPeopleSearchForm();' %>
+        <%= select_tag 'department_id', department_tree_options_for_select(Department.all, selected: Department.find_by_id(params[:department_id])), prompt: l(:prompt_please_select), class: 'live_search_field', style: 'width: 200px;', onchange: 'this.form.submit();' %>
       </span>
 
-      <%= link_to "Очистить", "#", class: "icon icon-reload", style: "margin-left: 15px;", onclick: "clearPeopleForm();" %>
+      <%= link_to "Очистить", people_path, class: "icon icon-reload", style: "margin-left: 15px;" %>
 
     </div>
 
