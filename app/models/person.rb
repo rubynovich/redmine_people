@@ -13,7 +13,8 @@ class Person < User
 
   scope :in_department, lambda {|department|
     department_id = department.is_a?(Department) ? department.id : department.to_i
-    { :conditions => {:department_id => department_id, :type => "User"} }
+    department_with_descendants_ids = Department.find(department_id).self_and_descendants.pluck(:id)
+    { :conditions => {:department_id => department_with_descendants_ids, :type => "User"} }
   }
 
   scope :not_in_department, lambda {|department|
