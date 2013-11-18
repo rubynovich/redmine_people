@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class Person < User
   unloadable
   self.inheritance_column = :_type_disabled
@@ -8,25 +9,58 @@ class Person < User
 
   GENDERS = [[l(:label_people_male), 0], [l(:label_people_female), 1]]
 
+  after_save :update_sanitized_phones
+
   scope :in_department, lambda {|department|
     department_id = department.is_a?(Department) ? department.id : department.to_i
-    { :conditions => {:department_id => department_id, :type => "User"} }
+    department_with_descendants_ids = Department.find(department_id).self_and_descendants.pluck(:id)
+    { :conditions => {:department_id => department_with_descendants_ids, :type => "User"} }
   }
+
   scope :not_in_department, lambda {|department|
     department_id = department.is_a?(Department) ? department.id : department.to_i
     { :conditions => ["(#{User.table_name}.department_id != ?) OR (#{User.table_name}.department_id IS NULL)", department_id] }
   }
 
-  scope :seach_by_name, lambda {|search| {:conditions =>   ["(LOWER(#{Person.table_name}.firstname) LIKE ? OR
-                                                                    LOWER(#{Person.table_name}.lastname) LIKE ? OR
-                                                                    LOWER(#{Person.table_name}.middlename) LIKE ? OR
-                                                                    LOWER(#{Person.table_name}.login) LIKE ? OR
-                                                                    LOWER(#{Person.table_name}.mail) LIKE ?)",
-                                                                  search.downcase + "%",
-                                                                  search.downcase + "%",
-                                                                  search.downcase + "%",
-                                                                  search.downcase + "%",
-                                                                  search.downcase + "%"] }}
+  scope :seach_by_name, lambda {|search|
+
+    {:conditions =>   ["(LOWER(#{Person.table_name}.firstname) LIKE ? OR
+                         LOWER(#{Person.table_name}.lastname) LIKE ? OR
+                         LOWER(#{Person.table_name}.middlename) LIKE ? OR
+                         LOWER(#{Person.table_name}.login) LIKE ? )",
+                       search.downcase + "%",
+                       search.downcase + "%",
+                       search.downcase + "%",
+                       search.downcase + "%"
+                      ] 
+    }
+  }
+
+  scope :search_by_phone, lambda {|search|
+    
+    strip_punctuation = search.downcase.gsub(/[-()\s—–‒]/, '')
+    seven_goes_eight  = strip_punctuation.sub(/^\+7/, '8')
+    eight_goes_seven  = strip_punctuation.sub(/^8/, '+7')
+    # phone_search_string = phone_search_string.gsub(/^8/, '+7') if phone_search_string.size == 11
+
+    {:conditions => ["( LOWER(#{Person.table_name}.sanitized_phones) LIKE ? OR
+                        LOWER(#{Person.table_name}.sanitized_phones) LIKE ? OR 
+                        LOWER(#{Person.table_name}.sanitized_phones) LIKE ?)", 
+                     "%" + strip_punctuation + "%", # search anywhere by substring without punctuation
+                     "%" + seven_goes_eight + "%", # search from beginning with +7/8 conversion - +7 changes to 8
+                     "%" + eight_goes_seven + "%"  # search from beginning with +7/8 conversion - 8 changes to +7
+                    ] 
+    } 
+
+  }
+
+  scope :search_by_mail, lambda {|search|
+    {:conditions =>   ["( LOWER(#{Person.table_name}.mail) LIKE ? )", "%" + search.downcase + "%" ] }
+  }
+
+  scope :search_by_job_title, lambda {|search|
+    {:conditions =>   ["( LOWER(#{Person.table_name}.job_title) LIKE ? )", "%" + search.downcase + "%" ] }
+  }
 
   validates_uniqueness_of :firstname, :scope => [:lastname, :middlename]
 
@@ -44,7 +78,6 @@ class Person < User
                   'department_id',
                   'background',
                   'appearance_date'
-
 
   def phones
     @phones || self.phone ? self.phone.split(/, +/) : []
@@ -101,6 +134,10 @@ class Person < User
 
   def attachments_visible?(user=User.current)
     true
+  end
+
+  def update_sanitized_phones
+    update_column(:sanitized_phones, self.phone.gsub(/[-()\s]/, ''))
   end
 
 end

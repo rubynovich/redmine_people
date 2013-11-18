@@ -1,0 +1,15 @@
+GIT
+  remote: https://github.com/aceofsales/vpim.git
+  revision: 60503889142f3109538645649084ea94395ec8ac
+  specs:
+    vpim (0.7.0)
+
+GEM
+  remote: http://rubygems.org/
+  specs:
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  vpim!

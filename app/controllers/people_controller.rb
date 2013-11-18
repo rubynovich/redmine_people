@@ -13,11 +13,13 @@ class PeopleController < ApplicationController
   helper :custom_fields
 
   def index
-  	@people = find_people(!params[:no_limit])
+    @people = find_people(!params[:no_limit])
     @groups = Group.all.sort
     @departments = Department.order(:name)
     @next_birthdays = Person.next_birthdays
     @new_people = Person.where("appearance_date IS NOT NULL").order("appearance_date desc").first(5)
+
+    @current_department = Department.find_by_id(params[:department_id])
 
     respond_to do |format|
       format.html {render :partial => 'list_excerpt', :layout => false if request.xhr?}
@@ -200,6 +202,9 @@ private
 
     scope = Person.logged.status(@status)
     scope = scope.seach_by_name(params[:name]) if params[:name].present?
+    scope = scope.search_by_job_title(params[:job_title]) if params[:job_title].present?
+    scope = scope.search_by_phone(params[:phone]) if params[:phone].present?
+    scope = scope.search_by_mail(params[:mail]) if params[:mail].present?
     scope = scope.in_group(params[:group_id]) if @group.present?
     scope = scope.in_department(params[:department_id]) if @department.present?
     scope = scope.where(:type => 'User')
@@ -229,6 +234,5 @@ private
   rescue ActiveRecord::RecordNotFound
     render_404
   end
-
 
 end

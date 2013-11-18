@@ -1,6 +1,9 @@
 <%= form_tag({}) do -%>
     <%= hidden_field_tag 'back_url', url_for(params) %>
     <%= hidden_field_tag 'project_id', @project.id if @project %>
+    
+    <%= hidden_field_tag 'current_department_name', @current_department.try(:name) %>
+
         <table class="people index">
         <tbody>
         <% @people.each do |person| %>

@@ -90,8 +90,22 @@ table.person_data td.name h4 {
 /*                   PEOPLE_TABLE_LIST					  	*/
 /**************************************************************/
 
+/* margin for inputs by default comes from application.css */
 .live_search input.live_search_field {
-	font-size: 16px;
+    font-size: 12px;
+    margin-top: 0px;
+}
+
+.live_search select.live_search_field {
+    font-size: 12px;
+}
+
+select.live_search_field {
+    border: 1px solid #C3C3C3;
+    border-radius: 12px 12px 12px 12px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15) inset;
+    outline: medium none;
+    padding: 3px 10px !important;
 }
 
 table.people.index {
