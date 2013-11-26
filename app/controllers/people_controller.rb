@@ -115,33 +115,32 @@ class PeopleController < ApplicationController
         target = File.join(attachment.class.thumbnails_storage_path, "#{attachment.id}_#{attachment.digest}_#{params[:size]}.thumb")
         thumbnail = RedmineContacts::Thumbnail.generate(attachment.diskfile, target, params[:size])
       elsif Redmine::Thumbnail.convert_available?
-        thumbnail = attachment.thumbnail(:size => params[:size])
+        thumbnail = attachment.thumbnail(size: params[:size])
       else
         thumbnail = attachment.diskfile
       end
 
-      if stale?(:etag => attachment.digest)
-        send_file thumbnail, :filename => (request.env['HTTP_USER_AGENT'] =~ %r{MSIE} ? ERB::Util.url_encode(attachment.filename) : attachment.filename),
-                                        :type => detect_content_type(attachment),
-                                        :disposition => 'inline'
+      if stale?(etag: attachment.digest)
+        send_file thumbnail, filename: (request.env['HTTP_USER_AGENT'] =~ %r{MSIE} ? ERB::Util.url_encode(attachment.filename) : attachment.filename),
+                                        type: detect_content_type(attachment),
+                                        disposition: 'inline'
       end
 
     else
       # No thumbnail for the attachment or thumbnail could not be created
-      render :nothing => true, :status => 404
+      render nothing: true, status: 404
     end
 
   rescue ActiveRecord::RecordNotFound
-    render :nothing => true, :status => 404
+    render nothing: true, status: 404
   end
 
   def context_menu
     @person = @people.first if (@people.size == 1)
-    @can = {:edit =>  @people.collect{|c| User.current.allowed_people_to?(:edit_people, @person)}.inject{|memo,d| memo && d}
-            }
+    @can = {edit:  @people.collect{|c| User.current.allowed_people_to?(:edit_people, @person)}.inject{|memo,d| memo && d} }
 
     # @back = back_url
-    render :layout => false
+    render layout: false
   end
 
 private
@@ -207,7 +206,7 @@ private
     scope = scope.search_by_mail(params[:mail]) if params[:mail].present?
     scope = scope.in_group(params[:group_id]) if @group.present?
     scope = scope.in_department(params[:department_id]) if @department.present?
-    scope = scope.where(:type => 'User')
+    scope = scope.where(type: 'User')
 
     @people_count = scope.count
     if pages
@@ -215,7 +214,7 @@ private
       @people_pages = Paginator.new(self, @people_count,  @limit, params[:page])
       @offset = @people_pages.current.offset
 
-      scope = scope.scoped :limit  => @limit, :offset => @offset, :order => [:lastname, :firstname]
+      scope = scope.scoped limit: @limit, offset: @offset, order: [:lastname, :firstname]
       @people = scope
 
       fake_name = @people.first.name if @people.length > 0 #without this patch paging does not work

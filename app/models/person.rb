@@ -13,8 +13,10 @@ class Person < User
 
   scope :in_department, lambda {|department|
     department_id = department.is_a?(Department) ? department.id : department.to_i
-    department_with_descendants_ids = Department.find(department_id).self_and_descendants.pluck(:id)
-    { :conditions => {:department_id => department_with_descendants_ids, :type => "User"} }
+    if department_id.present?
+      department_with_descendants_ids = Department.find(department_id).self_and_descendants.pluck(:id)
+      { :conditions => {:department_id => department_with_descendants_ids, :type => "User"} }
+    end
   }
 
   scope :not_in_department, lambda {|department|
@@ -32,25 +34,25 @@ class Person < User
                        search.downcase + "%",
                        search.downcase + "%",
                        search.downcase + "%"
-                      ] 
+                      ]
     }
   }
 
   scope :search_by_phone, lambda {|search|
-    
+
     strip_punctuation = search.downcase.gsub(/[-()\s—–‒]/, '')
     seven_goes_eight  = strip_punctuation.sub(/^\+7/, '8')
     eight_goes_seven  = strip_punctuation.sub(/^8/, '+7')
     # phone_search_string = phone_search_string.gsub(/^8/, '+7') if phone_search_string.size == 11
 
     {:conditions => ["( LOWER(#{Person.table_name}.sanitized_phones) LIKE ? OR
-                        LOWER(#{Person.table_name}.sanitized_phones) LIKE ? OR 
-                        LOWER(#{Person.table_name}.sanitized_phones) LIKE ?)", 
+                        LOWER(#{Person.table_name}.sanitized_phones) LIKE ? OR
+                        LOWER(#{Person.table_name}.sanitized_phones) LIKE ?)",
                      "%" + strip_punctuation + "%", # search anywhere by substring without punctuation
                      "%" + seven_goes_eight + "%", # search from beginning with +7/8 conversion - +7 changes to 8
                      "%" + eight_goes_seven + "%"  # search from beginning with +7/8 conversion - 8 changes to +7
-                    ] 
-    } 
+                    ]
+    }
 
   }
 
