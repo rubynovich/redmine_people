@@ -2,9 +2,9 @@ module PeopleHelper
 
   def birthday_date(person)
     if person.birthday.day == Date.today.day && person.birthday.month == Date.today.month
-       "#{l(:label_today).capitalize} (#{person.age + 1})"
+       "#{l(:label_today).capitalize}"
     else
-      "#{person.birthday.day} #{t('date.month_names')[person.birthday.month]} (#{person.age + 1})"
+      "#{person.birthday.day} #{t('date.month_names')[person.birthday.month]}"
     end
   end
 
