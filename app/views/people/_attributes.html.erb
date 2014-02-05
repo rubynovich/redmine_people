@@ -103,6 +103,10 @@
   <% end %>
   <% end %>
   
+  <% unless @person.appearance_date.blank? %>
+    <tr> <th class = "appearance_date"> <%=l(:field_people_appearance_date)%>:</th><td class="appearance_date"> <%= format_date(@person.appearance_date) %></td> </tr>
+  <% end %>
+
   <tr> <th class = "registered_on"> <%=l(:label_registered_on)%>:</th><td class="registered_on"> <%= format_date(@person.created_on) %></td> </tr>
   <% unless @person.last_login_on.nil? %>
   <tr> <th class = "last_login_on"> <%=l(:field_last_login_on)%>:</th><td class="last_login_on"> <%= format_date(@person.last_login_on) %></td> </tr>  
