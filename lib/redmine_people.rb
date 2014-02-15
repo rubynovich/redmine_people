@@ -4,6 +4,7 @@ Rails.configuration.to_prepare do
   require_dependency 'acts_as_attachable_global/init'
 
   require_dependency 'redmine_people/patches/user_patch'
+  require_dependency 'redmine_people/patches/group_patch'
   require_dependency 'redmine_people/patches/application_helper_patch'
 
   require_dependency 'redmine_people/hooks/views_layouts_hook'
