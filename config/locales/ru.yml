@@ -12,6 +12,8 @@ ru:
   label_people_new_people: Новые сотрудники
   label_people_male: 'Муж.'
   label_people_female: 'Жен.'
+  label_people_city_m: Москва
+  label_people_city_spb: Санкт-Петербург
   label_people_settings: Настройки сотрудников
 
   button_people_edit_profile: Редактировать профиль
@@ -27,6 +29,7 @@ ru:
   field_people_middlename: Отчество
   field_people_background: Дополнительная информация
   field_people_address: Адрес
+  field_people_city: Город
   field_people_gender: Пол
   field_people_birthday: Дата рождения
   field_people_appearance_date: Дата начала работы
@@ -58,3 +61,7 @@ ru:
 
   #0.1.5
   people_permission_delete_departments: Удаление подразделений 
+
+  #
+  label_filter_city: Выберите город
+  label_group_id: Выберите группу
