@@ -20,6 +20,12 @@
 	<% unless @departments.blank? %>
 		<p><%= f.select :department_id, department_tree_options_for_select(@departments,  :selected => @person.department), :include_blank => true, :label => l(:field_people_department) %></p>	
 	<% end %>
+	<% unless @cfos.blank? %>
+		<p><%= f.select :cfo_id, options_for_select(@cfos.map {|c| [c.cfo]}), {:include_blank => true, :label => l(:field_people_cfo), :disabled => block_cfo_edit?(@person)} %></p>
+	<% end %>
+	<% unless @people.blank? %>
+		<p><%= f.select :cfo_id, principals_options_for_select(@people, default_leader(@person)), {:include_blank => true, :label => l(:field_people_leader), :disabled => block_cfo_edit?(@person) } %></p>
+	<% end %>
 	<p><%= f.select :gender, Person::GENDERS, :label => l(:field_people_gender)%></p>
 	<p><%= f.text_field :appearance_date, :size => 12, :label => l(:field_people_appearance_date) %><%= calendar_for('person_appearance_date') %> </p>   
 	<p><%= f.text_field :birthday, :size => 12, :label => l(:field_people_birthday) %><%= calendar_for('person_birthday') %> </p>   
@@ -27,7 +33,7 @@
 	<p><%= f.text_field :mail, :required => true %></p>
 	<p><%= f.text_area :address, :label=>l(:field_people_address), :rows => 5 -%></p>
 
-	<div id="phones_fields"> 
+	<div id="phones_fields">
 		<p>
 			<%= f.text_field :phone, :label => l(:field_people_phone), :size => 80 -%>
 			<br>

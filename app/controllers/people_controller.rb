@@ -16,6 +16,7 @@ class PeopleController < ApplicationController
     @people = find_people(!params[:no_limit])
     @groups = Group.all.sort
     @departments = Department.order(:name)
+    @cfos = Cfo.all
     @next_birthdays = Person.next_birthdays
     @new_people = Person.where("appearance_date IS NOT NULL").order("appearance_date desc").first(5)
 
@@ -40,13 +41,23 @@ class PeopleController < ApplicationController
   end
 
   def edit
+    @people = Person.all
+    @cfos = Cfo.all
     @auth_sources = AuthSource.find(:all)
     @departments = Department.all.sort
     @membership ||= Member.new
   end
 
   def new
+    @people = Person.all
+    @cfos = Cfo.all
     @person = Person.new(:language => Setting.default_language, :mail_notification => Setting.default_notification_option, :department_id => params[:department_id])
+    unless Cfo.first.nil? 
+      @person.cfo = Cfo.first
+    else
+      cfo = Cfo.new(:cfo => "Общее")
+      @person.cfo = cfo
+    end
     @auth_sources = AuthSource.find(:all)
     @departments = Department.all.sort
   end
@@ -198,6 +209,7 @@ private
     @status = params[:status] || 1
     @group = Group.find_by_id(params[:group_id]) if params[:group_id].present?
     @department = Department.find_by_id(params[:department_id]) if params[:department_id].present?
+    @cfos = Cfo.all
 
     scope = Person.logged.status(@status)
     scope = scope.seach_by_name(params[:name]) if params[:name].present?
