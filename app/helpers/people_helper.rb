@@ -43,4 +43,36 @@ module PeopleHelper
     
   end 
 
+  def block_cfo_edit?(person)
+    not User.current.allowed_people_to?(:edit_people, person)
+  end
+
+  def default_leader(person)
+    begin
+      leader = Person.find_by_id(Person.find_by_id(User.current.id).department.head_id)
+      puts "!!!!!111111"
+      puts leader.lastname + ' ' + leader.firstname
+      puts "!!!!!222222"
+      leader.lastname + ' ' + leader.firstname
+    rescue
+      nil
+    end
+  end
+
+  def principals_options_for_select(collection, selected=nil)
+    s = ''
+    if collection.include?(User.current)
+      s << content_tag('option', "<< #{l(:label_me)} >>", :value => User.current.id)
+    end
+    groups = ''
+    collection.sort.each do |element|
+      selected_attribute = ' selected="selected"' if element.to_s.eql? selected
+      (element.is_a?(Group) ? groups : s) << %(<option value="#{element.id}"#{selected_attribute}>#{h element.name}</option>)
+    end
+    unless groups.empty?
+      s << %(<optgroup label="#{h(l(:label_group_plural))}">#{groups}</optgroup>)
+    end
+    s.html_safe
+  end
+
 end
