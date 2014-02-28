@@ -21,6 +21,7 @@ resources :people_settings do
   collection do
     get :autocomplete_for_user
   end
-end  
+end
 # match "people_settings/:action" => "people_settings"
 
+resources :cfos
