@@ -32,7 +32,6 @@
         $("#job_title").observe_field(2, sendPeopleSearchForm);
         $("#phone").observe_field(2, sendPeopleSearchForm);
         $("#mail").observe_field(2, sendPeopleSearchForm);
-        $("#city").observe_field(2, sendPeopleSearchForm);
         // $("#department_id").observe_field(2, sendPeopleSearchForm);
       });
 
@@ -54,10 +53,6 @@
      
       <span class="live_search">
         <%= text_field_tag(:mail, params[:mail], :autocomplete => "off", :class => "live_search_field", :placeholder => 'email', style: 'width: 150px;' ) %>
-      </span>
-
-      <span class="live_search">
-        <%= select_tag(:city, options_for_select(Person::CITIES, selected: params[:city]), prompt: l(:label_filter_city), :class => "live_search_field", onchange: 'this.form.submit();' ) %>
       </span>
 
       <span class="live_search" style="font-weight: normal; margin-left: 15px;">

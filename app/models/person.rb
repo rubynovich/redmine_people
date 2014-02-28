@@ -8,8 +8,6 @@ class Person < User
   include Redmine::SafeAttributes
 
   GENDERS = [[l(:label_people_male), 0], [l(:label_people_female), 1]]
-  #CITIES = [[l(:label_people_city_m), 0], [l(:label_people_city_spb), 1]]
-  CITIES = {l(:label_people_city_m) => 0, l(:label_people_city_spb) =>1}
 
   after_save :update_sanitized_phones
 
@@ -66,10 +64,6 @@ class Person < User
     {:conditions =>   ["( LOWER(#{Person.table_name}.job_title) LIKE ? )", "%" + search.downcase + "%" ] }
   }
 
-  scope :search_by_city, lambda {|search|
-    {:conditions =>   ["( LOWER(#{Person.table_name}.city) = ? )", search ] } 
-  }
-
   validates_uniqueness_of :firstname, :scope => [:lastname, :middlename]
 
   safe_attributes 'phone',
@@ -85,8 +79,7 @@ class Person < User
                   'linkedin',
                   'department_id',
                   'background',
-                  'appearance_date',
-                  'city'
+                  'appearance_date'
 
   def phones
     @phones || self.phone ? self.phone.split(/, +/) : []
@@ -98,11 +91,6 @@ class Person < User
     else
       super(formatter)
     end
-  end
-
-
-  def city
-    CITIES.key(self[:city]) 
   end
 
   def type

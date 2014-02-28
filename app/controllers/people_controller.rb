@@ -72,7 +72,7 @@ class PeopleController < ApplicationController
 
   def create
     @person  = Person.new(:language => Setting.default_language, :mail_notification => Setting.default_notification_option)
-    @person.safe_attributes = params[:person]    
+    @person.safe_attributes = params[:person]
     @person.admin = false
     @person.login = params[:person][:login]
     @person.password, @person.password_confirmation = params[:person][:password], params[:person][:password_confirmation] unless @person.auth_source_id
@@ -199,15 +199,12 @@ private
     @group = Group.find_by_id(params[:group_id]) if params[:group_id].present?
     @department = Department.find_by_id(params[:department_id]) if params[:department_id].present?
 
-    scope = Person.logged.status(@status).active
+    scope = Person.logged.status(@status)
     scope = scope.seach_by_name(params[:name]) if params[:name].present?
     scope = scope.search_by_job_title(params[:job_title]) if params[:job_title].present?
     scope = scope.search_by_phone(params[:phone]) if params[:phone].present?
     scope = scope.search_by_mail(params[:mail]) if params[:mail].present?
-    scope = scope.search_by_city(params[:city]) if params[:city].present?
-    groupp = @group.present? ? params[:group_id] : Setting.plugin_redmine_people[:sett_group_id]
-    scope = scope.in_group(groupp)# if @group.present?  if params[:group_id].present?
-    #scope = scope.in_group(params[:group_id]) if @group.present?
+    scope = scope.in_group(params[:group_id]) if @group.present?
     scope = scope.in_department(params[:department_id]) if @department.present?
     scope = scope.where(type: 'User')
 

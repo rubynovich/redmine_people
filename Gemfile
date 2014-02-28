@@ -4,6 +4,3 @@ if RUBY_VERSION <= '1.9'
 else
   gem 'vpim', :git => "https://github.com/aceofsales/vpim.git"
 end
-
-require 'colorize'
-gem "haml"
