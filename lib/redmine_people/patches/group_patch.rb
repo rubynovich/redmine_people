@@ -5,6 +5,7 @@ require_dependency 'user'
 module RedminePeople
   module Patches
     module GroupPatch
+      unloadable
       extend ActiveSupport::Concern
       included do
         has_and_belongs_to_many :people,
