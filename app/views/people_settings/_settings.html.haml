@@ -1,3 +1,0 @@
-%p
-  %label= l(:label_group_id)
-  = select_tag("settings[sett_group_id]", principals_options_for_select(Group.all, (Group.find_by_id(@settings[:sett_group_id]) rescue nil)), :prompt => t(:prompt_please_select))

@@ -12,6 +12,8 @@ en:
   label_people_new_people: New people
   label_people_male: Male
   label_people_female: Female
+  label_people_city_m: Moscow
+  label_people_city_spb: Saint-Petersburg
   label_people_settings: People settings
 
   button_people_edit_profile: Edit profile
@@ -27,6 +29,7 @@ en:
   field_people_middlename: Middle name
   field_people_background: Background info
   field_people_address: Address
+  field_people_city: city
   field_people_gender: Gender
   field_people_birthday: Birthday
   field_people_appearance_date: Appearance date
@@ -58,3 +61,7 @@ en:
 
   #0.1.5
   people_permission_delete_departments: Delete departments
+
+  #
+  label_filter_city: Select a city
+  label_group_id: Select a group
