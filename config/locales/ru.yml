@@ -20,7 +20,11 @@ ru:
 
   field_people_avatar: Avatar
   field_people_job_title: Должность
-  field_people_phone: Телефон
+  field_people_phone: Рабочий телефон
+  field_people_phone_dop: доб.
+  field_people_phone_mob: Мобильный телефон
+  field_people_phone_small: Рабочий 
+  field_people_phone_mob_small: Мобильный 
   field_people_phone_plural: Телефоны
   field_people_skype: Skype
   field_people_twitter: Twitter

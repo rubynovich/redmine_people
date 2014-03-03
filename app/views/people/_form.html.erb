@@ -30,9 +30,10 @@
 
 	<div id="phones_fields"> 
 		<p>
-			<%= f.text_field :phone, :label => l(:field_people_phone), :size => 80 -%>
+			<%= f.text_field :phone, :label => l(:field_people_phone), :size => 16 -%>
+			<%= f.text_field :phone_dop, :label => l(:field_people_phone_dop), :size => 4 -%>
 			<br>
-			<em><%= l(:text_comma_separated) %></em>                                                       
+			<%= f.text_field :phone_mob, :label => l(:field_people_phone_mob), :size => 80 -%>
 		 </p>  
 	</div>   
 			
