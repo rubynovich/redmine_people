@@ -25,10 +25,15 @@ Redmine::Plugin.register :redmine_people do
                  :caption => :label_people,
                  :if => Proc.new { User.current.allowed_people_to?(:view_people) }
                })
-
+    
   end
 
-
   menu :admin_menu, :people, {:controller => 'people_settings', :action => 'index'}, :caption => :label_people
+  menu :admin_menu, :cfo, {:controller => 'cfos', :action => 'index'}, :caption => :label_cfo
+
+  project_module :redmine_people do
+    permission :edit_cfos, {:cfos => [:new, :create, :edit, :update, :destroy]}
+    permission :view_cfos, {:cfos => [:index]}
+  end
 
 end

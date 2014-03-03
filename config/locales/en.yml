@@ -16,6 +16,8 @@ en:
   label_people_city_spb: Saint-Petersburg
   label_people_settings: People settings
 
+  label_cfo: CFO
+
   button_people_edit_profile: Edit profile
 
   field_people_avatar: Avatar
@@ -55,6 +57,8 @@ en:
   label_department: Department
   label_department_head: Head
   field_people_department: Department
+  field_people_cfo: CFO
+  field_people_leader: Leader
   label_people_at_department: at
   field_department_parent: Subdepartment of
   people_permission_edit_departments: Edit departments

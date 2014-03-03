@@ -16,6 +16,8 @@ ru:
   label_people_city_spb: Санкт-Петербург
   label_people_settings: Настройки сотрудников
 
+  label_cfo: 'ЦФО'
+
   button_people_edit_profile: Редактировать профиль
 
   field_people_avatar: Avatar
@@ -55,6 +57,8 @@ ru:
   label_department: Подразделение
   label_department_head: Руководитель
   field_people_department: Подразделение
+  field_people_cfo: ЦФО
+  field_people_leader: Руководитель
   label_people_at_department: в
   field_department_parent: Родительское подразделение
   people_permission_edit_departments: Редактирование подразделений

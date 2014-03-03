@@ -4,6 +4,7 @@ class Person < User
   self.inheritance_column = :_type_disabled
 
   belongs_to :department
+  has_one :cfo
 
   include Redmine::SafeAttributes
 
