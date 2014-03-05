@@ -12,6 +12,7 @@ pl:
   label_people_new_people: Nowe osoby
   label_people_male: Mężczyzna
   label_people_female: Kobieta
+  label_people_city_noname: Miasto nie zdefiniowano
   label_people_city_m: Moskwa
   label_people_city_spb: Sankt Petersburg
   label_people_settings: Ustawienia osób

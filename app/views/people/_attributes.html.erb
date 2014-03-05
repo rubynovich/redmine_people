@@ -61,10 +61,12 @@
   <p class="value"> <%= mail_to @person.email %> </p>
 </div>
 
-<div class="human">
-  <p class="attr"><%= l(:field_people_city) %>:</p>
-  <p class="value"> <%= @person.city %> </p>
-</div>
+<% if @person.city && @person.city != l(:label_people_city_noname) %>
+  <div class="human">
+    <p class="attr"><%= l(:field_people_city) %>:</p>
+    <p class="value"> <%= @person.city %> </p>
+  </div>
+<% end %>
 
 <% unless @person.address.blank? %>
 <div class="human">

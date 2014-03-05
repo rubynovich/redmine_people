@@ -9,8 +9,7 @@ class Person < User
   include Redmine::SafeAttributes
 
   GENDERS = [[l(:label_people_male), 0], [l(:label_people_female), 1]]
-  #CITIES = [[l(:label_people_city_m), 0], [l(:label_people_city_spb), 1]]
-  CITIES = {l(:label_people_city_m) => 0, l(:label_people_city_spb) =>1}
+  CITIES = {l(:label_people_city_noname) => 0, l(:label_people_city_m) => 1, l(:label_people_city_spb) =>2}
 
   after_save :update_sanitized_phones
 
@@ -126,6 +125,10 @@ class Person < User
 
   def city
     CITIES.key(self[:city]) 
+  end
+
+  def city=(new_city)
+    self[:city] = new_city
   end
 
   def type
