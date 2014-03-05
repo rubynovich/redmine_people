@@ -53,6 +53,15 @@ class PeopleController < ApplicationController
 
   def update
     (render_403; return false) unless @person.editable_by?(User.current)
+
+    params[:person][:phone] = ""
+    params[:person][:phone] << params[:phone_work] + ", " unless params[:phone_work].blank?
+    params[:person][:phone] << params[:phone_extension] + ", " unless params[:phone_extension].blank?
+    params[:person][:phone] << params[:phone_mobile] unless params[:phone_mobile].blank?
+    params.delete([:phone_work])
+    params.delete([:phone_extension])
+    params.delete([:phone_mobile])
+    
     if @person.update_attributes(params[:person])
       flash[:notice] = l(:notice_successful_update)
       attach_avatar
@@ -72,6 +81,15 @@ class PeopleController < ApplicationController
 
   def create
     @person  = Person.new(:language => Setting.default_language, :mail_notification => Setting.default_notification_option)
+
+    params[:person][:phone] = ""
+    params[:person][:phone] << params[:phone_work] + ", " unless params[:phone_work].blank?
+    params[:person][:phone] << params[:phone_extension] + "  " unless params[:phone_extension].blank?
+    params[:person][:phone] << params[:phone_mobile] unless params[:phone_mobile].blank?
+    params.delete([:phone_work])
+    params.delete([:phone_extension])
+    params.delete([:phone_mobile])
+
     @person.safe_attributes = params[:person]    
     @person.admin = false
     @person.login = params[:person][:login]

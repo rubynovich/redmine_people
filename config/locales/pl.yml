@@ -21,11 +21,12 @@ pl:
   field_people_avatar: Avatar
   field_people_job_title: Stanowisko
   field_people_phone: Telefon do pracy
-  field_people_phone_dop: dod.
-  field_people_phone_mob: Telefony komórkowe
+  field_people_phone_extension: dod.
+  field_people_phone_mobile: Telefony komórkowe
   field_people_phone_small: Praca
-  field_people_phone_mob_small: Telefon
+  field_people_phone_mobile_small: Telefon
   field_people_phone_plural: Telefony
+  field_people_phone_correct: Wprowadź telefon zgodnie z szablonem +7 (XXX) XXX-XX-XX
   field_people_skype: Skype
   field_people_twitter: Twitter
   field_people_facebook: Facebook 
