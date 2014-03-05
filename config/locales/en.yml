@@ -22,8 +22,13 @@ en:
 
   field_people_avatar: Avatar
   field_people_job_title: Job title
-  field_people_phone: Phone
+  field_people_phone: Office phone
+  field_people_phone_extension: ext.
+  field_people_phone_mobile: Mobile phone
+  field_people_phone_small: Office
+  field_people_phone_mobile_small: Mobile
   field_people_phone_plural: Phones
+  field_people_phone_correct: Enter the phone number in accordance with the template +7 (XXX) XXX-XX-XX
   field_people_skype: Skype
   field_people_twitter: Twitter
   field_people_facebook: Facebook 
@@ -31,7 +36,7 @@ en:
   field_people_middlename: Middle name
   field_people_background: Background info
   field_people_address: Address
-  field_people_city: city
+  field_people_city: City
   field_people_gender: Gender
   field_people_birthday: Birthday
   field_people_appearance_date: Appearance date

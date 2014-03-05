@@ -90,8 +90,30 @@ class Person < User
                   'city'
 
   def phones
-    @phones || self.phone ? self.phone.split(/, +/) : []
+    @phones || self.phone ? self.phone.split(/[,;{доб\.*}] */) : []
   end
+
+  def phone_extension
+    if phones.index { |x| x.length > 0 and x.length < 6 } 
+      phones[phones.index { |x| x.length > 0 and x.length < 6 }] 
+    else
+      []
+    end
+  end
+
+  def phone_work
+    phones.each do |value| 
+      if value.index(/\+*[78] *\(*(495|499|812)/)  
+        return value 
+      end
+    end
+    return []
+  end
+
+  def phone_mobile
+    phones - [phone_work] - [phone_extension] - [" "]
+  end
+
 
   def name(formatter = nil)
     if middlename.present?
