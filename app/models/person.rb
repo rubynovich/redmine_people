@@ -89,7 +89,10 @@ class Person < User
                   'city'
 
   def phones
-    @phones || self.phone ? self.phone.split(/[,;{доб\.*}] */) : []
+    unless self.phone.blank?
+      self.phone.sub!(/[^,]\s+\+/, ", +") 
+    end
+    @phones || self.phone ? self.phone.split(/(?:[,;]|доб\.*)\s*/)-[""] : []
   end
 
   def phone_extension
@@ -177,7 +180,9 @@ class Person < User
   end
 
   def update_sanitized_phones
-    update_column(:sanitized_phones, self.phone.gsub(/[-()\s]/, ''))
+    unless self.phone.blank?
+      update_column(:sanitized_phones, self.phone.gsub(/[-()\s]/, ''))
+    end
   end
 
 end
