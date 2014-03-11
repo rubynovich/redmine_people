@@ -31,7 +31,13 @@ namespace :redmine do
                     phone_copy = phone.dup
                     phone_new = "+7 ("
                     phone_copy.gsub!(/[-()\s]/, '')
-                    shift = phone_copy.include?("+7") ? 2 : 1                    
+                    if phone_copy.include?("+7")
+                        shift = 2 
+                    elsif phone_copy[0] == "8"
+                        shift = 1
+                    else
+                        shift = 0
+                    end                    
                     phone_new << phone_copy.slice(shift,3)    # city_code
                     phone_new << ") "
                     phone_new << phone_copy.slice(shift+3,3)   # XXX
@@ -45,7 +51,7 @@ namespace :redmine do
                     p.update_attribute(:phone, phone_copy)
                 end
             end           
-            puts "end:    " + p.phone
+            puts "end:    id=" + p.id.to_s + "  phone=" + p.phone
             puts
             end                
            

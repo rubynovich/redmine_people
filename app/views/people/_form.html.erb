@@ -147,6 +147,8 @@
 			if (num > 0){
 				var elem = document.getElementById('mobile'+num);
 				elem.parentNode.removeChild(elem);
+				var elem = document.getElementById('phone_mobile_correct'+num);
+				elem.parentNode.removeChild(elem);
 			}
 			else
 			{
@@ -158,15 +160,20 @@
 							document.getElementById('phone_mobile0').value = document.getElementById('phone_mobile'+i).value;
 							var elem = document.getElementById('mobile'+i);
 							elem.parentNode.removeChild(elem);
+							var elem = document.getElementById('phone_mobile_correct'+i);
+							elem.parentNode.removeChild(elem);
 							is_deleted = 1;
 							break;
 						}
-						if (is_deleted == 0)
+						if (is_deleted == 0){
 							document.getElementById('phone_mobile0').value = "";
+							document.getElementById('phone_mobile_correct0').value = "";
+						}
 				}
 				else
 				{
 					document.getElementById('phone_mobile0').value = "";
+					document.getElementById('phone_mobile_correct0').value = "";					
 				}
 
 			}
