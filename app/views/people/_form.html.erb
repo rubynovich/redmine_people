@@ -106,6 +106,75 @@
 		 checkAll(); 
 		}
 
+		function addMobilePhone(num){
+			var elId;
+			var newP = document.createElement('p');
+			var newLabel = document.createElement('label');
+			var newEm = document.createElement('em');
+			var newA = document.createElement('a');
+
+			var newTextField = document.createElement('input');
+			newTextField.type = "text";
+			newTextField.id = "phone_mobile"+num;
+			newTextField.title = "+7 (XXX) XXX-XX-XX";
+			newTextField.name = "phone_mobile"+num;
+			newTextField.setAttribute("size",'30');
+			newTextField.setAttribute('onkeyup',"checkWorkPhone('phone_mobile" + num + "', 'phone_mobile_correct" + num + "')");
+			newTextField.setAttribute('onkeypress', "checkWorkPhone('phone_mobile" + num + "', 'phone_mobile_correct" + num + "')");
+			newTextField.setAttribute('onfocus',"checkWorkPhone('phone_mobile" + num + "', 'phone_mobile_correct" + num + "')");
+			
+			newEm.id = "phone_mobile_correct"+num;
+			newEm.value = "";
+
+			newA.setAttribute('class', "icon icon-del");
+			newA.href = "javascript:void(0)";
+			newA.setAttribute('onclick',"delMobilePhone("+num+")");
+
+			newP.id = "mobile"+num;
+			newP.appendChild(newLabel);
+			newP.appendChild(newTextField);
+			newP.appendChild(newA);
+
+			elId = document.getElementById('person_phone_mobile_counter');
+			document.getElementById('person_phone_mobile_counter').value = num+1;
+			elId.parentNode.insertBefore(newP, elId);
+			elId.parentNode.insertBefore(newEm, elId);
+			document.getElementById('phone_mobile_id').setAttribute('onclick',"addMobilePhone("+num+1+")");
+			checkAll(); 			
+		}
+
+		function delMobilePhone(num){
+			if (num > 0){
+				var elem = document.getElementById('mobile'+num);
+				elem.parentNode.removeChild(elem);
+			}
+			else
+			{
+				if (document.getElementById('person_phone_mobile_counter').value > 1){
+					var i_max = document.getElementById('person_phone_mobile_counter').value;
+					var is_deleted = 0;
+					for (var i = 1; i < i_max; i++)
+						if (document.getElementById('phone_mobile'+i)){
+							document.getElementById('phone_mobile0').value = document.getElementById('phone_mobile'+i).value;
+							var elem = document.getElementById('mobile'+i);
+							elem.parentNode.removeChild(elem);
+							is_deleted = 1;
+							break;
+						}
+						if (is_deleted == 0)
+							document.getElementById('phone_mobile0').value = "";
+				}
+				else
+				{
+					document.getElementById('phone_mobile0').value = "";
+				}
+
+			}
+
+			
+		}
+
+
     </script>
 
 	<p class="avatar" id="watchers">
@@ -142,11 +211,27 @@
 	<p><%= f.text_field :mail, :required => true %></p>
 	<p><%= f.text_area :address, :label=>l(:field_people_address), :rows => 5 -%></p>
 
-	<p><label><%= l(:field_people_phone)  -%></label><%= text_field_tag :phone_work, @person.phone_work, :size => 26, :title => "+7 (XXX) XXX-XX-XX", :onkeypress => "checkWorkPhone('phone_work', 'phone_work_correct')", :onfocus => "checkWorkPhone('phone_work', 'phone_work_correct')", :onkeyup => "checkWorkPhone('phone_work', 'phone_work_correct')"-%></p>
+	<p><label><%= l(:field_people_phone)  -%></label><%= text_field_tag :phone_work, @person.phone_work, :size => 30, :title => "+7 (XXX) XXX-XX-XX", :onkeypress => "checkWorkPhone('phone_work', 'phone_work_correct')", :onfocus => "checkWorkPhone('phone_work', 'phone_work_correct')", :onkeyup => "checkWorkPhone('phone_work', 'phone_work_correct')"-%></p>
 	<em id="phone_work_correct" value = ""></em> 
+
 	<p><label><%= l(:field_people_phone_extension)  -%></label><%= text_field_tag :phone_extension, @person.phone_extension, :size => 6  -%></p>
-	<p><label><%= l(:field_people_phone_mobile)  -%></label><%= text_field_tag :phone_mobile, @person.phone_mobile, :size => 60, :title => "+7 (XXX) XXX-XX-XX", :onkeypress => "checkWorkPhone('phone_mobile', 'phone_mobile_correct')", :onfocus => "checkWorkPhone('phone_mobile', 'phone_mobile_correct')", :onkeyup => "checkWorkPhone('phone_mobile', 'phone_mobile_correct')" -%></p>  
-	<em id="phone_mobile_correct" value = ""></em> 
+
+	<% unless @person.phone_mobile.blank? %>
+		<% @person.phone_mobile.each_with_index do |phone, p_index| %>
+			<p id ="mobile<%= p_index %>"><label><%=  l(:field_people_phone_mobile) if p_index == 0 -%></label><%= text_field_tag "phone_mobile"+p_index.to_s, phone, :size => 30, :title => "+7 (XXX) XXX-XX-XX", :onkeypress => "checkWorkPhone('phone_mobile"+p_index.to_s+"', 'phone_mobile_correct"+p_index.to_s+"')", :onfocus => "checkWorkPhone('phone_mobile"+p_index.to_s+"', 'phone_mobile_correct"+p_index.to_s+"')", :onkeyup => "checkWorkPhone('phone_mobile"+p_index.to_s+"', 'phone_mobile_correct"+p_index.to_s+"')"%><a class="icon icon-del" href="javascript:void(0)" onclick="delMobilePhone(<%= p_index %>)" ></a></p>  
+			<em id="phone_mobile_correct<%= p_index %>" value = ""></em> 
+      	<% end %> 
+      	<%= f.hidden_field :phone_mobile_counter, :value => @person.phone_mobile.length.to_s %>
+
+		<p id="mobile0"><a id="phone_mobile_id" href="javascript:void(0)" onclick="addMobilePhone(<%=@person.phone_mobile.length%>)" class="icon icon-add">Добавить мобильный телефон</a></p>
+
+    <% else %>
+    	<p><label><%= l(:field_people_phone_mobile)  -%></label><%= text_field_tag :phone_mobile0, @person.phone_mobile, :size => 30, :title => "+7 (XXX) XXX-XX-XX", :onkeypress => "checkWorkPhone('phone_mobile0', 'phone_mobile_correct0')", :onfocus => "checkWorkPhone('phone_mobile0', 'phone_mobile_correct0')", :onkeyup => "checkWorkPhone('phone_mobile0', 'phone_mobile_correct0')"%><a class="icon icon-del" href="javascript:void(0)" onclick="delMobilePhone(0)" ></a></p>  
+		<em id="phone_mobile_correct0" value = ""></em> 
+      	<%= f.hidden_field :phone_mobile_counter, :value => 1 %>
+      	<p><a id="phone_mobile_id" href="javascript:void(0)" onclick="addMobilePhone(1)" class="icon icon-add">Добавить мобильный телефон</a></p>
+
+	<% end %>	
 			
  	<p><%= f.text_field :skype, :label => l(:field_people_skype) -%></p> 
  	<p><%= f.text_field :facebook, :label => l(:field_people_facebook) + ' ID'-%></p> 

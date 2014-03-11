@@ -45,7 +45,7 @@ class PeopleController < ApplicationController
     @cfos = Cfo.all
     @auth_sources = AuthSource.find(:all)
     @departments = Department.all.sort
-    @membership ||= Member.new
+    @membership ||= Member.new    
   end
 
   def new
@@ -68,10 +68,13 @@ class PeopleController < ApplicationController
     params[:person][:phone] = ""
     params[:person][:phone] << params[:phone_work] + ", " unless params[:phone_work].blank?
     params[:person][:phone] << params[:phone_extension] + ", " unless params[:phone_extension].blank?
-    params[:person][:phone] << params[:phone_mobile] unless params[:phone_mobile].blank?
+    params[:person][:phone_mobile_counter].to_i.times do |mobile_index| 
+      params[:person][:phone] << params["phone_mobile"+mobile_index.to_s] + ", " unless params["phone_mobile"+mobile_index.to_s].blank?
+      params.delete(["phone_mobile"+mobile_index.to_s])
+    end
     params.delete([:phone_work])
     params.delete([:phone_extension])
-    params.delete([:phone_mobile])
+    params[:person].delete(:phone_mobile_counter)
     
     if @person.update_attributes(params[:person])
       flash[:notice] = l(:notice_successful_update)
@@ -96,11 +99,14 @@ class PeopleController < ApplicationController
     params[:person][:phone] = ""
     params[:person][:phone] << params[:phone_work] + ", " unless params[:phone_work].blank?
     params[:person][:phone] << params[:phone_extension] + "  " unless params[:phone_extension].blank?
-    params[:person][:phone] << params[:phone_mobile] unless params[:phone_mobile].blank?
+    params[:person][:phone_mobile_counter].to_i.times do |mobile_index| 
+      params[:person][:phone] << params["phone_mobile"+mobile_index.to_s] + ", " unless params["phone_mobile"+mobile_index.to_s].blank?
+      params.delete(["phone_mobile"+mobile_index.to_s])
+    end
     params.delete([:phone_work])
     params.delete([:phone_extension])
-    params.delete([:phone_mobile])
-
+    params[:person].delete(:phone_mobile_counter)
+    
     @person.safe_attributes = params[:person]    
     @person.admin = false
     @person.login = params[:person][:login]
@@ -170,6 +176,10 @@ class PeopleController < ApplicationController
 
     # @back = back_url
     render layout: false
+  end
+
+  def adding_mobile_phone
+    render :partial => 'adding mobile phones', :content_type => 'text/html'
   end
 
 private

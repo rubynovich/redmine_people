@@ -6,6 +6,7 @@ resources :people do
       get :bulk_edit, :context_menu, :edit_mails, :preview_email, :avatar
       post :bulk_edit, :bulk_update, :send_mails
       delete :bulk_destroy
+      #get :adding_mobile_phone
     end
 end
 
