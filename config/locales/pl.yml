@@ -65,4 +65,4 @@ pl:
         person:
           attributes:
             phone:
-              label_people_mobile_errors: 'Błąd formatu w telefonie komórkowym, wprowadź wzór 7 (XXX) XXX-XX-XX'
+              label_people_mobile_errors: ':  błąd formatu w telefonie komórkowym, wprowadź wzór 7 (XXX) XXX-XX-XX'

@@ -83,4 +83,4 @@ ru:
         person:
           attributes:
             phone:
-              label_people_mobile_errors: 'Ошибка в формате мобильного телефона, введите по образцу +7 (XXX) XXX-XX-XX'
+              label_people_mobile_errors: ':  ошибка в формате мобильного телефона, введите по образцу +7 (XXX) XXX-XX-XX'
