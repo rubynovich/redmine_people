@@ -75,3 +75,12 @@ ru:
   #
   label_filter_city: Выберите город
   label_group_id: Выберите группу
+
+
+  activerecord:
+    errors:
+      models:
+        person:
+          attributes:
+            phone:
+              label_people_mobile_errors: 'Ошибка в формате мобильного телефона, введите по образцу +7 (XXX) XXX-XX-XX'

@@ -19,7 +19,7 @@
 		 	}
 		 }
 		 else if ( (val.length > 4) && (val.length < 8) ){ // '+7 (XXX'
-		 	if ( /^\+7\s?\([0-9]{1,3}$/.test(val) ) 
+		 	if ( /^\+7\s{1}\([0-9]{1,3}$/.test(val) ) 
 		 		has_error = '';		 	
 		 	else 
 		 		has_error = error_message;
@@ -29,71 +29,71 @@
 		    has_error = '' ;
 
 		 if (val.length == 8){  // "+7 (XXX)"
-		 	if ( /^\+7\s?\([0-9]{3}[0-9]{1}$/.test(val) ) {
+		 	if ( /^\+7\s{1}\([0-9]{3}[0-9]{1}$/.test(val) ) {
 		 		has_error = '';		 	
 		 		end_str = val.substr(-1);
 		 		val = val.substr(0, val.length -1) + ")" + end_str;
 		 	}
-		 	else if ( /^\+7\s?\([0-9]{3}[^\)\s]$/.test(val) )
+		 	else if ( /^\+7\s{1}\([0-9]{3}[^\)\s]$/.test(val) )
 		 		has_error = error_message;
-		 	else if ( /^\+7\s?\([0-9]{3}[\s{1}\)]$/.test(val) ){
+		 	else if ( /^\+7\s{1}\([0-9]{3}[\s{1}\)]$/.test(val) ){
 		 		has_error = '';
 		 		val = val.substr(0, val.length -1) + ")";
 		 	}
 
 		 }
 		 if (val.length == 9){  // "+7 (XXX) "
-		 	if ( /^\+7\s?\([0-9]{3}\)[0-9]{1}$/.test(val) ) {
+		 	if ( /^\+7\s{1}\([0-9]{3}\)[0-9]{1}$/.test(val) ) {
 		 		has_error = '';		 	
 		 		end_str = val.substr(-1);
 		 		val = val.substr(0, val.length -1) + " " + end_str;
 		 	}
-		 	else if ( /^\+7\s?\([0-9]{3}\)[^\s]$/.test(val) )
+		 	else if ( /^\+7\s{1}\([0-9]{3}\)[^\s]$/.test(val) )
 		 		has_error = error_message; 	
 
 		 }
 
 		 if ((val.length > 9) && (val.length < 13)){  // '+7 (XXX) XXX'
-		 	if ( /^\+7\s?\([0-9]{3}\)\s?[0-9]{1,3}$/.test(val) ) 
+		 	if ( /^\+7\s{1}\([0-9]{3}\)\s{1}[0-9]{1,3}$/.test(val) ) 
 		 		has_error = '';		 	
 		 	else 
 		 		has_error = error_message;
 		 }
 		 if (val.length == 13){  // '+7 (XXX) XXX-'
-		 	if ( /^\+7\s?\([0-9]{3}\)\s?[0-9]{3}[0-9]{1}$/.test(val) ) {
+		 	if ( /^\+7\s{1}\([0-9]{3}\)\s{1}[0-9]{3}[0-9]{1}$/.test(val) ) {
 		 		has_error = '';		 	
 		 		end_str = val.substr(-1);
 		 		val = val.substr(0, val.length -1) + "-" + end_str;
 		 	}
-		 	else if ( /^\+7\s?\([0-9]{3}\)\s?[0-9]{3}[^\-\s]$/.test(val) )
+		 	else if ( /^\+7\s{1}\([0-9]{3}\)\s{1}[0-9]{3}[^\-\s]$/.test(val) )
 		 		has_error = error_message;
-		 	else if ( /^\+7\s?\([0-9]{3}\)\s?[0-9]{3}\s{1}$/.test(val) ){
+		 	else if ( /^\+7\s{1}\([0-9]{3}\)\s{1}[0-9]{3}\s{1}$/.test(val) ){
 		 		has_error = '';
 		 		val = val.substr(0, val.length -1) + "-";
 		 	}
 		 }
 
 		 if ((val.length > 13) && (val.length < 16)){  // '+7 (XXX) XXX-XX'
-		 	if ( /^\+7\s?\([0-9]{3}\)\s?[0-9]{3}\-[0-9]{1,2}$/.test(val) ) 
+		 	if ( /^\+7\s{1}\([0-9]{3}\)\s{1}[0-9]{3}\-[0-9]{1,2}$/.test(val) ) 
 		 		has_error = '';		 	
 		 	else 
 		 		has_error = error_message;
 		 }
 		 if (val.length == 16){  // '+7 (XXX) XXX-XX-'
-			if ( /^\+7\s?\([0-9]{3}\)\s?[0-9]{3}\-[0-9]{2}[0-9]{1}$/.test(val) ) {
+			if ( /^\+7\s{1}\([0-9]{3}\)\s{1}[0-9]{3}\-[0-9]{2}[0-9]{1}$/.test(val) ) {
 		 		has_error = '';		 	
 		 		end_str = val.substr(-1);
 		 		val = val.substr(0, val.length -1) + "-" + end_str;
 		 	}
-		 	else if ( /^\+7\s?\([0-9]{3}\)\s?[0-9]{3}\-[0-9]{2}[^\-\s]$/.test(val) )
+		 	else if ( /^\+7\s{1}\([0-9]{3}\)\s{1}[0-9]{3}\-[0-9]{2}[^\-\s]$/.test(val) )
 		 		has_error = error_message;
-		 	else if( /^\+7\s?\([0-9]{3}\)\s?[0-9]{3}\-[0-9]{2}\s{1}$/.test(val) ){
+		 	else if( /^\+7\s{1}\([0-9]{3}\)\s{1}[0-9]{3}\-[0-9]{2}\s{1}$/.test(val) ){
 		 		has_error = '';
 		 		val = val.substr(0, val.length -1) + "-";
 		 	}
 		 }
 		 if ((val.length > 16) && (val.length <= 18)){	// '+7 (XXX) XXX-XX-XX'
-		 	if ( /^\+7\s?\([0-9]{3}\)\s?[0-9]{3}\-[0-9]{2}\-[0-9]{1,2}$/.test(val) ) 
+		 	if ( /^\+7\s{1}\([0-9]{3}\)\s{1}[0-9]{3}\-[0-9]{2}\-[0-9]{1,2}$/.test(val) ) 
 		 		has_error = '';		 	
 		 	else 
 		 		has_error = error_message;
@@ -118,7 +118,8 @@
 			newTextField.id = "phone_mobile"+num;
 			newTextField.title = "+7 (XXX) XXX-XX-XX";
 			newTextField.name = "phone_mobile"+num;
-			newTextField.setAttribute("size",'30');
+			newTextField.setAttribute("size",30);
+			newTextField.setAttribute("maxlength",18);
 			newTextField.setAttribute('onkeyup',"checkWorkPhone('phone_mobile" + num + "', 'phone_mobile_correct" + num + "')");
 			newTextField.setAttribute('onkeypress', "checkWorkPhone('phone_mobile" + num + "', 'phone_mobile_correct" + num + "')");
 			newTextField.setAttribute('onfocus',"checkWorkPhone('phone_mobile" + num + "', 'phone_mobile_correct" + num + "')");
@@ -192,7 +193,8 @@
 	                                         :class => 'delete',
 											 :style => "vertical-align: middle;",
 	                                         :title => l(:button_delete) unless @person.avatar.blank? %>
-	</p>    
+	</p> 
+
 	<p><%= label_tag l(:field_people_avatar) %> <%= file_field_tag 'person_avatar[file]', :size => 30, :id => nil  -%> </p>
 	<p><%= f.text_field :firstname, :required => true %></p>    
 	<p><%= f.text_field :middlename, :label => l(:field_people_middlename) %></p>
@@ -218,14 +220,14 @@
 	<p><%= f.text_field :mail, :required => true %></p>
 	<p><%= f.text_area :address, :label=>l(:field_people_address), :rows => 5 -%></p>
 
-	<p><label><%= l(:field_people_phone)  -%></label><%= text_field_tag :phone_work, @person.phone_work, :size => 30, :title => "+7 (XXX) XXX-XX-XX", :onkeypress => "checkWorkPhone('phone_work', 'phone_work_correct')", :onfocus => "checkWorkPhone('phone_work', 'phone_work_correct')", :onkeyup => "checkWorkPhone('phone_work', 'phone_work_correct')"-%></p>
+	<p><label><%= l(:field_people_phone)  -%></label><%= text_field_tag :phone_work, @person.phone_work, :size => 30, :maxlength =>18, :title => "+7 (XXX) XXX-XX-XX", :onkeypress => "checkWorkPhone('phone_work', 'phone_work_correct')", :onfocus => "checkWorkPhone('phone_work', 'phone_work_correct')", :onkeyup => "checkWorkPhone('phone_work', 'phone_work_correct')"-%></p>
 	<em id="phone_work_correct" value = ""></em> 
 
 	<p><label><%= l(:field_people_phone_extension)  -%></label><%= text_field_tag :phone_extension, @person.phone_extension, :size => 6  -%></p>
 
 	<% unless @person.phone_mobile.blank? %>
 		<% @person.phone_mobile.each_with_index do |phone, p_index| %>
-			<p id ="mobile<%= p_index %>"><label><%=  l(:field_people_phone_mobile) if p_index == 0 -%></label><%= text_field_tag "phone_mobile"+p_index.to_s, phone, :size => 30, :title => "+7 (XXX) XXX-XX-XX", :onkeypress => "checkWorkPhone('phone_mobile"+p_index.to_s+"', 'phone_mobile_correct"+p_index.to_s+"')", :onfocus => "checkWorkPhone('phone_mobile"+p_index.to_s+"', 'phone_mobile_correct"+p_index.to_s+"')", :onkeyup => "checkWorkPhone('phone_mobile"+p_index.to_s+"', 'phone_mobile_correct"+p_index.to_s+"')"%><a class="icon icon-del" href="javascript:void(0)" onclick="delMobilePhone(<%= p_index %>)" ></a></p>  
+			<p id ="mobile<%= p_index %>"><label><%=  l(:field_people_phone_mobile) if p_index == 0 -%></label><%= text_field_tag "phone_mobile"+p_index.to_s, phone, :size => 30, :maxlength =>18, :title => "+7 (XXX) XXX-XX-XX", :onkeypress => "checkWorkPhone('phone_mobile"+p_index.to_s+"', 'phone_mobile_correct"+p_index.to_s+"')", :onfocus => "checkWorkPhone('phone_mobile"+p_index.to_s+"', 'phone_mobile_correct"+p_index.to_s+"')", :onkeyup => "checkWorkPhone('phone_mobile"+p_index.to_s+"', 'phone_mobile_correct"+p_index.to_s+"')"%><a class="icon icon-del" href="javascript:void(0)" onclick="delMobilePhone(<%= p_index %>)" ></a></p>  
 			<em id="phone_mobile_correct<%= p_index %>" value = ""></em> 
       	<% end %> 
       	<%= f.hidden_field :phone_mobile_counter, :value => @person.phone_mobile.length.to_s %>
@@ -233,7 +235,7 @@
 		<p id="mobile0"><a id="phone_mobile_id" href="javascript:void(0)" onclick="addMobilePhone(<%=@person.phone_mobile.length%>)" class="icon icon-add">Добавить мобильный телефон</a></p>
 
     <% else %>
-    	<p><label><%= l(:field_people_phone_mobile)  -%></label><%= text_field_tag :phone_mobile0, @person.phone_mobile, :size => 30, :title => "+7 (XXX) XXX-XX-XX", :onkeypress => "checkWorkPhone('phone_mobile0', 'phone_mobile_correct0')", :onfocus => "checkWorkPhone('phone_mobile0', 'phone_mobile_correct0')", :onkeyup => "checkWorkPhone('phone_mobile0', 'phone_mobile_correct0')"%><a class="icon icon-del" href="javascript:void(0)" onclick="delMobilePhone(0)" ></a></p>  
+    	<p><label><%= l(:field_people_phone_mobile)  -%></label><%= text_field_tag :phone_mobile0, @person.phone_mobile, :size => 30, :maxlength =>18, :title => "+7 (XXX) XXX-XX-XX", :onkeypress => "checkWorkPhone('phone_mobile0', 'phone_mobile_correct0')", :onfocus => "checkWorkPhone('phone_mobile0', 'phone_mobile_correct0')", :onkeyup => "checkWorkPhone('phone_mobile0', 'phone_mobile_correct0')"%><a class="icon icon-del" href="javascript:void(0)" onclick="delMobilePhone(0)" ></a></p>  
 		<em id="phone_mobile_correct0" value = ""></em> 
       	<%= f.hidden_field :phone_mobile_counter, :value => 1 %>
       	<p><a id="phone_mobile_id" href="javascript:void(0)" onclick="addMobilePhone(1)" class="icon icon-add">Добавить мобильный телефон</a></p>

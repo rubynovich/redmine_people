@@ -76,7 +76,7 @@ class PeopleController < ApplicationController
     params.delete([:phone_extension])
     params[:person].delete(:phone_mobile_counter)
     
-    if @person.update_attributes(params[:person])
+    if @person.update_attributes(params[:person])      
       flash[:notice] = l(:notice_successful_update)
       attach_avatar
       attachments = Attachment.attach_files(@person, params[:attachments])

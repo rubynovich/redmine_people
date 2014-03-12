@@ -40,7 +40,7 @@ pl:
   field_people_birthday: Urodziny
   field_people_appearance_date: Data dołączenia
   field_people_age: Wiek
-
+  
   people_permission_edit_people: Edycja osób
   people_permission_view_people: Przeglądanie osób
   people_permission_add_people: Dodawanie osób
@@ -58,3 +58,11 @@ pl:
   #
   label_filter_city: Wybierz miasto
   label_group_id: Wybierz grupę
+
+  activerecord:
+    errors:
+      models:
+        person:
+          attributes:
+            phone:
+              label_people_mobile_errors: 'Błąd formatu w telefonie komórkowym, wprowadź wzór 7 (XXX) XXX-XX-XX'

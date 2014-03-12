@@ -75,3 +75,12 @@ en:
   #
   label_filter_city: Select a city
   label_group_id: Select a group
+
+
+  activerecord:
+    errors:
+      models:
+        person:
+          attributes:
+            phone:
+              label_people_mobile_errors: 'Format error in mobile phone, enter modeled +7 (XXX) XXX-XX-XX'

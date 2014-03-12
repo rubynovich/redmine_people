@@ -71,6 +71,8 @@ class Person < User
   }
 
   validates_uniqueness_of :firstname, :scope => [:lastname, :middlename]
+  validate :phones_correct
+  
 
   safe_attributes 'phone',
                   'address',
@@ -116,6 +118,16 @@ class Person < User
     phones - [phone_work] - [phone_extension] - [" "]
   end
 
+  def phones_correct
+    if phone_mobile.present?
+      phone_mobile.each do |phone|
+        unless phone.index(/^\s*\+7\s{1}\([0-9]{3}\)\s{1}[0-9]{3}\-[0-9]{2}\-[0-9]{2}\s*$/)
+          errors.add(:phone, :label_people_mobile_errors)
+          break
+        end
+      end
+    end
+  end
 
   def name(formatter = nil)
     if middlename.present?
