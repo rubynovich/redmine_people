@@ -72,6 +72,9 @@ class Person < User
 
   validates_uniqueness_of :firstname, :scope => [:lastname, :middlename]
   validate :phones_correct
+  #validates :mail, :email =>  {:strict_mode => true}
+  validates_format_of :mail, :with => /^[0-9a-zA-Z][0-9a-zA-Z\-\_]*(\.[0-9a-zA-Z\-\_]*[0-9a-zA-Z]+)*@[0-9a-zA-Z][0-9a-zA-Z\-\_]*(\.[0-9a-zA-Z\-\_]*[0-9a-zA-Z]+)*\.[a-zA-Z]{2,}$/i
+  
   
 
   safe_attributes 'phone',
