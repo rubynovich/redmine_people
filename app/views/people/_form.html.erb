@@ -6,7 +6,7 @@
 	                                         :confirm => l(:text_are_you_sure),
 	                                         :method => :delete,
 	                                         :class => 'delete',
-											 :style => "vertical-align: middle;",
+						 :style => "vertical-align: middle;",
 	                                         :title => l(:button_delete) unless @person.avatar.blank? %>
 	</p>    
 	<p><%= label_tag l(:field_people_avatar) %> <%= file_field_tag 'person_avatar[file]', :size => 30, :id => nil  -%> </p>
@@ -18,16 +18,26 @@
 	<% end %>
 
 	<% unless @departments.blank? %>
-		<p><%= f.select :department_id, department_tree_options_for_select(@departments,  :selected => @person.department), :include_blank => true, :label => l(:field_people_department) %></p>	
+		<p><%= f.select :department_id, department_tree_options_for_select(@departments, :selected => @person.department), :include_blank => true, :label => l(:field_people_department) %></p>	
+	<% end %>
+	<% unless @cfos.blank? %>
+		<% unless block_cfo_edit?(@person) %>
+			<p><%= f.select :cfo_id, options_for_select(@cfos.map {|c| [c.cfo,c.id]}, person_current_cfo(@person)), {:include_blank => true, :label => l(:field_people_cfo), :disabled => block_cfo_edit?(@person) } %></p>
+		<% end %>
+	<% end %>
+	<% unless @people.blank? %>
+		<% unless block_leader_edit?(@person) %>
+			<p><%= f.select :leader_id, principals_options_for_select_in_person(@principals, person_current_leader(@person)), {:include_blank => true, :label => l(:field_people_leader) } %></p>
+		<% end %>
 	<% end %>
 	<p><%= f.select :gender, Person::GENDERS, :label => l(:field_people_gender)%></p>
-	<p><%= f.text_field :appearance_date, :size => 12, :label => l(:field_people_appearance_date) %><%= calendar_for('person_appearance_date') %> </p>   
+	<p><%= f.text_field :appearance_date, :size => 12, :label => l(:field_people_appearance_date) %><%= calendar_for('person_appearance_date') %> </p>
 	<p><%= f.text_field :birthday, :size => 12, :label => l(:field_people_birthday) %><%= calendar_for('person_birthday') %> </p>   
 	<p><%= f.text_field :job_title, :label => l(:field_people_job_title) %></p>
 	<p><%= f.text_field :mail, :required => true %></p>
 	<p><%= f.text_area :address, :label=>l(:field_people_address), :rows => 5 -%></p>
 
-	<div id="phones_fields"> 
+	<div id="phones_fields">
 		<p>
 			<%= f.text_field :phone, :label => l(:field_people_phone), :size => 80 -%>
 			<br>

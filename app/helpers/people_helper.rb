@@ -22,7 +22,7 @@ module PeopleHelper
 
       maker.add_addr do |addr|
         addr.preferred = true
-        addr.street = person.address.to_s.gsub("\r\n"," ").gsub("\n"," ") 
+        addr.street = person.address.to_s.gsub("\r\n"," ").gsub("\n"," ")
       end
       
       maker.title = person.job_title.to_s
@@ -38,9 +38,57 @@ module PeopleHelper
     end   
     avatar = person.avatar  
     card = card.encode.sub("END:VCARD", "PHOTO;BASE64:" + "\n " + [File.open(avatar.diskfile).read].pack('m').to_s.gsub(/[ \n]/, '').scan(/.{1,76}/).join("\n ") + "\nEND:VCARD") if avatar && avatar.readable?
-    
     card.to_s   
     
   end 
+
+  def block_cfo_edit?(person)
+    not User.current.allowed_people_to?(:edit_people, person)
+  end
+
+  def block_leader_edit?(person)
+    not User.current.allowed_people_to?(:edit_people, person)
+  end
+
+  def principals_options_for_select_in_person(collection, selected=nil)
+    s = ''
+    if collection.include?(User.current)
+      s << content_tag('option', "<< #{l(:label_me)} >>", :value => User.current.id)
+    end
+    groups = ''
+    collection.sort.each do |element|
+      selected_attribute = ' selected="selected"' if option_value_selected?(element, selected)
+      (element.is_a?(Group) ? groups : s) << %(<option value="#{element.id}"#{selected_attribute}>#{h element.name}</option>)
+    end
+    unless groups.empty?
+      s << %(<optgroup label="#{h(l(:label_group_plural))}">#{groups}</optgroup>)
+    end
+    s.html_safe
+  end
+
+  def person_current_leader person
+    begin
+      current_leader = Principal.find_by_id(User.find_by_id(person.id).leader_id)
+      if current_leader.nil?
+        current_department = Department.find_by_id(User.find_by_id(person.id).department_id)
+        current_leader = Principal.find_by_id(Department.find_by_id(User.find_by_id(person.id).department_id).head_id)
+        if current_leader.id == person.id
+          current_leader = Principal.find_by_id(current_department.parent.head_id)
+        end
+      end
+      current_leader
+    rescue
+      nil
+    end
+  end
+
+  def person_current_cfo person
+    begin
+      current_cfo = Cfo.find_by_id(User.find_by_id(person.id).cfo_id)
+      current_cfo.id
+    rescue
+      nil
+    end
+  end
 
 end
