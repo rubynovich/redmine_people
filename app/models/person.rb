@@ -58,16 +58,16 @@ class Person < User
 
   }
 
+  scope :search_by_city, lambda {|search|
+    {:conditions =>   ["( LOWER(#{Person.table_name}.city) = ? )", search ] } 
+  }
+
   scope :search_by_mail, lambda {|search|
     {:conditions =>   ["( LOWER(#{Person.table_name}.mail) LIKE ? )", "%" + search.downcase + "%" ] }
   }
 
   scope :search_by_job_title, lambda {|search|
     {:conditions =>   ["( LOWER(#{Person.table_name}.job_title) LIKE ? )", "%" + search.downcase + "%" ] }
-  }
-
-  scope :search_by_city, lambda {|search|
-    {:conditions =>   ["( LOWER(#{Person.table_name}.city) = ? )", search ] } 
   }
 
   validates_uniqueness_of :firstname, :scope => [:lastname, :middlename]
@@ -195,9 +195,77 @@ class Person < User
   end
 
   def update_sanitized_phones
-    unless self.phone.blank?
-      update_column(:sanitized_phones, self.phone.gsub(/[-()\s]/, ''))
+    unless phone.blank?
+      #puts "---------------------------------" 
+      #puts "all:    " + p.phone
+      arr = ""
+      mobiles = ""
+      unless phone_work.blank?          # work phone exist
+          arr = phone_work.gsub(/[-+()\s]/, '')
+          arr[0]  = "8"
+
+          tmp = 0
+          Person::CITIES.each do |key, city| 
+              cities = Setting.plugin_redmine_people[:"sett_city_default_#{city}"].split(/,\s*/)
+              cities.each { |city_one| tmp = 1 if arr == city_one }
+          end
+          if tmp == 0
+              #puts "arr:    " + arr + " " + Setting.plugin_redmine_people[:"sett_city_default_0"]+ " " + Setting.plugin_redmine_people[:"sett_city_default_1"]+ " " + Setting.plugin_redmine_people[:"sett_city_default_2"]
+              arr = ""
+              mobiles = phone_work.dup
+          end
+      end
+      if !phone_extension.blank? && arr.size == 0 # work phone doesn't exist, but extension does   
+          #puts "city = " + p[:city].to_s
+          arr = Setting.plugin_redmine_people[:"sett_city_default_#{self[:city]}"].split(/,\s*/) unless Setting.plugin_redmine_people[:"sett_city_default_#{self[:city]}"].blank?
+          arr = arr[0]
+
+          # add work phone into p.phone
+          phone_new = "+7 ("
+          shift = 1         
+          phone_new << arr.slice(shift,3)    # city_code
+          phone_new << ") "
+          phone_new << arr.slice(shift+3,3)   # XXX
+          phone_new << "-"
+          phone_new << arr.slice(shift+6,2)     # XX
+          phone_new << "-"
+          phone_new << arr.slice(shift+8,2)    # XX
+          phone_new << ", " + phone.dup
+          #puts "p ==== " + phone_new
+      end
+      
+
+      unless phone_extension.blank? 
+          arr << "," if arr.size > 0
+          arr << phone_extension.dup
+      end            
+
+      phone_mobile.each do |mobiles|
+          unless mobiles.blank?                    
+              phone_copy = mobiles.dup
+              phone_copy.gsub!(/[-()\s]/, '')
+              arr << ", " if arr.size > 0
+              arr << phone_copy                    
+          end
+      end 
+
+      unless mobiles.blank?
+          phone_copy = mobiles.dup
+          phone_copy.gsub!(/[-()\s]/, '')
+          arr << ", " if arr.size > 0
+          arr << phone_copy                     
+      end 
+
+
+      update_attribute(:phone, phone_new) unless phone_new.blank?
+      update_attribute(:sanitized_phones, arr)         
+      #puts "end:    id=" + p.id.to_s + "  phone=" + arr
+      #puts
     end
+
+    #unless self.phone.blank?
+    #  update_column(:sanitized_phones, self.phone.gsub(/[-()\s]/, ''))
+    #end
   end
 
 end

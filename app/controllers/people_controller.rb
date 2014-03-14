@@ -240,13 +240,13 @@ private
     @cfos = Cfo.all
 
     scope = Person.logged.status(@status).active
+    groupp = @group.present? ? params[:group_id] : Setting.plugin_redmine_people[:sett_group_id]
+    scope = scope.in_group(groupp)# if @group.present?  if params[:group_id].present?
     scope = scope.seach_by_name(params[:name]) if params[:name].present?
     scope = scope.search_by_job_title(params[:job_title]) if params[:job_title].present?
     scope = scope.search_by_phone(params[:phone]) if params[:phone].present?
     scope = scope.search_by_mail(params[:mail]) if params[:mail].present?
     scope = scope.search_by_city(params[:city]) if params[:city].present?
-    groupp = @group.present? ? params[:group_id] : Setting.plugin_redmine_people[:sett_group_id]
-    scope = scope.in_group(groupp)# if @group.present?  if params[:group_id].present?
     #scope = scope.in_group(params[:group_id]) if @group.present?
     scope = scope.in_department(params[:department_id]) if @department.present?
     scope = scope.where(type: 'User')

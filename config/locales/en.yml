@@ -75,6 +75,7 @@ en:
   #
   label_filter_city: Select a city
   label_group_id: Select a group
+  label_city_id: Enter the default number for
 
 
   activerecord:
