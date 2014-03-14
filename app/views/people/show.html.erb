@@ -26,7 +26,13 @@
       <td class="subject_info">
         <ul>
           <% if @person.phones.any? %>
-            <li class="phone icon icon-phone"><%=  @person.phones.first %></li>
+            <li class="phone icon icon-phone">
+            <%=  @person.phones.first %>
+            <% if (@person.phone_extension.size > 0) and ([@person.phones.first] == [@person.phone_work]) %>
+              <%= " #{l(:field_people_phone_extension)} "%>
+              <%= h @person.phone_extension %>
+            <% end %>    
+            </li>
           <% end %>
           <li class="email icon icon-email"><%= mail_to @person.email %></li>
         </ul>

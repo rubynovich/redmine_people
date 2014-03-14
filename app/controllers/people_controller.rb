@@ -16,6 +16,7 @@ class PeopleController < ApplicationController
     @people = find_people(!params[:no_limit])
     @groups = Group.all.sort
     @departments = Department.order(:name)
+    @cfos = Cfo.all
     @next_birthdays = Person.next_birthdays
     @new_people = Person.where("appearance_date IS NOT NULL").order("appearance_date desc").first(5)
 
@@ -40,20 +41,42 @@ class PeopleController < ApplicationController
   end
 
   def edit
+    @people = Person.all
+    @cfos = Cfo.all
     @auth_sources = AuthSource.find(:all)
     @departments = Department.all.sort
-    @membership ||= Member.new
+    @membership ||= Member.new    
   end
 
   def new
+    @people = Person.all
+    @cfos = Cfo.all
     @person = Person.new(:language => Setting.default_language, :mail_notification => Setting.default_notification_option, :department_id => params[:department_id])
+    unless Cfo.first.nil? 
+      @person.cfo = Cfo.first
+    else
+      cfo = Cfo.new(:cfo => "Общее")
+      @person.cfo = cfo
+    end
     @auth_sources = AuthSource.find(:all)
     @departments = Department.all.sort
   end
 
   def update
     (render_403; return false) unless @person.editable_by?(User.current)
-    if @person.update_attributes(params[:person])
+
+    params[:person][:phone] = ""
+    params[:person][:phone] << params[:phone_work] + ", " unless params[:phone_work].blank?
+    params[:person][:phone] << params[:phone_extension] + ", " unless params[:phone_extension].blank?
+    params[:person][:phone_mobile_counter].to_i.times do |mobile_index| 
+      params[:person][:phone] << params["phone_mobile"+mobile_index.to_s] + ", " unless params["phone_mobile"+mobile_index.to_s].blank?
+      params.delete(["phone_mobile"+mobile_index.to_s])
+    end
+    params.delete([:phone_work])
+    params.delete([:phone_extension])
+    params[:person].delete(:phone_mobile_counter)
+    
+    if @person.update_attributes(params[:person])      
       flash[:notice] = l(:notice_successful_update)
       attach_avatar
       attachments = Attachment.attach_files(@person, params[:attachments])
@@ -72,7 +95,19 @@ class PeopleController < ApplicationController
 
   def create
     @person  = Person.new(:language => Setting.default_language, :mail_notification => Setting.default_notification_option)
-    @person.safe_attributes = params[:person]
+
+    params[:person][:phone] = ""
+    params[:person][:phone] << params[:phone_work] + ", " unless params[:phone_work].blank?
+    params[:person][:phone] << params[:phone_extension] + "  " unless params[:phone_extension].blank?
+    params[:person][:phone_mobile_counter].to_i.times do |mobile_index| 
+      params[:person][:phone] << params["phone_mobile"+mobile_index.to_s] + ", " unless params["phone_mobile"+mobile_index.to_s].blank?
+      params.delete(["phone_mobile"+mobile_index.to_s])
+    end
+    params.delete([:phone_work])
+    params.delete([:phone_extension])
+    params[:person].delete(:phone_mobile_counter)
+    
+    @person.safe_attributes = params[:person]    
     @person.admin = false
     @person.login = params[:person][:login]
     @person.password, @person.password_confirmation = params[:person][:password], params[:person][:password_confirmation] unless @person.auth_source_id
@@ -143,6 +178,10 @@ class PeopleController < ApplicationController
     render layout: false
   end
 
+  def adding_mobile_phone
+    render :partial => 'adding mobile phones', :content_type => 'text/html'
+  end
+
 private
   def authorize_people
     allowed = case params[:action].to_s
@@ -198,13 +237,17 @@ private
     @status = params[:status] || 1
     @group = Group.find_by_id(params[:group_id]) if params[:group_id].present?
     @department = Department.find_by_id(params[:department_id]) if params[:department_id].present?
+    @cfos = Cfo.all
 
-    scope = Person.logged.status(@status)
+    scope = Person.logged.status(@status).active
     scope = scope.seach_by_name(params[:name]) if params[:name].present?
     scope = scope.search_by_job_title(params[:job_title]) if params[:job_title].present?
     scope = scope.search_by_phone(params[:phone]) if params[:phone].present?
     scope = scope.search_by_mail(params[:mail]) if params[:mail].present?
-    scope = scope.in_group(params[:group_id]) if @group.present?
+    scope = scope.search_by_city(params[:city]) if params[:city].present?
+    groupp = @group.present? ? params[:group_id] : Setting.plugin_redmine_people[:sett_group_id]
+    scope = scope.in_group(groupp)# if @group.present?  if params[:group_id].present?
+    #scope = scope.in_group(params[:group_id]) if @group.present?
     scope = scope.in_department(params[:department_id]) if @department.present?
     scope = scope.where(type: 'User')
 

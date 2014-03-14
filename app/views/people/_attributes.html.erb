@@ -39,16 +39,36 @@
   <% end %>
 
 <div class="human">
-  <p class="attr"><%= l(:field_people_phone_plural) %>:</p>
-  <% @person.phones.each do |phone| %>   
-    <p class="value"><%= h phone %></p>
-  <% end %>   
+  <% unless @person.phone.blank? %>   
+    <p class="attr"><%= l(:field_people_phone_plural) %>:</p>
+    <% unless @person.phone_work.blank? %>   
+      <tr> <th class = "attr"> <%=l(:field_people_phone_small)%>:</th><td class="value"> <%= h @person.phone_work %></td> </tr>
+    <% end %>
+    <% unless @person.phone_extension.blank? %>
+      <tr> <th class = "attr"> <%=l(:field_people_phone_extension)%></th><td class="value"> <%= h @person.phone_extension %></td> </tr>
+    <% end %>   
+    <% unless @person.phone_mobile.blank? %> 
+      <p class="attr"></p>
+      <tr> <th class = "attr"> <%=l(:field_people_phone_mobile_small)%>:</th>
+      <% @person.phone_mobile.each do |phone| %>   
+        <p class="value"><%= h phone %></p>
+      <% end %> 
+      </tr>  
+    <% end %> 
+  <% end %> 
 </div>   
 
 <div class="human">
   <p class="attr"><%= l(:field_mail) %>:</p>
   <p class="value"> <%= mail_to @person.email %> </p>
 </div>
+
+<% if @person.city && @person.city != l(:label_people_city_noname) %>
+  <div class="human">
+    <p class="attr"><%= l(:field_people_city) %>:</p>
+    <p class="value"> <%= @person.city %> </p>
+  </div>
+<% end %>
 
 <% unless @person.address.blank? %>
 <div class="human">

@@ -12,14 +12,22 @@ pl:
   label_people_new_people: Nowe osoby
   label_people_male: Mężczyzna
   label_people_female: Kobieta
+  label_people_city_noname: Miasto nie zdefiniowano
+  label_people_city_m: Moskwa
+  label_people_city_spb: Sankt Petersburg
   label_people_settings: Ustawienia osób
 
   button_people_edit_profile: Edytuj profil
 
   field_people_avatar: Avatar
   field_people_job_title: Stanowisko
-  field_people_phone: Telefon
+  field_people_phone: Telefon do pracy
+  field_people_phone_extension: dod.
+  field_people_phone_mobile: Telefony komórkowe
+  field_people_phone_small: Praca
+  field_people_phone_mobile_small: Telefon
   field_people_phone_plural: Telefony
+  field_people_phone_correct: Wprowadź telefon zgodnie z szablonem +7 (XXX) XXX-XX-XX
   field_people_skype: Skype
   field_people_twitter: Twitter
   field_people_facebook: Facebook 
@@ -27,11 +35,12 @@ pl:
   field_people_middlename: Drugie imię
   field_people_background: Informacje
   field_people_address: Adres
+  field_people_city: Miasto 
   field_people_gender: Płeć
   field_people_birthday: Urodziny
   field_people_appearance_date: Data dołączenia
   field_people_age: Wiek
-
+  
   people_permission_edit_people: Edycja osób
   people_permission_view_people: Przeglądanie osób
   people_permission_add_people: Dodawanie osób
@@ -45,3 +54,15 @@ pl:
   label_people_visibility_resistered: Dla zarejestrowanych użytkowników
   label_people_visibility_selected: Dla wybranych użytkowników
   label_people_visibility_anonymous: Dla anonimowych użytkowników
+
+  #
+  label_filter_city: Wybierz miasto
+  label_group_id: Wybierz grupę
+
+  activerecord:
+    errors:
+      models:
+        person:
+          attributes:
+            phone:
+              label_people_mobile_errors: ':  błąd formatu w telefonie komórkowym, wprowadź wzór 7 (XXX) XXX-XX-XX'

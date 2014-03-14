@@ -12,14 +12,24 @@ en:
   label_people_new_people: New people
   label_people_male: Male
   label_people_female: Female
+  label_people_city_noname: City is not defined
+  label_people_city_m: Moscow
+  label_people_city_spb: Saint-Petersburg
   label_people_settings: People settings
+
+  label_cfo: CFO
 
   button_people_edit_profile: Edit profile
 
   field_people_avatar: Avatar
   field_people_job_title: Job title
-  field_people_phone: Phone
+  field_people_phone: Office phone
+  field_people_phone_extension: ext.
+  field_people_phone_mobile: Mobile phone
+  field_people_phone_small: Office
+  field_people_phone_mobile_small: Mobile
   field_people_phone_plural: Phones
+  field_people_phone_correct: Enter the phone number in accordance with the template +7 (XXX) XXX-XX-XX
   field_people_skype: Skype
   field_people_twitter: Twitter
   field_people_facebook: Facebook 
@@ -27,6 +37,7 @@ en:
   field_people_middlename: Middle name
   field_people_background: Background info
   field_people_address: Address
+  field_people_city: City
   field_people_gender: Gender
   field_people_birthday: Birthday
   field_people_appearance_date: Appearance date
@@ -52,9 +63,24 @@ en:
   label_department: Department
   label_department_head: Head
   field_people_department: Department
+  field_people_cfo: CFO
+  field_people_leader: Leader
   label_people_at_department: at
   field_department_parent: Subdepartment of
   people_permission_edit_departments: Edit departments
 
   #0.1.5
   people_permission_delete_departments: Delete departments
+
+  #
+  label_filter_city: Select a city
+  label_group_id: Select a group
+
+
+  activerecord:
+    errors:
+      models:
+        person:
+          attributes:
+            phone:
+              label_people_mobile_errors: ':  format error in mobile phone, enter modeled +7 (XXX) XXX-XX-XX'

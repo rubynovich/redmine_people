@@ -4,10 +4,12 @@ class Person < User
   self.inheritance_column = :_type_disabled
 
   belongs_to :department
+  has_one :cfo
 
   include Redmine::SafeAttributes
 
   GENDERS = [[l(:label_people_male), 0], [l(:label_people_female), 1]]
+  CITIES = {l(:label_people_city_noname) => 0, l(:label_people_city_m) => 1, l(:label_people_city_spb) =>2}
 
   after_save :update_sanitized_phones
 
@@ -64,7 +66,13 @@ class Person < User
     {:conditions =>   ["( LOWER(#{Person.table_name}.job_title) LIKE ? )", "%" + search.downcase + "%" ] }
   }
 
+  scope :search_by_city, lambda {|search|
+    {:conditions =>   ["( LOWER(#{Person.table_name}.city) = ? )", search ] } 
+  }
+
   validates_uniqueness_of :firstname, :scope => [:lastname, :middlename]
+  validate :phones_correct
+  
 
   safe_attributes 'phone',
                   'address',
@@ -79,10 +87,46 @@ class Person < User
                   'linkedin',
                   'department_id',
                   'background',
-                  'appearance_date'
+                  'appearance_date',
+                  'city'
 
   def phones
-    @phones || self.phone ? self.phone.split(/, +/) : []
+    unless self.phone.blank?
+      self.phone.sub!(/[^,]\s+\+/, ", +") 
+    end
+    @phones || self.phone ? self.phone.split(/(?:[,;]|доб\.*)\s*/)-[""] : []
+  end
+
+  def phone_extension
+    if phones.index { |x| x.length > 0 and x.length < 6 } 
+      phones[phones.index { |x| x.length > 0 and x.length < 6 }] 
+    else
+      []
+    end
+  end
+
+  def phone_work
+    phones.each do |value| 
+      if value.index(/\+*[78] *\(*(495|499|812)/)  
+        return value 
+      end
+    end
+    return []
+  end
+
+  def phone_mobile
+    phones - [phone_work] - [phone_extension] - [" "]
+  end
+
+  def phones_correct
+    if phone_mobile.present?
+      phone_mobile.each do |phone|
+        unless phone.index(/^\s*\+7\s{1}\([0-9]{3}\)\s{1}[0-9]{3}\-[0-9]{2}\-[0-9]{2}\s*$/)
+          errors.add(:phone, :label_people_mobile_errors)
+          break
+        end
+      end
+    end
   end
 
   def name(formatter = nil)
@@ -91,6 +135,15 @@ class Person < User
     else
       super(formatter)
     end
+  end
+
+
+  def city
+    CITIES.key(self[:city]) 
+  end
+
+  def city=(new_city)
+    self[:city] = new_city
   end
 
   def type
@@ -139,7 +192,9 @@ class Person < User
   end
 
   def update_sanitized_phones
-    update_column(:sanitized_phones, self.phone.gsub(/[-()\s]/, ''))
+    unless self.phone.blank?
+      update_column(:sanitized_phones, self.phone.gsub(/[-()\s]/, ''))
+    end
   end
 
 end
