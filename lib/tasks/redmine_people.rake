@@ -122,8 +122,8 @@ namespace :redmine do
                     arr << phone_copy                     
                 end 
 
-                p.update_attribute(:phone, phone_new) unless phone_new.blank?
-                p.update_attribute(:sanitized_phones, arr)         
+                p.update_column(:phone, phone_new) unless phone_new.blank?
+                p.update_column(:sanitized_phones, arr)         
                 puts "end:    id=" + p.id.to_s + "  phone=" + arr
                 puts
             end                
