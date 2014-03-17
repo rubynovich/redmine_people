@@ -4,7 +4,11 @@ class Person < User
   self.inheritance_column = :_type_disabled
 
   belongs_to :department
-  has_one :cfo
+  belongs_to :cfo
+  belongs_to :leader, :class_name => 'Person', :foreign_key => 'leader_id'
+  has_many :slaves, :foreign_key => 'leader_id', :class_name => 'Person'
+  #has_to :,
+
 
   include Redmine::SafeAttributes
 
@@ -91,7 +95,10 @@ class Person < User
                   'department_id',
                   'background',
                   'appearance_date',
-                  'city'
+                  'city',
+                  'identity_url',
+                  'cfo_id',
+                  'leader_id'
 
   def phones
     unless self.phone.blank?

@@ -3,5 +3,5 @@ class Cfo < ActiveRecord::Base
 
   validates_presence_of :cfo
 
-  belongs_to :person
+  has_one :person
 end

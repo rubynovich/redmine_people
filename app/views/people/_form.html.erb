@@ -203,14 +203,24 @@
 	<p><%= f.select :status, options_for_select([[l(:status_active), '1'], [l(:status_locked), '3']], @person.status.to_s) %></p>
 	<% end %>
 
+
+
 	<% unless @departments.blank? %>
 		<p><%= f.select :department_id, department_tree_options_for_select(@departments, :selected => @person.department), :include_blank => true, :label => l(:field_people_department) %></p>	
 	<% end %>
+
+
 	<% unless @cfos.blank? %>
-		<p><%= f.select :cfo_id, options_for_select(@cfos.map {|c| [c.cfo]}), {:include_blank => true, :label => l(:field_people_cfo), :disabled => block_cfo_edit?(@person)} %></p>
+        <% if User.current.allowed_to?(:edit_cfos,  nil, {:global => true}) %>
+		    <p><%= f.select :cfo_id, options_for_select(@cfos.map {|c| [c.cfo, c.id]}, @person.cfo_id), {:include_blank => true, :label => l(:field_people_cfo), :disabled => block_cfo_edit?(@person)} %></p>
+        <% elsif User.current.allowed_to?(:view_cfos, nil, {:global => true}) %>цукцук
+            <p><label for="person_cfo_id"><%= l(:field_people_cfo) %></label><%=  @person.cfo.try(:cfo) %></p>
+        <% end %>
 	<% end %>
+
+
 	<% unless @people.blank? %>
-		<p><%= f.select :cfo_id, principals_options_for_select(@people, default_leader(@person)), {:include_blank => true, :label => l(:field_people_leader), :disabled => block_cfo_edit?(@person) } %></p>
+		<p><%= f.select :leader_id, principals_options_for_select(@people, @person.leader || default_leader(@person)), {:include_blank => true, :label => l(:field_people_leader), :disabled => block_cfo_edit?(@person) } %></p>
 	<% end %>
 	<p><%= f.select :gender, Person::GENDERS, :label => l(:field_people_gender)%></p>
 	<p><%= f.select :city, city_options_for_select, :label => l(:field_people_city)%></p>
