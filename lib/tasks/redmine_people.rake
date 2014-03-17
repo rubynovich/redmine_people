@@ -1,14 +1,15 @@
+# encoding: UTF-8
 namespace :redmine do
   namespace :plugins do
     desc 'Copies city from address to city in redmine_people.'
     task :people_update_city => :environment do
         Person.all.each do |p|
             if p.address && p.address.include?("Москва")                
-                p.update_attribute(:city, 1)
+                p.update_column(:city, 1)
             elsif p.address && p.address.include?("Санкт")
-                p.update_attribute(:city, 2)
+                p.update_column(:city, 2)
             else
-                p.update_attribute(:city, 0)
+                p.update_column(:city, 0)
                 puts "0"
             end
         end
@@ -48,7 +49,7 @@ namespace :redmine do
                     #puts phone_copy
                     phone_copy = p.phone.dup
                     phone_copy.sub!(phone, phone_new) 
-                    p.update_attribute(:phone, phone_copy)
+                    p.update_column(:phone, phone_copy)
                 end
             end           
             puts "end:    id=" + p.id.to_s + "  phone=" + p.phone

@@ -257,8 +257,8 @@ class Person < User
       end 
 
 
-      update_attribute(:phone, phone_new) unless phone_new.blank?
-      update_attribute(:sanitized_phones, arr)         
+      update_column(:phone, phone_new) unless phone_new.blank?
+      update_column(:sanitized_phones, arr)
       #puts "end:    id=" + p.id.to_s + "  phone=" + arr
       #puts
     end

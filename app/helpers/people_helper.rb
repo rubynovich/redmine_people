@@ -20,6 +20,7 @@ module PeopleHelper
 
       maker.add_name do |name|
         name.prefix = ''
+        name.fullname = person.lastname.to_s + ' ' + person.firstname.to_s
         name.given = person.firstname.to_s
         name.family = person.lastname.to_s
         name.additional = person.middlename.to_s
