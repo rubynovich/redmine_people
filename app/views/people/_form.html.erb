@@ -207,16 +207,6 @@
 		<p><%= f.select :department_id, department_tree_options_for_select(@departments, :selected => @person.department), :include_blank => true, :label => l(:field_people_department) %></p>	
 	<% end %>
 	<% unless @cfos.blank? %>
-		<% unless block_cfo_edit?(@person) %>
-			<p><%= f.select :cfo_id, options_for_select(@cfos.map {|c| [c.cfo,c.id]}, person_current_cfo(@person)), {:include_blank => true, :label => l(:field_people_cfo), :disabled => block_cfo_edit?(@person) } %></p>
-		<% end %>
-	<% end %>
-	<% unless @people.blank? %>
-		<% unless block_leader_edit?(@person) %>
-			<p><%= f.select :leader_id, principals_options_for_select_in_person(@principals, person_current_leader(@person)), {:include_blank => true, :label => l(:field_people_leader) } %></p>
-		<% end %>
-	<% end %>
-	<% unless @cfos.blank? %>
 		<p><%= f.select :cfo_id, options_for_select(@cfos.map {|c| [c.cfo]}), {:include_blank => true, :label => l(:field_people_cfo), :disabled => block_cfo_edit?(@person)} %></p>
 	<% end %>
 	<% unless @people.blank? %>

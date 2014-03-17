@@ -45,7 +45,17 @@ module PeopleHelper
     card = card.encode.sub("END:VCARD", "PHOTO;BASE64:" + "\n " + [File.open(avatar.diskfile).read].pack('m').to_s.gsub(/[ \n]/, '').scan(/.{1,76}/).join("\n ") + "\nEND:VCARD") if avatar && avatar.readable?
     card.to_s   
     
-  end 
+  end
+
+  def default_leader(person)
+    begin
+      leader = person.department.head_id
+      leader.lastname + ' ' + leader.firstname
+    rescue
+      nil
+    end
+  end
+
 
   def block_cfo_edit?(person)
     not User.current.allowed_people_to?(:edit_people, person)
@@ -56,6 +66,7 @@ module PeopleHelper
   end
 
   def principals_options_for_select_in_person(collection, selected=nil)
+    collection ||= []
     s = ''
     if collection.include?(User.current)
       s << content_tag('option', "<< #{l(:label_me)} >>", :value => User.current.id)
