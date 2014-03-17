@@ -1,3 +1,8 @@
 %p
   %label= l(:label_group_id)
   = select_tag("settings[sett_group_id]", principals_options_for_select(Group.all, (Group.find_by_id(@settings[:sett_group_id]) rescue nil)), :prompt => t(:prompt_please_select))
+  - Person::CITIES.each do |key, city|  
+    %p
+      %label= l(:label_city_id)+" "+key
+      = text_field_tag("settings[sett_city_default_#{city}]", (@settings["sett_city_default_#{city}".to_sym] rescue nil))
+  

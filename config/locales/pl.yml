@@ -58,6 +58,7 @@ pl:
   #
   label_filter_city: Wybierz miasto
   label_group_id: Wybierz grupę
+  label_city_id: Wpisz liczbę domyślnie dla
 
   activerecord:
     errors:

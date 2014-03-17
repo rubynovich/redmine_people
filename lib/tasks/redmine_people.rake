@@ -57,5 +57,79 @@ namespace :redmine do
            
         end
     end
+    desc 'Update phones format in redmine_people.'
+    task :people_concat_phones => :environment do
+        Person.all.each do |p|
+            unless p.phone.blank?
+                puts "---------------------------------" 
+                puts "all:    " + p.phone
+                arr = ""
+                mobiles = ""
+                unless p.phone_work.blank?          # work phone exist
+                    arr = p.phone_work.gsub(/[-+()\s]/, '')
+                    arr[0]  = "8"
+
+                    tmp = 0
+                    Person::CITIES.each do |key, city| 
+                        cities = Setting.plugin_redmine_people[:"sett_city_default_#{city}"].split(/,\s*/)
+                        cities.each { |city_one| tmp = 1 if arr == city_one }
+                    end
+                    if tmp == 0
+                        puts "arr:    " + arr + " " + Setting.plugin_redmine_people[:"sett_city_default_0"]+ " " + Setting.plugin_redmine_people[:"sett_city_default_1"]+ " " + Setting.plugin_redmine_people[:"sett_city_default_2"]
+                        arr = ""
+                        mobiles = p.phone_work.dup
+                    end
+                end
+                if !p.phone_extension.blank? && arr.size == 0 # work phone doesn't exist, but extension does   
+                    puts "city = " + p[:city].to_s
+                    arr = Setting.plugin_redmine_people[:"sett_city_default_#{p[:city]}"].split(/,\s*/) unless Setting.plugin_redmine_people[:"sett_city_default_#{p[:city]}"].blank?
+                    arr = arr[0]
+
+                    # add work phone into p.phone
+                    phone_new = "+7 ("
+                    shift = 1         
+                    phone_new << arr.slice(shift,3)    # city_code
+                    phone_new << ") "
+                    phone_new << arr.slice(shift+3,3)   # XXX
+                    phone_new << "-"
+                    phone_new << arr.slice(shift+6,2)     # XX
+                    phone_new << "-"
+                    phone_new << arr.slice(shift+8,2)    # XX
+                    phone_new << ", " + p.phone.dup
+                    puts "p ==== " + phone_new                    
+                end
+                
+
+                unless p.phone_extension.blank? 
+                    arr << "," if arr.size > 0
+                    arr << p.phone_extension.dup
+                end            
+
+                p.phone_mobile.each do |phone|
+                    #puts "---------------------------------"
+                    unless phone.blank?                    
+                        phone_copy = phone.dup
+                        phone_copy.gsub!(/[-()\s]/, '')
+                        arr << ", " if arr.size > 0
+                        arr << phone_copy                    
+                    end
+                end 
+
+                unless mobiles.blank?
+                    phone_copy = mobiles.dup
+                    phone_copy.gsub!(/[-()\s]/, '')
+                    arr << ", " if arr.size > 0
+                    arr << phone_copy                     
+                end 
+
+                p.update_column(:phone, phone_new) unless phone_new.blank?
+                p.update_column(:sanitized_phones, arr)         
+                puts "end:    id=" + p.id.to_s + "  phone=" + arr
+                puts
+            end                
+           
+        end
+    end
+
   end
 end

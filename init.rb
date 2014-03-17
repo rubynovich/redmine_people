@@ -36,4 +36,11 @@ Redmine::Plugin.register :redmine_people do
     permission :view_cfos, {:cfos => [:index]}
   end
 
+  require "user_patch"
+  require_dependency 'user'
+
+
+   [[User, RedminePeoplePlugin::UserPatch]].each do |cl, patch|
+    cl.send(:include, patch) unless cl.included_modules.include? patch
+  end
 end
