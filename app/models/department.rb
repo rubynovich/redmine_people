@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class Department < ActiveRecord::Base
   include Redmine::SafeAttributes
   unloadable
