@@ -273,7 +273,7 @@ class Person < User
   def update_sanitized_phones
     unless phone.blank?
       sanitize_phones if @sanitized_phones_new.nil?
-      update_column(:phone, @sanitized_phones_new) unless phone_new.blank?
+      update_column(:phone, @sanitized_phones_new) unless @sanitized_phones_new.blank?
       update_column(:sanitized_phones, @sanitized_arr)
     end
 
