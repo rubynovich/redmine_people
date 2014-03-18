@@ -7,13 +7,15 @@ class Person < User
   belongs_to :cfo
   belongs_to :leader, :class_name => 'Person', :foreign_key => 'leader_id'
   has_many :slaves, :foreign_key => 'leader_id', :class_name => 'Person'
+
+
   #has_to :,
 
 
   include Redmine::SafeAttributes
 
-  GENDERS = [[l(:label_people_male), 0], [l(:label_people_female), 1]]
-  CITIES = {l(:label_people_city_noname) => 0, l(:label_people_city_m) => 1, l(:label_people_city_spb) =>2}
+  GENDERS = [[t(:label_people_male), 0], [t(:label_people_female), 1]]
+  CITIES = {t(:label_people_city_noname) => 0, t(:label_people_city_m) => 1, t(:label_people_city_spb) => 2}
 
   after_save :update_sanitized_phones
 
@@ -201,73 +203,78 @@ class Person < User
     true
   end
 
-  def update_sanitized_phones
-    unless phone.blank?
-      #puts "---------------------------------" 
-      #puts "all:    " + p.phone
+  def sanitize_phones
+    if phone.present? && @sanitized_phones_new.nil?
       arr = ""
       mobiles = ""
       unless phone_work.blank?          # work phone exist
-          arr = phone_work.gsub(/[-+()\s]/, '')
-          arr[0]  = "8"
+        arr = phone_work.gsub(/[-+()\s]/, '')
+        arr[0]  = "8"
 
-          tmp = 0
-          Person::CITIES.each do |key, city| 
-              cities = Setting.plugin_redmine_people[:"sett_city_default_#{city}"].split(/,\s*/)
-              cities.each { |city_one| tmp = 1 if arr == city_one }
-          end
-          if tmp == 0
-              #puts "arr:    " + arr + " " + Setting.plugin_redmine_people[:"sett_city_default_0"]+ " " + Setting.plugin_redmine_people[:"sett_city_default_1"]+ " " + Setting.plugin_redmine_people[:"sett_city_default_2"]
-              arr = ""
-              mobiles = phone_work.dup
-          end
+        tmp = 0
+        Person::CITIES.each do |key, city|
+          cities = Setting.plugin_redmine_people[:"sett_city_default_#{city}"].split(/,\s*/)
+          cities.each { |city_one| tmp = 1 if arr == city_one }
+        end
+        if tmp == 0
+          #puts "arr:    " + arr + " " + Setting.plugin_redmine_people[:"sett_city_default_0"]+ " " + Setting.plugin_redmine_people[:"sett_city_default_1"]+ " " + Setting.plugin_redmine_people[:"sett_city_default_2"]
+          arr = ""
+          mobiles = phone_work.dup
+        end
       end
-      if !phone_extension.blank? && arr.size == 0 # work phone doesn't exist, but extension does   
-          #puts "city = " + p[:city].to_s
-          arr = Setting.plugin_redmine_people[:"sett_city_default_#{self[:city]}"].split(/,\s*/) unless Setting.plugin_redmine_people[:"sett_city_default_#{self[:city]}"].blank?
-          arr = arr[0]
+      if !phone_extension.blank? && arr.size == 0 # work phone doesn't exist, but extension does
+        #puts "city = " + p[:city].to_s
+        arr = Setting.plugin_redmine_people[:"sett_city_default_#{self[:city]}"].split(/,\s*/) unless Setting.plugin_redmine_people[:"sett_city_default_#{self[:city]}"].blank?
+        arr = arr[0]
 
-          # add work phone into p.phone
-          phone_new = "+7 ("
-          shift = 1         
-          phone_new << arr.slice(shift,3)    # city_code
-          phone_new << ") "
-          phone_new << arr.slice(shift+3,3)   # XXX
-          phone_new << "-"
-          phone_new << arr.slice(shift+6,2)     # XX
-          phone_new << "-"
-          phone_new << arr.slice(shift+8,2)    # XX
-          phone_new << ", " + phone.dup
-          #puts "p ==== " + phone_new
+        # add work phone into p.phone
+        phone_new = "+7 ("
+        shift = 1
+        phone_new << arr.slice(shift,3)    # city_code
+        phone_new << ") "
+        phone_new << arr.slice(shift+3,3)   # XXX
+        phone_new << "-"
+        phone_new << arr.slice(shift+6,2)     # XX
+        phone_new << "-"
+        phone_new << arr.slice(shift+8,2)    # XX
+        phone_new << ", " + phone.dup
+        #puts "p ==== " + phone_new
       end
-      
 
-      unless phone_extension.blank? 
-          arr << "," if arr.size > 0
-          arr << phone_extension.dup
-      end            
+
+      unless phone_extension.blank?
+        arr << "," if arr.size > 0
+        arr << phone_extension.dup
+      end
 
       phone_mobile.each do |mobiles|
-          unless mobiles.blank?                    
-              phone_copy = mobiles.dup
-              phone_copy.gsub!(/[-()\s]/, '')
-              arr << ", " if arr.size > 0
-              arr << phone_copy                    
-          end
-      end 
-
-      unless mobiles.blank?
+        unless mobiles.blank?
           phone_copy = mobiles.dup
           phone_copy.gsub!(/[-()\s]/, '')
           arr << ", " if arr.size > 0
-          arr << phone_copy                     
-      end 
+          arr << phone_copy
+        end
+      end
 
+      unless mobiles.blank?
+        phone_copy = mobiles.dup
+        phone_copy.gsub!(/[-()\s]/, '')
+        arr << ", " if arr.size > 0
+        arr << phone_copy
+      end
+      @sanitized_phones_new = phone_new
+      @sanitized_arr = arr
+      arr
+    else
+      @sanitized_arr
+    end
+  end
 
-      update_column(:phone, phone_new) unless phone_new.blank?
-      update_column(:sanitized_phones, arr)
-      #puts "end:    id=" + p.id.to_s + "  phone=" + arr
-      #puts
+  def update_sanitized_phones
+    unless phone.blank?
+      sanitize_phones if @sanitized_phones_new.nil?
+      update_column(:phone, @sanitized_phones_new) unless phone_new.blank?
+      update_column(:sanitized_phones, @sanitized_arr)
     end
 
     #unless self.phone.blank?

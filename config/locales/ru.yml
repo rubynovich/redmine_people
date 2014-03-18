@@ -12,9 +12,9 @@ ru:
   label_people_new_people: Новые сотрудники
   label_people_male: 'Муж.'
   label_people_female: 'Жен.'
-  label_people_city_noname: Город не определен
-  label_people_city_m: Москва
-  label_people_city_spb: Санкт-Петербург
+  label_people_city_noname: 'Город не определен'
+  label_people_city_m: 'Москва'
+  label_people_city_spb: 'Санкт-Петербург'
   label_people_settings: Настройки сотрудников
 
   label_cfo: 'ЦФО'

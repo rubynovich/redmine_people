@@ -10,7 +10,6 @@ module PeopleHelper
 
   def city_options_for_select
     options_for_select(Person::CITIES.to_a, @person[:city])
-
   end
 
   def person_to_vcard(person)  

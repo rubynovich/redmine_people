@@ -9,6 +9,7 @@ class PeopleController < ApplicationController
   before_filter :bulk_find_people, :only => [:context_menu]
 
   include PeopleHelper
+  helper :people
   helper :departments
   helper :context_menus
   helper :custom_fields
