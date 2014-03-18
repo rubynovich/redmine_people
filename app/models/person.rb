@@ -14,8 +14,8 @@ class Person < User
 
   include Redmine::SafeAttributes
 
-  GENDERS = [[t(:label_people_male), 0], [t(:label_people_female), 1]]
-  CITIES = {t(:label_people_city_noname) => 0, t(:label_people_city_m) => 1, t(:label_people_city_spb) => 2}
+  GENDERS = [[l(:label_people_male), 0], [l(:label_people_female), 1]]
+  CITIES = {l(:label_people_city_noname) => 0, l(:label_people_city_m) => 1, l(:label_people_city_spb) => 2}
 
   after_save :update_sanitized_phones
 
