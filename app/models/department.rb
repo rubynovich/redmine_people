@@ -23,7 +23,7 @@ class Department < ActiveRecord::Base
 
   after_initialize :stash_default_external_role
   after_save  :update_default_roles_in_projects
-  
+
   def to_s
     name
   end
