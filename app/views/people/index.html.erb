@@ -57,7 +57,7 @@
       </span>
 
       <span class="live_search">
-        <%= select_tag(:city, options_for_select(Person::CITIES, selected: params[:city]), prompt: l(:label_filter_city), :class => "live_search_field", onchange: 'this.form.submit();' ) %>
+        <%= select_tag(:city, options_for_select(Person.cities, selected: params[:city]), prompt: l(:label_filter_city), :class => "live_search_field", onchange: 'this.form.submit();' ) %>
       </span>
 
       <span class="live_search" style="font-weight: normal; margin-left: 15px;">

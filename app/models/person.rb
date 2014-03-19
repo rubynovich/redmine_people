@@ -14,10 +14,13 @@ class Person < User
 
   include Redmine::SafeAttributes
 
-  I18n.locale = I18n.default_locale
+  def self.genders
+    [[l(:label_people_male), 0], [l(:label_people_female), 1]]
+  end
 
-  GENDERS = [[l(:label_people_male), 0], [l(:label_people_female), 1]]
-  CITIES = {l(:label_people_city_noname) => 0, l(:label_people_city_m) => 1, l(:label_people_city_spb) => 2}
+  def self.cities
+    {l(:label_people_city_noname) => 0, l(:label_people_city_m) => 1, l(:label_people_city_spb) => 2}
+  end
 
   after_save :update_sanitized_phones
 
@@ -153,7 +156,7 @@ class Person < User
 
 
   def city
-    CITIES.key(self[:city]) 
+    self.class.cities.key(self[:city])
   end
 
   def city=(new_city)
@@ -214,7 +217,7 @@ class Person < User
         arr[0]  = "8"
 
         tmp = 0
-        Person::CITIES.each do |key, city|
+        self.class.cities.each do |key, city|
           cities = Setting.plugin_redmine_people[:"sett_city_default_#{city}"].split(/,\s*/)
           cities.each { |city_one| tmp = 1 if arr == city_one }
         end

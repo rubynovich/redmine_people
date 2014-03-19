@@ -222,7 +222,7 @@
 	<% unless @people.blank? %>
 		<p><%= f.select :leader_id, principals_options_for_select(@people, @person.leader || default_leader(@person)), {:include_blank => true, :label => l(:field_people_leader), :disabled => block_cfo_edit?(@person) } %></p>
 	<% end %>
-	<p><%= f.select :gender, Person::GENDERS, :label => l(:field_people_gender)%></p>
+	<p><%= f.select :gender, Person.genders, :label => l(:field_people_gender)%></p>
 	<p><%= f.select :city, city_options_for_select, :label => l(:field_people_city)%></p>
 	<p><%= f.text_field :appearance_date, :size => 12, :label => l(:field_people_appearance_date) %><%= calendar_for('person_appearance_date') %> </p>   
 	<p><%= f.text_field :birthday, :size => 12, :label => l(:field_people_birthday) %><%= calendar_for('person_birthday') %> </p>   

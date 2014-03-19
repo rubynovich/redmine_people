@@ -71,7 +71,7 @@ namespace :redmine do
                     arr[0]  = "8"
 
                     tmp = 0
-                    Person::CITIES.each do |key, city| 
+                    Person.cities.each do |key, city|
                         cities = Setting.plugin_redmine_people[:"sett_city_default_#{city}"].split(/,\s*/)
                         cities.each { |city_one| tmp = 1 if arr == city_one }
                     end
