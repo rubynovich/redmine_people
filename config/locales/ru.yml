@@ -1,4 +1,4 @@
-# English strings go here for Rails i18n
+# Russian strings go here for Rails i18n
 ru:
   label_people: Сотрудники
   label_people_edit_person: Редактирование сотрудника
