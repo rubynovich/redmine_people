@@ -2,6 +2,7 @@
 class Person < User
   unloadable
   #self.inheritance_column = :_type_disabled
+  self.inheritance_column = :_type_disabled
 
   belongs_to :department
   belongs_to :cfo
