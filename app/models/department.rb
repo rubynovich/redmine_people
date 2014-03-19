@@ -4,6 +4,9 @@ class Department < ActiveRecord::Base
   belongs_to :head, :class_name => 'Person', :foreign_key => 'head_id'    
   has_many :people, :uniq => true, :dependent => :nullify
 
+  belongs_to :default_internal_role, class_name: 'Role', foreign_key: 'default_internal_role_id'
+  belongs_to :default_external_role, class_name: 'Role', foreign_key: 'default_external_role_id'
+  
   acts_as_nested_set :order => 'name', :dependent => :destroy
   acts_as_attachable_global
 
@@ -11,10 +14,12 @@ class Department < ActiveRecord::Base
   validates_uniqueness_of :name 
 
   safe_attributes 'name',
-    'background',
-    'parent_id',
-    'head_id'
-
+                  'background',
+                  'parent_id',
+                  'head_id',
+                  'default_internal_role_id',
+                  'default_external_role_id'
+    
   def to_s
     name
   end

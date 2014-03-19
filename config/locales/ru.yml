@@ -75,3 +75,6 @@ ru:
   #
   label_filter_city: Выберите город
   label_group_id: Выберите группу
+
+  field_default_internal_role: Роль по умолчанию во внутреннем проекте
+  field_default_external_role: Роль по умолчанию во внешнем проекте
