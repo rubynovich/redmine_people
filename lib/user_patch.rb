@@ -2,7 +2,7 @@ module RedminePeoplePlugin
   module UserPatch
     extend ActiveSupport::Concern
     included do
-
+      #self.inheritance_column = :_type_disabled
       validator = User._validators[:mail].find{|v| v.class == ActiveModel::Validations::FormatValidator }
       validator.instance_eval{ @options = {} }
       #belongs_to :cfo
