@@ -215,7 +215,8 @@ class Person < User
       mobiles = ""
       unless phone_work.blank?          # work phone exist
         arr = phone_work.gsub(/[-+()\s]/, '')
-        arr[0]  = "8"
+        arr[0]  = "7"
+        arr = "+#{arr}"
 
         tmp = 0
         self.class.cities.each do |key, city|
