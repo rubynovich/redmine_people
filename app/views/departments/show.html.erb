@@ -11,7 +11,7 @@
 
 <div class="department issue details">
 
-  <%= avatar(@department.head, :size => "50") %>
+  <%= avatar(@department.head, :size => "50") %>    
 
   <div class="subject">
     <h3><%= @department.name %></h3>
@@ -33,13 +33,15 @@
   <%= link_to_attachments @department, :thumbnails => true %>
   <% end -%>  
 
-  <% if @department.default_internal_role %>
+  <div>
+    <% if @department.default_internal_role %>
     <p><b><%= l(:field_default_internal_role) + ':' %></b> <%= link_to @department.default_internal_role.name, edit_role_path(@department.default_internal_role) %></p>
-  <% end %>
+    <% end %>
 
-  <% if @department.default_external_role %>
+    <% if @department.default_external_role %>
     <p><b><%= l(:field_default_external_role) + ':' %></b> <%= link_to @department.default_external_role.name, edit_role_path(@department.default_external_role) %></p>
-  <% end %>
+    <% end %>
+  </div> 
 
 </div>
 

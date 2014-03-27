@@ -13,6 +13,9 @@ class Person < User
 
   after_save :update_sanitized_phones
 
+  before_validation :stash_old_department
+  after_save :update_roles_from_new_department
+  
   scope :in_department, lambda {|department|
     department_id = department.is_a?(Department) ? department.id : department.to_i
     if department_id.present?
@@ -185,4 +188,32 @@ class Person < User
     end
   end
 
+  def stash_old_department
+    @old_department = self.department
+  end
+
+  def update_roles_from_new_department
+    # if @old_department && @old_department != department
+    #   old_internal_role = @old_department.try(:default_internal_role)
+    #   old_external_role = @old_department.try(:default_external_role)
+    #   new_internal_role = department.try(:default_internal_role)
+    #   new_external_role = department.try(:default_external_role)
+    #   for project in self.projects
+    #     role_in_project = self.roles_for_project(project)
+    #     if roles_in_project.include?(old_internal_role) && roles_in_project.include?(old_external_role)
+    #       member = Member.where(project_id: project.id, user_id: self.id).first
+    #       if project.is_external?
+    #         member.roles << new_external_role
+    #         member_role = member.member_roles.where(role_id: @old_external_role.id).first
+    #       else
+    #         member.roles << new_internal_role
+    #         member_role = member.member_roles.where(role_id: @old_external_role.id).first
+    #       end
+    #       member_role.destroy
+    #     end
+    #   end
+    # end 
+  end
 end
+
+

@@ -1,3 +1,4 @@
+# coding: utf-8
 class Department < ActiveRecord::Base
   include Redmine::SafeAttributes
   unloadable
@@ -19,7 +20,10 @@ class Department < ActiveRecord::Base
                   'head_id',
                   'default_internal_role_id',
                   'default_external_role_id'
-    
+
+  after_initialize :stash_default_external_role
+  after_save  :update_default_roles_in_projects
+  
   def to_s
     name
   end
@@ -55,4 +59,39 @@ class Department < ActiveRecord::Base
     @allowed_parents
   end  
 
+  def stash_default_external_role
+    @old_default_external_role = self.default_external_role
+    # Rails.logger.error("заначили старую роль #{@old_default_external_role.try(:name)}".yellow)
+  end
+  
+  # При изменении ролей по умолчанию заменяет во всех текущих проектах
+  # роли для уже добавленных людей из этого подразделения на новое, указанное значение.
+  def update_default_roles_in_projects
+    Rails.logger.error("запуск колбека".yellow)
+    # if @old_default_external_role && @old_default_external_role != default_external_role
+    #   Rails.logger.error("меняем роль".yellow)
+    #   Rails.logger.error("старая: #{@old_default_external_role}".yellow)
+    #   Rails.logger.error("новая: #{default_external_role.name}".yellow)
+    #   for person in self.people
+    #     for project in person.projects.select{|p| p.is_external}
+    #       if person.roles_for_project(project).include?(@old_default_external_role)
+    #         Rails.logger.error(" #{person} добавлен в проект ##{project.id} с ролью #{ @old_default_external_role.try(:name) }".yellow)
+    #         member = Member.where(project_id: project.id, user_id: person.id).first
+    #         Rails.logger.error("#{member.inspect}".yellow)
+    #         Rails.logger.error("добавляем новую роль".yellow)
+    #         member.roles << default_external_role
+    #         member.reload
+    #         member_role = member.member_roles.where(role_id: @old_default_external_role.id).first
+    #         Rails.logger.error("#{member_role.inspect}".yellow)
+    #         Rails.logger.error("до удаления: #{member.roles.map{|r| r.name}.to_s}".yellow)
+    #         member_role.destroy
+    #         member.reload
+    #         Rails.logger.error("после удаления: #{member.roles.map{|r| r.name}.to_s}".yellow)
+    #         Rails.logger.error("после замены роли: #{member.roles.map{|r| r.name}.to_s}".yellow)
+    #       end
+    #     end
+    #   end 
+    # end
+  end
+  
 end
