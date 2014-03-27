@@ -67,7 +67,7 @@ class Department < ActiveRecord::Base
   # При изменении ролей по умолчанию заменяет во всех текущих проектах
   # роли для уже добавленных людей из этого подразделения на новое, указанное значение.
   def update_default_roles_in_projects
-    Rails.logger.error("запуск колбека".yellow)
+    # Rails.logger.error("запуск колбека".yellow)
     # if @old_default_external_role && @old_default_external_role != default_external_role
     #   Rails.logger.error("меняем роль".yellow)
     #   Rails.logger.error("старая: #{@old_default_external_role}".yellow)
