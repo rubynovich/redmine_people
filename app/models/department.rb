@@ -60,6 +60,7 @@ class Department < ActiveRecord::Base
   end  
 
   def stash_default_external_role
+    @old_default_internal_role = self.default_internal_role
     @old_default_external_role = self.default_external_role
     # Rails.logger.error("заначили старую роль #{@old_default_external_role.try(:name)}".yellow)
   end
@@ -67,31 +68,42 @@ class Department < ActiveRecord::Base
   # При изменении ролей по умолчанию заменяет во всех текущих проектах
   # роли для уже добавленных людей из этого подразделения на новое, указанное значение.
   def update_default_roles_in_projects
-    # Rails.logger.error("запуск колбека".yellow)
-    # if @old_default_external_role && @old_default_external_role != default_external_role
-    #   Rails.logger.error("меняем роль".yellow)
-    #   Rails.logger.error("старая: #{@old_default_external_role}".yellow)
-    #   Rails.logger.error("новая: #{default_external_role.name}".yellow)
-    #   for person in self.people
-    #     for project in person.projects.select{|p| p.is_external}
-    #       if person.roles_for_project(project).include?(@old_default_external_role)
-    #         Rails.logger.error(" #{person} добавлен в проект ##{project.id} с ролью #{ @old_default_external_role.try(:name) }".yellow)
-    #         member = Member.where(project_id: project.id, user_id: person.id).first
-    #         Rails.logger.error("#{member.inspect}".yellow)
-    #         Rails.logger.error("добавляем новую роль".yellow)
-    #         member.roles << default_external_role
-    #         member.reload
-    #         member_role = member.member_roles.where(role_id: @old_default_external_role.id).first
-    #         Rails.logger.error("#{member_role.inspect}".yellow)
-    #         Rails.logger.error("до удаления: #{member.roles.map{|r| r.name}.to_s}".yellow)
-    #         member_role.destroy
-    #         member.reload
-    #         Rails.logger.error("после удаления: #{member.roles.map{|r| r.name}.to_s}".yellow)
-    #         Rails.logger.error("после замены роли: #{member.roles.map{|r| r.name}.to_s}".yellow)
-    #       end
-    #     end
-    #   end 
-    # end
+    Rails.logger.error("запуск колбека".light_green)
+    if (@old_default_external_role && @old_default_external_role != default_external_role) || (@old_default_internal_role && @old_default_internal_role != default_internal_role)
+      Rails.logger.error("меняем роль".light_green)
+
+      Rails.logger.error("старая внутренняя роль: #{@old_default_internal_role}".light_green)
+      Rails.logger.error("новая: внутренняя роль: #{default_internal_role.name}".light_green)
+      Rails.logger.error("старая внешняя роль: #{@old_default_external_role}".light_green)
+      Rails.logger.error("новая: внешняя роль: #{default_external_role.name}".light_green)
+
+      for person in self.people
+        for project in person.projects
+          roles_for_project = person.roles_for_project(project)
+          if roles_for_project.include?(@old_default_internal_role) || roles_for_project.include?(@old_default_external_role)
+             
+            Rails.logger.error(" #{person} добавлен в проект ##{project.id} с ролью #{ @old_default_external_role.try(:name) }".light_green)
+            member = Member.where(project_id: project.id, user_id: person.id).first
+            Rails.logger.error("#{member.inspect}".light_green)
+
+            Rails.logger.error("до замены ролей: #{member.roles.map{|r| r.name}.to_s}".light_green)
+            if project.is_external? && @old_default_external_role != default_external_role
+              Rails.logger.error("!!! меняем роль для внешних проектов".light_green)
+              member.roles << default_external_role
+              member.roles = member.roles - [@old_default_external_role]
+            end
+
+            if !project.is_external? && @old_default_internal_role != default_internal_role
+              Rails.logger.error("!!! меняем роль для внутренних проектов".light_green)
+              member.roles << default_internal_role
+              member.roles = member.roles - [@old_default_internal_role]
+            end
+            Rails.logger.error("после замены ролей: #{member.roles.map{|r| r.name}.to_s}".light_green)
+
+          end
+        end
+      end 
+    end
   end
   
 end

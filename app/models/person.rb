@@ -190,7 +190,7 @@ class Person < User
 
   def stash_old_department
     @old_department = self.department
-    Rails.logger.error("заначено старое подразделение #{@old_department.try(:name)}".yellow)
+    # Rails.logger.error("заначено старое подразделение #{@old_department.try(:name)}".yellow)
   end
 
   def update_roles_from_new_department
@@ -211,12 +211,12 @@ class Person < User
           Rails.logger.error("до замены: #{member.roles.map{|r| r.name}.inspect}".yellow)
           if project.is_external?
             return false unless new_external_role
-            member.roles << new_external_role
             old_member_role = member.member_roles.where(role_id: old_external_role.id)
+            member.roles << new_external_role if old_member_role
           else
             return false unless new_internal_role
-            member.roles << new_internal_role
             old_member_role = member.member_roles.where(role_id: old_external_role.id)
+            member.roles << new_internal_role if old_member_role
           end
           Rails.logger.error("количество: #{old_member_role.count}")
           old_member_role.map(&:destroy)
