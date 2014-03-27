@@ -1,10 +1,13 @@
-# encoding: UTF-8
+# encoding: utf-8
 class Department < ActiveRecord::Base
   include Redmine::SafeAttributes
   unloadable
   belongs_to :head, :class_name => 'Person', :foreign_key => 'head_id'    
   has_many :people, :uniq => true, :dependent => :nullify
 
+  belongs_to :default_internal_role, class_name: 'Role', foreign_key: 'default_internal_role_id'
+  belongs_to :default_external_role, class_name: 'Role', foreign_key: 'default_external_role_id'
+  
   acts_as_nested_set :order => 'name', :dependent => :destroy
   acts_as_attachable_global
 
@@ -12,10 +15,15 @@ class Department < ActiveRecord::Base
   validates_uniqueness_of :name 
 
   safe_attributes 'name',
-    'background',
-    'parent_id',
-    'head_id'
+                  'background',
+                  'parent_id',
+                  'head_id',
+                  'default_internal_role_id',
+                  'default_external_role_id'
 
+  after_initialize :stash_default_external_role
+  after_save  :update_default_roles_in_projects
+  
   def to_s
     name
   end
@@ -51,4 +59,51 @@ class Department < ActiveRecord::Base
     @allowed_parents
   end  
 
+  def stash_default_external_role
+    @old_default_internal_role = self.default_internal_role
+    @old_default_external_role = self.default_external_role
+    # Rails.logger.error("заначили старую роль #{@old_default_external_role.try(:name)}".yellow)
+  end
+  
+  # При изменении ролей по умолчанию заменяет во всех текущих проектах
+  # роли для уже добавленных людей из этого подразделения на новое, указанное значение.
+  def update_default_roles_in_projects
+    Rails.logger.error("запуск колбека".light_green)
+    if (@old_default_external_role && @old_default_external_role != default_external_role) || (@old_default_internal_role && @old_default_internal_role != default_internal_role)
+      Rails.logger.error("меняем роль".light_green)
+
+      Rails.logger.error("старая внутренняя роль: #{@old_default_internal_role}".light_green)
+      Rails.logger.error("новая: внутренняя роль: #{default_internal_role.name}".light_green)
+      Rails.logger.error("старая внешняя роль: #{@old_default_external_role}".light_green)
+      Rails.logger.error("новая: внешняя роль: #{default_external_role.name}".light_green)
+
+      for person in self.people
+        for project in person.projects
+          roles_for_project = person.roles_for_project(project)
+          if roles_for_project.include?(@old_default_internal_role) || roles_for_project.include?(@old_default_external_role)
+             
+            Rails.logger.error(" #{person} добавлен в проект ##{project.id} с ролью #{ @old_default_external_role.try(:name) }".light_green)
+            member = Member.where(project_id: project.id, user_id: person.id).first
+            Rails.logger.error("#{member.inspect}".light_green)
+
+            Rails.logger.error("до замены ролей: #{member.roles.map{|r| r.name}.to_s}".light_green)
+            if project.is_external? && @old_default_external_role != default_external_role
+              Rails.logger.error("!!! меняем роль для внешних проектов".light_green)
+              member.roles << default_external_role
+              member.roles = member.roles - [@old_default_external_role]
+            end
+
+            if !project.is_external? && @old_default_internal_role != default_internal_role
+              Rails.logger.error("!!! меняем роль для внутренних проектов".light_green)
+              member.roles << default_internal_role
+              member.roles = member.roles - [@old_default_internal_role]
+            end
+            Rails.logger.error("после замены ролей: #{member.roles.map{|r| r.name}.to_s}".light_green)
+
+          end
+        end
+      end 
+    end
+  end
+  
 end

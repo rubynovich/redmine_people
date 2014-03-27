@@ -25,6 +25,9 @@ class Person < User
 
   after_save :update_sanitized_phones
 
+  after_initialize :stash_old_department
+  after_save :update_roles_from_new_department
+  
   scope :in_department, lambda {|department|
     department_id = department.is_a?(Department) ? department.id : department.to_i
     if department_id.present?
@@ -289,4 +292,44 @@ class Person < User
     #end
   end
 
+  def stash_old_department
+    @old_department = self.department
+    # Rails.logger.error("заначено старое подразделение #{@old_department.try(:name)}".yellow)
+  end
+
+  def update_roles_from_new_department
+    Rails.logger.error("update_roles_from_new_department".yellow)
+    Rails.logger.error("новое подразделение: #{department.name}".yellow)
+    if @old_department && @old_department != department
+      Rails.logger.error("condition".yellow)
+      old_internal_role = @old_department.try(:default_internal_role)
+      old_external_role = @old_department.try(:default_external_role)
+      new_internal_role = department.try(:default_internal_role)
+      new_external_role = department.try(:default_external_role)
+      for project in self.projects
+        roles_in_project = self.roles_for_project(project)
+        if roles_in_project.include?(old_internal_role) || roles_in_project.include?(old_external_role)
+          Rails.logger.error(" #{name} добавлен в проект ##{project.id} с ролью #{project.is_external? ? old_external_role.name : old_internal_role.name }".yellow)
+          member = Member.where(project_id: project.id, user_id: self.id).first
+          Rails.logger.error("member: #{member.inspect}".yellow)
+          Rails.logger.error("до замены: #{member.roles.map{|r| r.name}.inspect}".yellow)
+          if project.is_external?
+            return false unless new_external_role
+            old_member_role = member.member_roles.where(role_id: old_external_role.id)
+            member.roles << new_external_role if old_member_role
+          else
+            return false unless new_internal_role
+            old_member_role = member.member_roles.where(role_id: old_external_role.id)
+            member.roles << new_internal_role if old_member_role
+          end
+          Rails.logger.error("количество: #{old_member_role.count}")
+          old_member_role.map(&:destroy)
+          Rails.logger.error("удаление: #{old_member_role.all?{|mr| mr.destroyed?}}")
+          Rails.logger.error("после замены: #{member.roles.map{|r| r.name}.inspect}".yellow)
+        end
+      end
+    end 
+  end
 end
+
+

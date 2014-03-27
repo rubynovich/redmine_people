@@ -11,16 +11,16 @@
 
 <div class="department issue details">
 
+  <%= avatar(@department.head, :size => "50") %>    
 
-  <%= avatar(@department.head, :size => "50") %>
+  <div class="subject">
+    <h3><%= @department.name %></h3>
+  </div>
 
-<div class="subject">
-<h3><%= @department.name %></h3>
-</div>
-        <p class="author">
-          <%= l(:label_department_head) %>
-          <%= link_to_user @department.head %>
-        </p>
+  <p class="author">
+    <%= l(:label_department_head) %>
+    <%= link_to_user @department.head %>
+  </p>
 
   <% if @department.background? || @department.attachments.any? -%>
 
@@ -32,6 +32,17 @@
   <% end %>
   <%= link_to_attachments @department, :thumbnails => true %>
   <% end -%>  
+
+  <div>
+    <% if @department.default_internal_role %>
+    <p><b><%= l(:field_default_internal_role) + ':' %></b> <%= link_to @department.default_internal_role.name, edit_role_path(@department.default_internal_role) %></p>
+    <% end %>
+
+    <% if @department.default_external_role %>
+    <p><b><%= l(:field_default_external_role) + ':' %></b> <%= link_to @department.default_external_role.name, edit_role_path(@department.default_external_role) %></p>
+    <% end %>
+  </div> 
+
 </div>
 
 <% content_for :sidebar do %>    
