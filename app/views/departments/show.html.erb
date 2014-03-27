@@ -33,17 +33,6 @@
   <%= link_to_attachments @department, :thumbnails => true %>
   <% end -%>  
 
-<<<<<<< HEAD
-  <div>
-    <% if @department.default_internal_role %>
-    <p><b><%= l(:field_default_internal_role) + ':' %></b> <%= link_to @department.default_internal_role.name, edit_role_path(@department.default_internal_role) %></p>
-    <% end %>
-
-    <% if @department.default_external_role %>
-    <p><b><%= l(:field_default_external_role) + ':' %></b> <%= link_to @department.default_external_role.name, edit_role_path(@department.default_external_role) %></p>
-    <% end %>
-  </div> 
-=======
   <% if @department.default_internal_role %>
     <p><b><%= l(:field_default_internal_role) + ':' %></b> <%= link_to @department.default_internal_role.name, edit_role_path(@department.default_internal_role) %></p>
   <% end %>
@@ -51,7 +40,6 @@
   <% if @department.default_external_role %>
     <p><b><%= l(:field_default_external_role) + ':' %></b> <%= link_to @department.default_external_role.name, edit_role_path(@department.default_external_role) %></p>
   <% end %>
->>>>>>> bd77c06... add: роли по умолчанию для подразделений
 
 </div>
 
