@@ -299,7 +299,7 @@ class Person < User
 
   def update_roles_from_new_department
     Rails.logger.error("update_roles_from_new_department".yellow)
-    Rails.logger.error("новое подразделение: #{department.name}".yellow)
+    Rails.logger.error("новое подразделение: #{department.try(:name)}".yellow)
     if @old_department && @old_department != department
       Rails.logger.error("condition".yellow)
       old_internal_role = @old_department.try(:default_internal_role)
