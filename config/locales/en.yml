@@ -85,3 +85,5 @@ en:
           attributes:
             phone:
               label_people_mobile_errors: ':  format error in mobile phone, enter modeled +7 (XXX) XXX-XX-XX'
+
+  label_company_structure: Company structure

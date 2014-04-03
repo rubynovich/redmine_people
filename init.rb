@@ -25,7 +25,13 @@ Redmine::Plugin.register :redmine_people do
                  :caption => :label_people,
                  :if => Proc.new { User.current.allowed_people_to?(:view_people) }
                })
-    
+
+    menu.push( :departments, {:controller => 'departments', :action => 'index', :project_id => nil},
+               { :parent => parent,
+                 :caption => :label_company_structure,
+                 :if => Proc.new { User.current.allowed_people_to?(:view_people) }
+               })
+
   end
 
   menu :admin_menu, :people, {:controller => 'people_settings', :action => 'index'}, :caption => :label_people
