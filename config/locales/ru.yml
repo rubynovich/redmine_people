@@ -16,6 +16,7 @@ ru:
   label_people_city_m: 'Москва'
   label_people_city_spb: 'Санкт-Петербург'
   label_people_settings: Настройки сотрудников
+  label_people_department: 'Подразделения'
 
   label_cfo: 'ЦФО'
 
