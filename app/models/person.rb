@@ -189,7 +189,7 @@ class Person < User
   end
 
   def self.next_birthdays(limit = 10)
-    Person.where("users.birthday IS NOT NULL").sort_by(&:next_birthday).first(limit)
+    Person.active.where("users.birthday IS NOT NULL").sort_by(&:next_birthday).first(limit)
   end
 
   def age
