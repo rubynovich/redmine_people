@@ -34,8 +34,8 @@ Redmine::Plugin.register :redmine_people do
 
   end
 
-  menu :admin_menu, :people, {:controller => 'people_settings', :action => 'index'}, :caption => :label_people
-  menu :admin_menu, :cfo, {:controller => 'cfos', :action => 'index'}, :caption => :label_cfo
+  menu :admin_menu, :people, {:controller => 'people_settings', :action => 'index'}, {:caption => :label_people}
+  menu :admin_menu, :cfo, {:controller => 'cfos', :action => 'index'}, {:caption => :label_cfo}
 
   project_module :redmine_people do
     permission :edit_cfos, {:cfos => [:new, :create, :edit, :update, :destroy]}
