@@ -14,6 +14,9 @@ class Department < ActiveRecord::Base
   validates_presence_of :name 
   validates_uniqueness_of :name 
 
+  validates_presence_of :default_internal_role
+  validates_presence_of :default_external_role
+
   safe_attributes 'name',
                   'background',
                   'parent_id',
