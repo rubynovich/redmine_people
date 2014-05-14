@@ -5,9 +5,11 @@
         {:name => 'people', :partial => 'people', :label => :label_people}
         ]   %>   
 
-<%= render_tabs person_tabs %>  
+<%= render_tabs person_tabs %>
 
-<% content_for :header_tags do %>
-  <%= javascript_include_tag :people, :plugin => 'redmine_people'  %>
-  <%= stylesheet_link_tag :people, :plugin => 'redmine_people' %>
+<% unless defined?(RedminePluginAssetPipeline) %>
+    <% content_for :header_tags do %>
+        <%= javascript_include_tag :people, :plugin => 'redmine_people'  %>
+        <%= stylesheet_link_tag :people, :plugin => 'redmine_people' %>
+    <% end %>
 <% end %>
