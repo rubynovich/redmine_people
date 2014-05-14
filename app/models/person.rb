@@ -9,11 +9,38 @@ class Person < User
   belongs_to :leader, :class_name => 'Person', :foreign_key => 'leader_id'
   has_many :slaves, :foreign_key => 'leader_id', :class_name => 'Person'
 
+  # delegate :default_internal_role, :to => :department
+  # delegate :default_external_role, :to => :department
 
-  #has_to :,
+  after_save :update_sanitized_phones
+  after_initialize :stash_old_department
+  after_save :update_roles_from_new_department
 
+  validates_uniqueness_of :firstname, :scope => [:lastname, :middlename]
+  validate :phones_correct
+  #validates :mail, :email =>  {:strict_mode => true}
+  validates_format_of :mail, :with => /^[0-9a-zA-Z][0-9a-zA-Z\-\_]*(\.[0-9a-zA-Z\-\_]*[0-9a-zA-Z]+)*@[0-9a-zA-Z][0-9a-zA-Z\-\_]*(\.[0-9a-zA-Z\-\_]*[0-9a-zA-Z]+)*\.[a-zA-Z]{2,}$/i
 
   include Redmine::SafeAttributes
+
+  safe_attributes 'phone',
+                  'address',
+                  'skype',
+                  'birthday',
+                  'job_title',
+                  'company',
+                  'middlename',
+                  'gender',
+                  'twitter',
+                  'facebook',
+                  'linkedin',
+                  'department_id',
+                  'background',
+                  'appearance_date',
+                  'city',
+                  'identity_url',
+                  'cfo_id',
+                  'leader_id'
 
   def self.genders
     [[l(:label_people_male), 0], [l(:label_people_female), 1]]
@@ -22,11 +49,6 @@ class Person < User
   def self.cities
     {l(:label_people_city_noname) => 0, l(:label_people_city_m) => 1, l(:label_people_city_spb) => 2}
   end
-
-  after_save :update_sanitized_phones
-
-  after_initialize :stash_old_department
-  after_save :update_roles_from_new_department
   
   scope :in_department, lambda {|department|
     department_id = department.is_a?(Department) ? department.id : department.to_i
@@ -85,32 +107,14 @@ class Person < User
     {:conditions =>   ["( LOWER(#{Person.table_name}.job_title) LIKE ? )", "%" + search.downcase + "%" ] }
   }
 
-  validates_uniqueness_of :firstname, :scope => [:lastname, :middlename]
-  validate :phones_correct
-  #validates :mail, :email =>  {:strict_mode => true}
-  validates_format_of :mail, :with => /^[0-9a-zA-Z][0-9a-zA-Z\-\_]*(\.[0-9a-zA-Z\-\_]*[0-9a-zA-Z]+)*@[0-9a-zA-Z][0-9a-zA-Z\-\_]*(\.[0-9a-zA-Z\-\_]*[0-9a-zA-Z]+)*\.[a-zA-Z]{2,}$/i
-  
-  
-
-  safe_attributes 'phone',
-                  'address',
-                  'skype',
-                  'birthday',
-                  'job_title',
-                  'company',
-                  'middlename',
-                  'gender',
-                  'twitter',
-                  'facebook',
-                  'linkedin',
-                  'department_id',
-                  'background',
-                  'appearance_date',
-                  'city',
-                  'identity_url',
-                  'cfo_id',
-                  'leader_id'
-
+  def default_internal_role
+    department ? department.default_internal_role : nil
+  end
+ 
+  def default_external_role
+    department ? department.default_external_role : nil
+  end
+ 
   def phones
     unless self.phone.blank?
       self.phone.sub!(/[^,]\s+\+/, ", +") 
