@@ -220,6 +220,7 @@ class Person < User
     if phone.present? && @sanitized_phones_new.nil?
       arr = ""
       mobiles = ""
+      #Rails.logger.error("sanitize_phones".red)
       unless phone_work.blank?          # work phone exist
         arr = phone_work.gsub(/[-+()\s]/, '')
         arr[0]  = "7"
@@ -240,10 +241,14 @@ class Person < User
         #puts "city = " + p[:city].to_s
         arr = Setting.plugin_redmine_people[:"sett_city_default_#{self[:city]}"].split(/,\s*/) unless Setting.plugin_redmine_people[:"sett_city_default_#{self[:city]}"].blank?
         arr = arr[0]
+        #Rails.logger.error(phone_work.red)
+        #Rails.logger.error(arr.red)
 
         # add work phone into p.phone
         phone_new = "+7 ("
         shift = 1
+        shift = 2 if arr.include?("+7")
+          
         phone_new << arr.slice(shift,3)    # city_code
         phone_new << ") "
         phone_new << arr.slice(shift+3,3)   # XXX
