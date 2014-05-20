@@ -1,6 +1,28 @@
 # encoding: UTF-8
 namespace :redmine do
   namespace :plugins do
+    desc 'Imoprt CFO from CSV.'
+    task :import_cfo_id => :environment do
+      require 'smarter_csv'
+      if File.exists?("#{Rails.root}/tmp/cfos.csv")
+        #csv_text = File.read("#{Rails.root}/tmp/cfos.csv")
+        #csv = CSV.parse(csv_text, :headers => true)
+        #users_not_found = []
+        SmarterCSV.process("#{Rails.root}/tmp/cfos.csv", {:col_sep=>';'}).each do |row|
+          #row = text_row.to_hash
+          #raise row.inspect
+          if person = Person.where(firstname: row[:firstname], lastname: row[:lastname], middlename: row[:middlename]).first || Person.where(firstname: row[:firstname], lastname: row[:lastname]).first
+            person.update_column(:cfo_id, row['cfo_id'])
+          else
+            #users_not_found += row
+            puts row.inspect
+          end
+        end
+        #puts users_not_found.inspect
+      end
+    end
+
+
     desc 'Copies city from address to city in redmine_people.'
     task :people_update_city => :environment do
         Person.all.each do |p|

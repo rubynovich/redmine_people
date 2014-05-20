@@ -8,3 +8,5 @@ end
 
 require 'colorize'
 gem "haml"
+
+gem 'smarter_csv'
