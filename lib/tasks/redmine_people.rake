@@ -12,10 +12,14 @@ namespace :redmine do
           #row = text_row.to_hash
           #raise row.inspect
           if person = Person.where(firstname: row[:firstname], lastname: row[:lastname], middlename: row[:middlename]).first || Person.where(firstname: row[:firstname], lastname: row[:lastname]).first
-            person.update_column(:cfo_id, row['cfo_id'])
+            unless row[:cfo_id].to_i == 0
+              person.update_column(:cfo_id, row[:cfo_id])
+            else
+              puts row.inspect.green
+            end
           else
             #users_not_found += row
-            puts row.inspect
+            puts row.inspect.red
           end
         end
         #puts users_not_found.inspect
