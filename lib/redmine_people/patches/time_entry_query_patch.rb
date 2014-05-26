@@ -32,7 +32,8 @@ module RedminePeople
 
       def statement_with_people
         res = statement_without_people
-        res.gsub('time_entries.cfo_id', 'users.cfo_id')
+        res.gsub!('time_entries.cfo_id', 'users.cfo_id') unless res.nil?
+        res
       end
 
     end
