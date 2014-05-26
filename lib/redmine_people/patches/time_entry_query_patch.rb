@@ -22,7 +22,7 @@ module RedminePeople
         add_available_filter("cfo_id",
           :type => :list, :values => [["<#{l(:label_none)}>",nil]] + Cfo.all.sort.map {|a| ["#{a.cfo_slug} (#{a.cfo})", a.id.to_s]}, :label => :label_cfo
         ) unless Cfo.count == 0
-        initialize_available_filters_ without_people
+        initialize_available_filters_without_people
       end
 
 
