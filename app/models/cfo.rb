@@ -8,7 +8,7 @@ class Cfo < ActiveRecord::Base
   has_one :person
 
   def to_s
-    cfo
+    cfo_slug
   end
 
 end
