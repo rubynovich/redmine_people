@@ -3,7 +3,7 @@ namespace :redmine do
   namespace :plugins do
 
     desc 'Update null cfo'
-    task :import_cfo_id => :environment do
+    task :update_null_cfo => :environment do
       Person.where(cfo_id: nil).update_all(:cfo_id => 0)
     end
 
