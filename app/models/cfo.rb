@@ -8,7 +8,7 @@ class Cfo < ActiveRecord::Base
   has_one :person
 
   def to_s
-    cfo_slug
+    (id.nil? || id == 0) ? "<#{l(:label_none)}>" : cfo_slug
   end
 
 end
