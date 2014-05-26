@@ -25,12 +25,12 @@ module RedminePeople
 
 
       def format_criteria_value_with_people(criteria_options, value)
-        if (value == 0) && (criteria_options[:name] == :cfo_id)
+
+        if (criteria_options[:klass] == Cfo) && value.to_s == '0'
           "[#{l(:label_none)}]"
         else
           format_criteria_value_without_people(criteria_options, value)
         end
-
       end
     end
   end
