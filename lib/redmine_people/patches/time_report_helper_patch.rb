@@ -14,6 +14,7 @@ module RedminePeople
 
       module InstanceMethods
 
+
         private
 
         def load_available_criteria_with_people
