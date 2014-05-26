@@ -3,7 +3,7 @@ class CfosController < ApplicationController
   unloadable
 
   before_filter :check_admin_user
-  before_filter :find_cfo, only: [:update, destroy, :edit]
+  before_filter :find_cfo, only: [:update, :destroy, :edit]
 
   # GET /cfos
   # GET /cfos.json
