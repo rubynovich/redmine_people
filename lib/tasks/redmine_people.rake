@@ -1,6 +1,12 @@
 # encoding: UTF-8
 namespace :redmine do
   namespace :plugins do
+
+    desc 'Update null cfo'
+    task :import_cfo_id => :environment do
+      Person.where(cfo_id: nil).update_all(:cfo_id => 0)
+    end
+
     desc 'Imoprt CFO from CSV.'
     task :import_cfo_id => :environment do
       require 'smarter_csv'

@@ -13,6 +13,7 @@ class Person < User
   # delegate :default_external_role, :to => :department
 
   after_save :update_sanitized_phones
+  after_save :update_null_cfo_id
   after_initialize :stash_old_department
   after_save :update_roles_from_new_department
 
@@ -339,6 +340,11 @@ class Person < User
       end
     end 
   end
+
+  def update_null_cfo_id
+    self.update_column(:cfo_id, 0) if self.cfo_id.nil?
+  end
+
 end
 
 
