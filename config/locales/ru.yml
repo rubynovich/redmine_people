@@ -19,6 +19,9 @@ ru:
   label_people_department: 'Подразделения'
 
   label_cfo: 'ЦФО'
+  field_cfo: 'Наименование'
+  field_cfo_slug: 'Обозначение'
+
 
   button_people_edit_profile: Редактировать профиль
 

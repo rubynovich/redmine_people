@@ -1,26 +1,6 @@
-<%= form_for(@cfo) do |f| %>
-  <% if @cfo.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@cfo.errors.count, "error") %> препядствуют сохранению этого ЦФО:</h2>
+<%= error_messages_for @cfo %>
 
-      <ul>
-      <% @cfo.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div class="field">
-    <%= f.label t(:label_cfo) %><br />
-    <%= f.text_field :cfo %>
-  </div>
-  <div class="field">
-    <%= f.label t(:label_cfo_slug) %><br />
-    <%= f.text_field :cfo_slug %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
-<br />
+<div class="box tabular">
+  <p><%= f.text_field :cfo, :required => true %></p>
+  <p><%= f.text_field :cfo_slug, :required => true %></p>
+</div>

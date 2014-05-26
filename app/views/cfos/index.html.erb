@@ -1,18 +1,20 @@
 <div id="content">
 	<h2>Список ЦФО</h2>
 
-	<table class="list plugins">
+	<table class="list cfos">
 		<tr class="odd">
-			<th><%= t(:label_cfo) %></th>
-			<th></th>
-			<th></th>
+          <th><%= t(:field_cfo_slug) %></th>
+          <th><%= t(:field_cfo) %></th>
+		  <th></th>
+		  <th></th>
 		</tr>
 
 	<% @cfos.each do |cfo| %>
 		<tr class="even">
-			<td><%= cfo.cfo %></td>
-			<td><%= link_to 'Обновить', edit_cfo_path(cfo) %></td>
-			<td><%= link_to 'Удалить', cfo, method: :delete, data: { confirm: 'Точно удалить ЦФО?' } %></td>
+          <td><%= cfo.cfo_slug %></td>
+          <td><%= cfo.cfo %></td>
+		  <td><%= link_to 'Обновить', edit_cfo_path(cfo) %></td>
+		  <td><%= link_to 'Удалить', cfo, method: :delete, data: { confirm: 'Точно удалить ЦФО?' } %></td>
 		</tr>
 	<% end %>
 	</table>

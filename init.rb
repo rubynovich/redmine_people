@@ -44,9 +44,19 @@ Redmine::Plugin.register :redmine_people do
 
   require "user_patch"
   require_dependency 'user'
+  require_dependency 'redmine/helpers/time_report.rb'
+  require 'redmine_people/patches/time_report_helper_patch'
+
+  require 'redmine_people/patches/time_entry_query_patch'
+  require_dependency 'time_entry_query'
 
 
-   [[User, RedminePeoplePlugin::UserPatch]].each do |cl, patch|
+
+   [[TimeEntryQuery, RedminePeople::Patches::TimeEntryQueryPatch],[User, RedminePeoplePlugin::UserPatch],[Redmine::Helpers::TimeReport, RedminePeople::Patches::TimeReportHelperPatch]].each do |cl, patch|
     cl.send(:include, patch) unless cl.included_modules.include? patch
-  end
+   end
+
+
+
+   Redmine::Helpers::TimeReport.send(:include, )
 end
