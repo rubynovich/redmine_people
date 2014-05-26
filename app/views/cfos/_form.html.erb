@@ -13,7 +13,11 @@
 
   <div class="field">
     <%= f.label t(:label_cfo) %><br />
-    <%= f.text_area :cfo, :rows => 1 %>
+    <%= f.text_field :cfo %>
+  </div>
+  <div class="field">
+    <%= f.label t(:label_cfo_slug) %><br />
+    <%= f.text_field :cfo_slug %>
   </div>
   <div class="actions">
     <%= f.submit %>
