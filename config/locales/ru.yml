@@ -53,6 +53,9 @@ ru:
   people_permission_delete_people: Удаление сотрудников
   people_permission_add_attachments: Добавление файлов
 
+  people_permission_edit_cfos: Редактирование ЦФО
+  people_permission_view_cfos: Просмотр ЦФО
+
   #0.0.2
   label_people_acl_settings: Права доступа
   label_people_visibility: Видимость

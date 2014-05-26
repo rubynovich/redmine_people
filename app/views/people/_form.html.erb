@@ -211,9 +211,9 @@
 
 
 	<% unless @cfos.blank? %>
-        <% if User.current.allowed_to?(:edit_cfos,  nil, {:global => true}) %>
+        <% if User.current.allowed_people_to?(:edit_cfos, @person) %>
 		    <p><%= f.select :cfo_id, options_for_select(@cfos.map {|c| [c.cfo, c.id]}, @person.cfo_id), {:include_blank => true, :label => l(:field_people_cfo), :disabled => block_cfo_edit?(@person)} %></p>
-        <% elsif User.current.allowed_to?(:view_cfos, nil, {:global => true}) %>цукцук
+        <% elsif User.current.allowed_people_to?(:view_cfos, @person) %>
             <p><label for="person_cfo_id"><%= l(:field_people_cfo) %></label><%=  @person.cfo.try(:cfo) %></p>
         <% end %>
 	<% end %>

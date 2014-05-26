@@ -108,7 +108,7 @@ class PeopleController < ApplicationController
     params.delete([:phone_work])
     params.delete([:phone_extension])
     params[:person].delete(:phone_mobile_counter)
-    
+    params[:person].delete(:cfo_id) unless User.current.allowed_people_to?(:edit_cfos, @person) || User.current.admin?
     @person.safe_attributes = params[:person]    
     @person.admin = false
     @person.login = params[:person][:login]
