@@ -8,6 +8,7 @@
   </span>
 </h2>
 
+
 <div class="filters">
   <%= form_tag({:contoller => "people", :action => "index"}, :method => :get,  :id => "query_form") do %>
     <%= hidden_field_tag('project_id', @project.to_param) if @project %>

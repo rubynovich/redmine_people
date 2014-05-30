@@ -2,7 +2,11 @@
 
 <% html_title "#{l(:label_people_person)} ##{@person.id}: #{@person.name}" %>    
 
-<div class="contextual">     
+<div class="contextual">
+  <% if Redmine::Plugin.all.map(&:id).include?(:redmine_people_places) && @person.people_place %>
+      <%= link_to_function l(:label_person_on_map), "$('.other_content_not_map').hide(); $('#person_on_map').show(); $('#link_to_show_person_on_map').hide(); $('#link_to_other_content_not_map').show();", id: 'link_to_show_person_on_map'%>
+      <%= link_to_function l(:label_other_content_not_map), " $('#person_on_map').hide(); $('.other_content_not_map').show(); $('#link_to_other_content_not_map').hide(); $('#link_to_show_person_on_map').show();", id: 'link_to_other_content_not_map'%>
+  <% end %>
   <%= link_to l(:label_profile), user_path(@person), :class => 'icon icon-user' %>
   <%= link_to l(:button_edit), {:controller => 'people', :action => 'edit', :id => @person}, :class => 'icon icon-edit' if User.current.allowed_people_to?(:edit_people, @person) %> 
   <%= link_to l(:button_delete), {:controller => 'users', :action => 'destroy', :project_id => @project, :id => @person}, :confirm => l(:text_are_you_sure), :method => :delete, :class => 'icon icon-del' if User.current.allowed_people_to?(:delete_people, @person) %>
@@ -39,11 +43,26 @@
       </td>
     </tr>
   </table>
-  
+
+  <% if Redmine::Plugin.all.map(&:id).include?(:redmine_people_places) %>
+      <% if people_place = @person.people_place %>
+          <div id="person_on_map">
+            <%= render :partial=> 'place_maps/map', locals: {people_place: people_place} %>
+          </div>
+          <div class="other_content_not_map">
+      <% end %>
+  <% end %>
+
   <%= call_hook(:view_people_show_details_bottom, :person => @person) %>
+  <% if Redmine::Plugin.all.map(&:id).include?(:redmine_people_places) && @person.people_place %>
+     </div>
+  <% end %>
+
 </div>
 
-
+<% if Redmine::Plugin.all.map(&:id).include?(:redmine_people_places) && @person.people_place %>
+          <div class="other_content_not_map">
+<% end %>
 
 <% person_tabs = [{:name => 'activity', :partial => 'activity', :label => :label_activity},
         {:name => 'files', :partial => 'attachments', :label => :label_attachment_plural},
@@ -52,6 +71,9 @@
 
 <%= render_tabs person_tabs %>
 
+<% if Redmine::Plugin.all.map(&:id).include?(:redmine_people_places) && @person.people_place %>
+          </div>
+<% end %>
 
 <% content_for :sidebar do %>    
   <%= render :partial => 'attributes' %>
