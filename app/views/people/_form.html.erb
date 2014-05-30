@@ -220,7 +220,7 @@
 
 
     <% if Redmine::Plugin.all.map(&:id).include?(:redmine_people_places) %>
-        <p><%= f.select :people_place_id, options_for_select(PeoplePlace.map {|c| ["место #{c.id} (#{c.place_map.name})", c.id]}, @person.people_place_id), {:include_blank => true, :label => l(:field_people_place)} %></p>
+        <p><%= f.select :people_place_id, options_for_select(PeoplePlace.all.map {|c| ["место #{c.id} (#{c.place_map.name})", c.id]}, @person.people_place_id), {:include_blank => true, :label => l(:field_people_place)} %></p>
     <% end %>
 
 
