@@ -46,6 +46,9 @@
 <% content_for :sidebar do %>    
   <div id="department_people">
     <h3><%= l(:label_people) %></h3>
+    <% if Redmine::Plugin.all.map(&:id).include?(:redmine_people_places) %>
+        <%= link_to "показать на карте", "/peoplemaps?department_id=#{@department.id}"%>
+    <% end %>
     <%= render :partial => 'people/person_data', :collection => @department.people %>
   </div>
 
