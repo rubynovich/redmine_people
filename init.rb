@@ -61,5 +61,5 @@ Redmine::Plugin.register :redmine_people do
 
 
 
-   Redmine::Helpers::TimeReport.send(:include, )
+   #Redmine::Helpers::TimeReport.send(:include, )
 end
