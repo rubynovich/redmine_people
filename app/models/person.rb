@@ -145,18 +145,10 @@ class Person < User
   end
 
 
-  def head
+  def default_head
     if self.department_id
-      self.department.head
+      self.department.find_head
     end
-  end
-
-  def all_parent_heads
-    heads = [self.head]
-    if self.head
-      heads += head.all_parent_heads
-    end
-    heads
   end
 
   def phones_correct
