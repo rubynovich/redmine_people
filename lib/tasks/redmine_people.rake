@@ -9,9 +9,9 @@ namespace :redmine do
       file = File.open("#{Rails.root}/public/limitit/people_orgstructure.csv", "w+")
       file.write(User.active.map do |user|
         person = user.becomes(Person)
-        ret = [person.login]
+        ret = person.department.try(:head) == person ? [] : [person.login]
         ret += person.department.parents_department_heads.map(&:login) if person.department
-        ret.to_csv
+        ret.comapct.to_csv
       end.join(''))
       file.close
     end
