@@ -41,7 +41,7 @@ class Department < ActiveRecord::Base
       yield department, ancestors.size
       ancestors << department
     end
-  end  
+  end
 
   def css_classes
     s = 'project'

@@ -144,6 +144,21 @@ class Person < User
     phones - [phone_work] - [phone_extension] - [" "]
   end
 
+
+  def head
+    if self.department_id
+      self.department.head
+    end
+  end
+
+  def all_parent_heads
+    heads = [self.head]
+    if self.head?
+      heads += head.all_parent_heads
+    end
+    heads
+  end
+
   def phones_correct
     if phone_mobile.present?
       phone_mobile.each do |phone|

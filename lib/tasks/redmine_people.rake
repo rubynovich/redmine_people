@@ -2,6 +2,15 @@
 namespace :redmine do
   namespace :plugins do
 
+
+    desc 'Export orgstructure people'
+    task :export_orgstructure => :environment do
+      Person.active.each do |person|
+        
+      end
+    end
+
+
     desc 'Update null cfo'
     task :update_null_cfo => :environment do
       Person.where(cfo_id: nil).update_all(:cfo_id => 0)
