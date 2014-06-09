@@ -47,6 +47,7 @@
   <% if Redmine::Plugin.all.map(&:id).include?(:redmine_people_places) %>
       <% if people_place = @person.people_place %>
           <div id="person_on_map">
+            <h2><%= people_place.place_map.name%></h2>
             <%= render :partial=> 'place_maps/map', locals: {people_place: people_place} %>
           </div>
           <div class="other_content_not_map">
