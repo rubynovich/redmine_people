@@ -5,7 +5,8 @@ namespace :redmine do
 
     desc 'Export orgstructure people'
     task :export_orgstructure => :environment do
-      file = File.open("#{Rails.root}/tmp/people_orgstructure.csv", "w+")
+      FileUtils.mkdir_p("#{Rails.root}/public/limitit") unless Dir.exist?("#{Rails.root}/public/limitit")
+      file = File.open("#{Rails.root}/public/limitit/people_orgstructure.csv", "w+")
       file.write(User.active.map do |user|
         person = user.becomes(Person)
         ret = [person.login]
