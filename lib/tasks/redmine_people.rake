@@ -5,9 +5,14 @@ namespace :redmine do
 
     desc 'Export orgstructure people'
     task :export_orgstructure => :environment do
-      Person.active.each do |person|
-        
-      end
+      file = File.open("#{Rails.root}/tmp/people_orgstructure.csv", "w+")
+      file.write(User.active.map do |user|
+        person = user.becomes(Person)
+        ret = [person.login]
+        ret += person.department.parents_department_heads.map(&:login) if person.department
+        ret.to_csv
+      end.join(''))
+      file.close
     end
 
 
