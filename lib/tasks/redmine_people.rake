@@ -11,7 +11,7 @@ namespace :redmine do
         person = user.becomes(Person)
         ret = person.department.try(:head) == person ? [] : [person.login]
         ret += person.department.parents_department_heads.map(&:login) if person.department
-        ret.comapct.to_csv
+        ret.compact.to_csv
       end.join(''))
       file.close
     end
