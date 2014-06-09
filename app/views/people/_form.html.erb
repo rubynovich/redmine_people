@@ -218,12 +218,6 @@
         <% end %>
 	<% end %>
 
-
-    <% if Redmine::Plugin.all.map(&:id).include?(:redmine_people_places) %>
-        <p><%= f.select :people_place_id, options_for_select(PeoplePlace.all.map {|c| ["место #{c.id} (#{c.place_map.name})", c.id] if c.person.nil? || c.person == @person }.compact.uniq, @person.people_place_id), {:include_blank => true, :label => l(:field_people_place)} %></p>
-    <% end %>
-
-
 	<% unless @people.blank? %>
 		<p><%= f.select :leader_id, principals_options_for_select(@people, @person.leader || default_leader(@person)), {:include_blank => true, :label => l(:field_people_leader), :disabled => block_cfo_edit?(@person) } %></p>
 	<% end %>
