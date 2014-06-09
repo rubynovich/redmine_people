@@ -70,10 +70,10 @@ class Person < User
                          LOWER(#{Person.table_name}.lastname) LIKE ? OR
                          LOWER(#{Person.table_name}.middlename) LIKE ? OR
                          LOWER(#{Person.table_name}.login) LIKE ? )",
-                       search.downcase + "%",
-                       search.downcase + "%",
-                       search.downcase + "%",
-                       search.downcase + "%"
+                       search.mb_chars.downcase.to_s + "%",
+                       search.mb_chars.downcase.to_s + "%",
+                       search.mb_chars.downcase.to_s + "%",
+                       search.mb_chars.downcase.to_s + "%"
                       ]
     }
   }
