@@ -153,7 +153,7 @@ class Person < User
 
   def all_parent_heads
     heads = [self.head]
-    if self.head?
+    if self.head
       heads += head.all_parent_heads
     end
     heads
