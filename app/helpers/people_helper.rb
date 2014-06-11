@@ -14,8 +14,8 @@ module PeopleHelper
   end
 
   def company_options_for_select
-    companies = [%q[ГК "ГорКапСтрой"], %q[ООО "Строй-Альянс"], %q[ООО "НВК-Холдинг"], %q[СЕО Фэктори], %q[ООО "ЭТП СтройТорги"]]
-    options_for_select(companies.map{|c| [c,c]}, @person[:company])
+    companies = [%q[ООО "ГорКапСтрой"], %q[ООО "Строй-Альянс"],  %q[ООО НПП "Строительство"], %q[ООО "НВК-Холдинг"], %q[СЕО Фэктори], %q[ООО "ЭТП СтройТорги"]]
+    options_for_select(companies.map{|c| [c,c]}, @person[:company], )
   end
 
 
