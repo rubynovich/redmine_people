@@ -1,6 +1,53 @@
 # encoding: UTF-8
 namespace :redmine do
   namespace :plugins do
+
+
+    desc 'Export orgstructure people'
+    task :export_orgstructure => :environment do
+      FileUtils.mkdir_p("#{Rails.root}/public/limitit") unless Dir.exist?("#{Rails.root}/public/limitit")
+      file = File.open("#{Rails.root}/public/limitit/people_orgstructure.csv", "w+")
+      file.write(User.active.map do |user|
+        person = user.becomes(Person)
+        ret = person.department.try(:head) == person ? [] : [person.login]
+        ret += person.department.parents_department_heads.map(&:login) if person.department
+        ret.compact.to_csv
+      end.join(''))
+      file.close
+    end
+
+
+    desc 'Update null cfo'
+    task :update_null_cfo => :environment do
+      Person.where(cfo_id: nil).update_all(:cfo_id => 0)
+    end
+
+    desc 'Imoprt CFO from CSV.'
+    task :import_cfo_id => :environment do
+      require 'smarter_csv'
+      if File.exists?("#{Rails.root}/tmp/cfos.csv")
+        #csv_text = File.read("#{Rails.root}/tmp/cfos.csv")
+        #csv = CSV.parse(csv_text, :headers => true)
+        #users_not_found = []
+        SmarterCSV.process("#{Rails.root}/tmp/cfos.csv", {:col_sep=>';'}).each do |row|
+          #row = text_row.to_hash
+          #raise row.inspect
+          if person = Person.where(firstname: row[:firstname], lastname: row[:lastname], middlename: row[:middlename]).first || Person.where(firstname: row[:firstname], lastname: row[:lastname]).first
+            unless row[:cfo_id].to_i == 0
+              person.update_column(:cfo_id, row[:cfo_id])
+            else
+              puts row.inspect.green
+            end
+          else
+            #users_not_found += row
+            puts row.inspect.red
+          end
+        end
+        #puts users_not_found.inspect
+      end
+    end
+
+
     desc 'Copies city from address to city in redmine_people.'
     task :people_update_city => :environment do
         Person.all.each do |p|

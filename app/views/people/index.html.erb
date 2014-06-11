@@ -8,6 +8,7 @@
   </span>
 </h2>
 
+
 <div class="filters">
   <%= form_tag({:contoller => "people", :action => "index"}, :method => :get,  :id => "query_form") do %>
     <%= hidden_field_tag('project_id', @project.to_param) if @project %>
@@ -149,7 +150,8 @@
 <% end %>
 
 <% content_for :header_tags do %>
-  <%= javascript_include_tag :people, :plugin => 'redmine_people'  %>
-  <%= stylesheet_link_tag :people, :plugin => 'redmine_people' %>
+
+  <%= javascript_include_tag :people, :plugin => 'redmine_people' unless defined?(RedminePluginAssetPipeline)  %>
+  <%= stylesheet_link_tag :people, :plugin => 'redmine_people' unless defined?(RedminePluginAssetPipeline) %>
   <meta name = "format-detection" content = "telephone=no">
 <% end %>

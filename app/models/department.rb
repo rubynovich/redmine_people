@@ -41,7 +41,19 @@ class Department < ActiveRecord::Base
       yield department, ancestors.size
       ancestors << department
     end
-  end  
+  end
+
+  def find_head
+    self.head ? self.head : self.parent.find_head
+  end
+
+  def parents_department_heads
+    heads = [self.find_head]
+    if self.parent_id
+      heads += self.parent.parents_department_heads
+    end
+    heads.compact.uniq
+  end
 
   def css_classes
     s = 'project'

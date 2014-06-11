@@ -108,7 +108,7 @@ class PeopleController < ApplicationController
     params.delete([:phone_work])
     params.delete([:phone_extension])
     params[:person].delete(:phone_mobile_counter)
-    
+    params[:person].delete(:cfo_id) unless User.current.allowed_people_to?(:edit_cfos, @person) || User.current.admin?
     @person.safe_attributes = params[:person]    
     @person.admin = false
     @person.login = params[:person][:login]
@@ -248,7 +248,7 @@ private
     scope = scope.search_by_job_title(params[:job_title]) if params[:job_title].present?
     scope = scope.search_by_phone(params[:phone]) if params[:phone].present?
     scope = scope.search_by_mail(params[:mail]) if params[:mail].present?
-    scope = scope.search_by_city(params[:city]) if params[:city].present?
+    scope = scope.where(city: params[:city]) if params[:city].present?
     #scope = scope.in_group(params[:group_id]) if @group.present?
     scope = scope.in_department(params[:department_id]) if @department.present?
     scope = scope.where(type: 'User')

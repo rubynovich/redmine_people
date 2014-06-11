@@ -13,6 +13,7 @@ class Person < User
   # delegate :default_external_role, :to => :department
 
   after_save :update_sanitized_phones
+  after_save :update_null_cfo_id
   after_initialize :stash_old_department
   after_save :update_roles_from_new_department
 
@@ -69,10 +70,10 @@ class Person < User
                          LOWER(#{Person.table_name}.lastname) LIKE ? OR
                          LOWER(#{Person.table_name}.middlename) LIKE ? OR
                          LOWER(#{Person.table_name}.login) LIKE ? )",
-                       search.downcase + "%",
-                       search.downcase + "%",
-                       search.downcase + "%",
-                       search.downcase + "%"
+                       search.mb_chars.downcase.to_s + "%",
+                       search.mb_chars.downcase.to_s + "%",
+                       search.mb_chars.downcase.to_s + "%",
+                       search.mb_chars.downcase.to_s + "%"
                       ]
     }
   }
@@ -141,6 +142,13 @@ class Person < User
 
   def phone_mobile
     phones - [phone_work] - [phone_extension] - [" "]
+  end
+
+
+  def default_head
+    if self.department_id
+      self.department.find_head
+    end
   end
 
   def phones_correct
@@ -220,6 +228,7 @@ class Person < User
     if phone.present? && @sanitized_phones_new.nil?
       arr = ""
       mobiles = ""
+      #Rails.logger.error("sanitize_phones".red)
       unless phone_work.blank?          # work phone exist
         arr = phone_work.gsub(/[-+()\s]/, '')
         arr[0]  = "7"
@@ -240,10 +249,14 @@ class Person < User
         #puts "city = " + p[:city].to_s
         arr = Setting.plugin_redmine_people[:"sett_city_default_#{self[:city]}"].split(/,\s*/) unless Setting.plugin_redmine_people[:"sett_city_default_#{self[:city]}"].blank?
         arr = arr[0]
+        #Rails.logger.error(phone_work.red)
+        #Rails.logger.error(arr.red)
 
         # add work phone into p.phone
         phone_new = "+7 ("
         shift = 1
+        shift = 2 if arr.include?("+7")
+          
         phone_new << arr.slice(shift,3)    # city_code
         phone_new << ") "
         phone_new << arr.slice(shift+3,3)   # XXX
@@ -334,6 +347,11 @@ class Person < User
       end
     end 
   end
+
+  def update_null_cfo_id
+    self.update_column(:cfo_id, 0) if self.cfo_id.nil?
+  end
+
 end
 
 

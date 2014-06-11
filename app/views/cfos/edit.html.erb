@@ -1,5 +1,8 @@
 <h1>Обновление ЦФО</h1>
 
-<%= render 'form' %>
+<%= labelled_form_for @cfo do |f| %>
+    <%= render :partial => 'form', :locals => {:f => f} %>
+    <%= submit_tag l(:button_save) %>
+<% end %>
 
 <%= link_to 'К списку ЦФО', cfos_path %>

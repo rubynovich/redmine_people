@@ -19,10 +19,14 @@ ru:
   label_people_department: 'Подразделения'
 
   label_cfo: 'ЦФО'
+  field_cfo: 'Наименование'
+  field_cfo_slug: 'Обозначение'
+
 
   button_people_edit_profile: Редактировать профиль
 
   field_people_avatar: Avatar
+  field_people_place: Рабочее место
   field_people_job_title: Должность
   field_people_phone: Рабочий телефон
   field_people_phone_extension: доб.
@@ -49,6 +53,9 @@ ru:
   people_permission_add_people: Добавление сотрудников
   people_permission_delete_people: Удаление сотрудников
   people_permission_add_attachments: Добавление файлов
+
+  people_permission_edit_cfos: Редактирование ЦФО
+  people_permission_view_cfos: Просмотр ЦФО
 
   #0.0.2
   label_people_acl_settings: Права доступа
