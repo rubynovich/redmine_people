@@ -224,6 +224,9 @@
 	<% end %>
 	<p><%= f.select :gender, Person.genders, :label => l(:field_people_gender)%></p>
 	<p><%= f.select :city, city_options_for_select, :label => l(:field_people_city)%></p>
+
+	<p><%= f.select :company, company_options_for_select, :label => l(:field_people_company), include_blank: true%></p>
+
 	<p><%= f.text_field :appearance_date, :size => 12, :label => l(:field_people_appearance_date) %><%= calendar_for('person_appearance_date') %> </p>   
 	<p><%= f.text_field :birthday, :size => 12, :label => l(:field_people_birthday) %><%= calendar_for('person_birthday') %> </p>   
 	<p><%= f.text_field :job_title, :label => l(:field_people_job_title) %></p>
