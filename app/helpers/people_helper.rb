@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 module PeopleHelper
 
   def birthday_date(person)
@@ -11,6 +12,12 @@ module PeopleHelper
   def city_options_for_select
     options_for_select(Person.cities.to_a, @person[:city])
   end
+
+  def company_options_for_select
+    companies = [%q[ООО "ГорКапСтрой"], %q[ООО "Строй-Альянс"],  %q[ООО НПП "Строительство"], %q[ООО "НВК-Холдинг"], %q[СЕО Фэктори], %q[ООО "ЭТП СтройТорги"]]
+    options_for_select(companies.map{|c| [c,c]}, @person[:company], )
+  end
+
 
   def person_to_vcard(person)  
     require 'vpim/vcard'
