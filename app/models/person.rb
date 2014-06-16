@@ -123,6 +123,16 @@ class Person < User
     @phones || self.phone ? self.phone.split(/(?:[,;]|доб\.*)\s*/)-[""] : []
   end
 
+  def mobile_phone
+    return @mobile_phone if @mobile_phone
+    self.sanitized_phones.split(', ').each do |phone|
+      if phone =~ /^\+79/
+        @mobile_phone = phone
+        return @mobile_phone
+      end
+    end
+  end
+
   def phone_extension
     if phones.index { |x| x.length > 0 and x.length < 6 } 
       phones[phones.index { |x| x.length > 0 and x.length < 6 }] 
