@@ -13,6 +13,7 @@ class DepartmentsController < ApplicationController
   end
 
   def edit
+#    @department.confirmer_id = @department.head_id if @department.confirmer_id.blank? 
   end
 
   def new

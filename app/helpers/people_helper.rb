@@ -68,6 +68,10 @@ module PeopleHelper
     not User.current.allowed_people_to?(:edit_people, person)
   end
 
+  def block_planning_edit?(person)
+    not User.current.allowed_people_to?(:edit_people, person)
+  end
+
   def block_leader_edit?(person)
     not User.current.allowed_people_to?(:edit_people, person)
   end

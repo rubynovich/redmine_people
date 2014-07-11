@@ -21,6 +21,7 @@ class Person < User
   validate :phones_correct
   #validates :mail, :email =>  {:strict_mode => true}
   validates_format_of :mail, :with => /^[0-9a-zA-Z][0-9a-zA-Z\-\_]*(\.[0-9a-zA-Z\-\_]*[0-9a-zA-Z]+)*@[0-9a-zA-Z][0-9a-zA-Z\-\_]*(\.[0-9a-zA-Z\-\_]*[0-9a-zA-Z]+)*\.[a-zA-Z]{2,}$/i
+  validate :validate_planning_settings
 
   include Redmine::SafeAttributes
 
@@ -41,7 +42,9 @@ class Person < User
                   'city',
                   'identity_url',
                   'cfo_id',
-                  'leader_id'
+                  'leader_id',
+                  'no_planning',
+                  'time_confirm'
 
   def self.genders
     [[l(:label_people_male), 0], [l(:label_people_female), 1]]
@@ -51,6 +54,10 @@ class Person < User
     {l(:label_people_city_noname) => 0, l(:label_people_city_m) => 1, l(:label_people_city_spb) => 2}
   end
   
+  def self.time_confirmation
+    [[l(:label_people_no_confirm), 0], [l(:label_people_confirm), 1]]
+  end
+
   scope :in_department, lambda {|department|
     department_id = department.is_a?(Department) ? department.id : department.to_i
     if department_id.present?
@@ -169,6 +176,13 @@ class Person < User
           break
         end
       end
+    end
+  end
+
+  def validate_planning_settings
+    if no_planning == true && time_confirm == 1
+      errors.add :base, :label_planning_settings_error 
+      return false
     end
   end
 

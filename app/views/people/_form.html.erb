@@ -221,6 +221,15 @@
 	<% unless @people.blank? %>
 		<p><%= f.select :leader_id, principals_options_for_select(@people, @person.leader || default_leader(@person)), {:include_blank => true, :label => l(:field_people_leader), :disabled => block_cfo_edit?(@person) } %></p>
 	<% end %>
+    <% if User.current.allowed_people_to?(:edit_planning, @person) || User.current.admin? %>
+	    <p><%= f.check_box :no_planning, :label => l(:field_people_no_planning), :disabled => block_planning_edit?(@person) %></p>
+		<p><%= f.select :time_confirm, options_for_select(Person.time_confirmation, @person[:time_confirm]), :label => l(:field_people_time_confirm)%></p>
+	<% elsif User.current. id == @person.id %>
+	    <p><%= f.check_box :no_planning, :label => l(:field_people_no_planning), :disabled => true %></p>
+		<p><label for="person_time_confirm"><%= l(:field_people_time_confirm) %></label><%= Person.time_confirmation[@person.time_confirm][0] %></p>
+    <% end %>
+
+
 	<p><%= f.select :gender, Person.genders, :label => l(:field_people_gender)%></p>
 	<p><%= f.select :city, city_options_for_select, :label => l(:field_people_city)%></p>
 

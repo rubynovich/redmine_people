@@ -21,6 +21,7 @@ class Department < ActiveRecord::Base
                   'background',
                   'parent_id',
                   'head_id',
+                  'confirmer_id',
                   'default_internal_role_id',
                   'default_external_role_id'
 

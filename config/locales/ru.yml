@@ -22,6 +22,10 @@ ru:
   field_cfo: 'Наименование'
   field_cfo_slug: 'Обозначение'
 
+  field_people_no_planning: Не ведет планирование
+  field_people_time_confirm: Затраченное время
+  label_people_no_confirm: не подтверждается
+  label_people_confirm: подтверждается
 
   button_people_edit_profile: Редактировать профиль
 
@@ -57,6 +61,8 @@ ru:
   people_permission_edit_cfos: Редактирование ЦФО
   people_permission_view_cfos: Просмотр ЦФО
 
+  people_permission_edit_planning: Редактирование подтверждения затраченного времени
+
   #0.0.2
   label_people_acl_settings: Права доступа
   label_people_visibility: Видимость
@@ -70,6 +76,7 @@ ru:
   label_department_new: Новое подразделение
   label_department: Подразделение
   label_department_head: Руководитель
+  label_department_confirmer: Подтверждающий затраченное время
   field_people_department: Подразделение
   field_people_cfo: ЦФО
   field_people_leader: Руководитель
@@ -94,6 +101,8 @@ ru:
           attributes:
             phone:
               label_people_mobile_errors: ':  ошибка в формате мобильного телефона, введите по образцу +7 (XXX) XXX-XX-XX'
+            base:
+              label_planning_settings_error: '"Не ведет планирование" и "Затраченное время подтверждается" не могут быть выбраны одновременно'
 
   field_default_internal_role: Роль по умолчанию во внутреннем проекте
   field_default_external_role: Роль по умолчанию во внешнем проекте
