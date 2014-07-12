@@ -7,6 +7,8 @@ class Department < ActiveRecord::Base
 
   belongs_to :default_internal_role, class_name: 'Role', foreign_key: 'default_internal_role_id'
   belongs_to :default_external_role, class_name: 'Role', foreign_key: 'default_external_role_id'
+
+  belongs_to :confirmer, class_name: 'Person'
   
   acts_as_nested_set :order => 'name', :dependent => :destroy
   acts_as_attachable_global
@@ -42,6 +44,14 @@ class Department < ActiveRecord::Base
       yield department, ancestors.size
       ancestors << department
     end
+  end
+
+  def confirmer
+    conf = super
+    unless conf
+      self.update_column(:confirmer_id, find_head.id)
+    end
+    conf
   end
 
   def find_head
