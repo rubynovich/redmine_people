@@ -40,11 +40,12 @@ class Person < User
                   'background',
                   'appearance_date',
                   'city',
-                  'identity_url',
-                  'cfo_id',
-                  'leader_id',
-                  'no_planning',
-                  'time_confirm'
+                  'identity_url'
+
+  safe_attributes 'cfo_id', :if =>  Proc.new{|person, user| user.allowed_people_to?(:edit_cfos, person) || user.admin?}
+  safe_attributes 'leader_id', :if =>  Proc.new{|person, user| user.allowed_people_to?(:edit_people, person) || user.admin? }
+  safe_attributes 'no_planning', :if =>  Proc.new{|person, user| user.allowed_people_to?(:edit_planning, person) || user.admin? }
+  safe_attributes 'time_confirm', :if =>  Proc.new{|person, user| user.allowed_people_to?(:edit_planning, person) || user.admin? }
 
   def self.genders
     [[l(:label_people_male), 0], [l(:label_people_female), 1]]
