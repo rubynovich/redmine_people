@@ -1,10 +1,6 @@
 <script type="text/javascript">
 	function setConfirmer() {
-		var headId = document.getElementById('department_head_id');
-		var value = headId.options[headId.selectedIndex].value;
-		if (value.length > 0){
-			document.getElementById('department_confirmer_id').selectedIndex = headId.selectedIndex;
-		}		
+        $('#department_confirmer_id').val($('#department_head_id').val());
 	  }
 </script>
 
