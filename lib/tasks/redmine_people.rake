@@ -22,13 +22,14 @@ namespace :redmine do
       file = File.open("#{Rails.root}/public/limitit/people_departments.csv", "w+")
       file.write(Department.order("lft").map do |department|
         if department.people.active.any?
-          ret = [department.self_and_ancestors.map{|d| d.name.gsub(/[\/\:\<\>\*\|]/,' - ').gsub(/[\"\?]/,'').strip}.join('/').to_s]
+          dep_name = "#{department.self_and_ancestors.map{|d| d.name.gsub(/[\/\:\<\>\*\|]/,' - ').gsub(/[\"\?]/,'').strip}.join('/').to_s.gsub('ООО НВК-Холдинг (проектирование)','ООО НВК-Холдинг')}"
+          ret = [dep_name]
           department.people.map do |person|
             ret << person.login if person.active?
           end
           ret.compact.to_csv
         end
-      end.compact.join(''))
+      end.compact.join('').gsub('""','"').gsub('""','"').gsub('""','"'))
       file.close
     end
 
