@@ -16,6 +16,22 @@ namespace :redmine do
       file.close
     end
 
+    desc 'Export departments people'
+    task :export_departments_people => :environment do
+      FileUtils.mkdir_p("#{Rails.root}/public/limitit") unless Dir.exist?("#{Rails.root}/public/limitit")
+      file = File.open("#{Rails.root}/public/limitit/people_departments.csv", "w+")
+      file.write(Department.order("lft").map do |department|
+        if department.people.active.any?
+          ret = [department.self_and_ancestors.map{|d| d.name.gsub(/[\/\:\<\>\*\|]/,' - ').gsub(/[\"\?]/,'').strip}.join('/').to_s]
+          department.people.map do |person|
+            ret << person.login if person.active?
+          end
+          ret.compact.to_csv
+        end
+      end.compact.join(''))
+      file.close
+    end
+
 
     desc 'Update null cfo'
     task :update_null_cfo => :environment do

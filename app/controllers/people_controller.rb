@@ -1,4 +1,6 @@
 # encoding: UTF-8
+require_dependency 'user'
+require_dependency 'person'
 class PeopleController < ApplicationController
   unloadable
 

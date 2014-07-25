@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+require_dependency 'user'
 class Person < User
   unloadable
   #self.inheritance_column = :_type_disabled
