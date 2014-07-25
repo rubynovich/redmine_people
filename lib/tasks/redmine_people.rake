@@ -24,10 +24,13 @@ namespace :redmine do
         if department.people.active.any?
           dep_name = "\"#{department.self_and_ancestors.map{|d| d.name.gsub(/[\/\:\<\>\*\|]/,' - ').gsub(/[\"\?]/,'').strip}.join('/').to_s.gsub('ООО НВК-Холдинг (проектирование)','ООО НВК-Холдинг')}\""
           ret = [dep_name]
-          department.people.map do |person|
-            ret << person.login if person.active?
+          department.self_and_descendants.map do |dep|
+            dep.people.map do |person|
+              ret << person.login if person.active?
+            end
           end
-          ret.compact.to_csv
+
+          ret.compact.uniq.to_csv
         end
       end.compact.join('').gsub('""','"').gsub('""','"').gsub('""','"').gsub('""','"'))
       file.close
