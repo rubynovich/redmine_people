@@ -38,6 +38,13 @@
   </div>
   <% end %>
 
+  <% unless person_current_leader(@person).blank? %>
+  <div class="human">
+    <p class="attr"><%= l(:field_people_leader) %>:</p>
+    <p class="value"><%= link_to_user person_current_leader(@person) %></p>
+  </div>
+  <% end %>
+
 <div class="human">
   <% unless @person.phone.blank? %>   
     <p class="attr"><%= l(:field_people_phone_plural) %>:</p>
