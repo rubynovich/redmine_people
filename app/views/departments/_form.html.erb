@@ -11,7 +11,7 @@
 <p><%= f.text_field :name, :required => true %></p>
 <p><%= f.text_area :background, :rows => 5, :label => :field_people_background, :class => 'wiki-edit' %></p>
 <p><%= f.select :head_id, options_for_select(Person.active.in_department(@department).sorted.map{|d| [d.name, d.id]}.insert(0, ['', '']), :selected => @department.head_id), {:label => l(:label_department_head)}, {:onchange => "setConfirmer();"} %></p>
-<p><%= f.select :confirmer_id, options_for_select(Person.active.sorted.map{|d| [d.name, d.id]}.insert(0, ['', '']), :selected => @department.confirmer_id.blank? ? @department.find_head.try(:id) : @department.confirmer_id), :label => l(:label_department_confirmer) %></p>
+<p><%= f.select :confirmer_id, options_for_select(Person.active.sorted.map{|d| [d.name, d.id]}.insert(0, ['', '']), :selected => @department.confirmer_id.blank? ? (@department.id.nil? ? nil : @department.find_head.try(:id)) : @department.confirmer_id), :label => l(:label_department_confirmer) %></p>
 <p><%= f.select :default_internal_role_id, options_from_collection_for_select(Role.where(internal:true), :id, :name, @department.default_internal_role_id), :prompt => t(:prompt_please_select)  %></p>
 <p><%= f.select :default_external_role_id, options_from_collection_for_select(Role.where(external:true), :id, :name, @department.default_external_role_id), :prompt => t(:prompt_please_select)  %></p>
 
