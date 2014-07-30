@@ -55,7 +55,7 @@ class Department < ActiveRecord::Base
   end
 
   def find_head
-    self.head ? self.head : self.parent.find_head
+    self.head ? self.head : (self.parent_id ? self.parent.find_head : nil)
   end
 
   def parents_department_heads
