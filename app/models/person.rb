@@ -188,13 +188,14 @@ class Person < User
     end
   end
 
-  def name(formatter = nil)
-    if middlename.present?
-      [super(formatter),"#{middlename}"].join(" ")
-    else
-      super(formatter)
-    end
-  end
+  # Отчества добавляются в redmine_ckyg путем добавления нового форматтера.
+  # def name(formatter = nil)
+  #   if middlename.present?
+  #     [super(formatter),"#{middlename}"].join(" ")
+  #   else
+  #     super(formatter)
+  #   end
+  # end
 
 
   def city
