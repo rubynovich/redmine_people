@@ -1,0 +1,29 @@
+.splitcontentleft
+  - if @users_skynet.any?
+    %table.list.users
+      %thead
+        %tr
+          %th= l(:label_user)
+          %th{style: "width:15%"}
+      %tbody
+        - @users_skynet.each do |observer|
+          %tr{id: "user-#{observer.user_id}"}
+            %td.user= link_to_user "#{User.find(observer.user_id).lastname} #{User.find(observer.user_id).firstname}"
+            %td
+              = delete_link url_for(:controller => "people_settings", :action => "destroy_observer",  :id => observer.id ), :remote => true
+  - else
+    %p.nodata= l(:label_no_data)
+
+.splitcontentright
+  - observers = User.active.all(:limit => 100, :order => 'type, login, lastname ASC')
+  - if observers.any?
+    = form_tag({:controller => :people_settings, :action => :skynet}, :remote => true, :method => :post, :id => "people_skynet_form", :class => "select-users") do |f|
+      %fieldset
+        %legend= l(:label_user_new)
+        %p
+          = label_tag "user_search_1", l(:label_user_search)
+          = text_field_tag 'user_search_1', nil
+        = javascript_tag "observeSearchfield('user_search_1', 'observers', '#{ escape_javascript url_for(:controller => :people_settings, :action => :autocomplete_for_user) }')"
+        #observers
+          = principals_check_box_tags 'user_ids[]', observers
+        %p= submit_tag l(:button_add)

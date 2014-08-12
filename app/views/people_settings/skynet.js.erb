@@ -1,0 +1,4 @@
+$('#tab-content-skynet').html('<%= escape_javascript(render :partial => 'people_settings/skynet') %>');
+<% @users_skynet.each do |skynet| %>
+  $('#user-<%= skynet.id %>').effect("highlight");
+<% end %>
