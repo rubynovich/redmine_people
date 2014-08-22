@@ -15,7 +15,7 @@
     <% no_filters = true %>
 
     <script type="text/javascript">
-
+      var timer;
       function sendPeopleSearchForm() {
             var form = $("#query_form"); // grab the form wrapping the search bar.
             var url = form.attr("action");
@@ -28,13 +28,20 @@
             });
       };
 
-      jQuery(function($) { 
+      jQuery(function($) {
+        $("#query_form input").keyup(function() {
+          clearTimeout(timer);
+          timer = setTimeout(function() {
+            sendPeopleSearchForm();
+          }, 500);
+        });
+        /* 
         $("#name").observe_field(2, sendPeopleSearchForm);
         $("#job_title").observe_field(2, sendPeopleSearchForm);
         $("#phone").observe_field(2, sendPeopleSearchForm);
         $("#mail").observe_field(2, sendPeopleSearchForm);
         $("#city").observe_field(2, sendPeopleSearchForm);
-        // $("#department_id").observe_field(2, sendPeopleSearchForm);
+        // $("#department_id").observe_field(2, sendPeopleSearchForm); */
       });
 
     </script>
