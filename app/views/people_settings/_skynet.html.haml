@@ -10,7 +10,7 @@
           %tr{id: "user-#{observer.user_id}"}
             %td.user= link_to_user "#{User.find(observer.user_id).lastname} #{User.find(observer.user_id).firstname}"
             %td
-              = delete_link url_for(:controller => "people_settings", :action => "destroy_observer",  :id => observer.id ), :remote => true
+              = delete_link url_for(:controller => "people_settings", :action => "destroy_observer",  :id => observer.user_id ), :remote => true
   - else
     %p.nodata= l(:label_no_data)
 
