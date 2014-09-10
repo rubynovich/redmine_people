@@ -95,14 +95,14 @@ module PeopleHelper
 
   def person_current_leader person
     begin
-      current_leader = Principal.find_by_id(User.find_by_id(person.id).leader_id)
-      if current_leader.nil?
+      #current_leader = Principal.find_by_id(User.find_by_id(person.id).leader_id)
+      #if current_leader.nil?
         current_department = Department.find_by_id(User.find_by_id(person.id).department_id)
         current_leader = Principal.find_by_id(Department.find_by_id(User.find_by_id(person.id).department_id).head_id)
         if current_leader.nil? || current_leader.id == person.id 
           current_leader = Principal.find_by_id(current_department.parent.head_id)
         end
-      end
+      #end
       current_leader
     rescue
       nil
