@@ -44,7 +44,7 @@ namespace :redmine do
             ret << person.login if person.active?
           end
           department.descendants.map do |dep|
-            ret << dep.head.login if dep.head.active?
+            ret << dep.head.login if dep.head && dep.head.active?
           end
           ret.compact.uniq.to_csv
         end
