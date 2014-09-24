@@ -16,7 +16,7 @@ class PeopleSettingsController < ApplicationController
   def update
     settings = Setting.plugin_redmine_people
     settings = {} if !settings.is_a?(Hash)
-    settings.merge!(params[:settings])
+    settings.merge!(params[:redmine_approval_page])
     Setting.plugin_redmine_people = settings
     flash[:notice] = l(:notice_successful_update)
     redirect_to :action => 'index', :tab => params[:tab]

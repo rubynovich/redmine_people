@@ -1,4 +1,4 @@
-source :rubygems
+#source :rubygems
 if RUBY_VERSION <= '1.9'
   gem "vpim", "~>0.695"
 else
