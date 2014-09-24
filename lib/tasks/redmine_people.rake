@@ -34,10 +34,6 @@ namespace :redmine do
         end
       end.compact.join('').gsub('""','"').gsub('""','"').gsub('""','"').gsub('""','"'))
       file.close
-    end
-
-    desc 'Export departments people one'
-    task :export_departments_people_one => :environment do
       FileUtils.mkdir_p("#{Rails.root}/public/limitit") unless Dir.exist?("#{Rails.root}/public/limitit")
       file = File.open("#{Rails.root}/public/limitit/people_departments_one.csv", "w+")
       file.write(Department.order("lft").map do |department|
@@ -55,6 +51,7 @@ namespace :redmine do
       end.compact.join('').gsub('""','"').gsub('""','"').gsub('""','"').gsub('""','"'))
       file.close
     end
+
 
 
 
