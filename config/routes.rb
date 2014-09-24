@@ -21,6 +21,7 @@ end
 resources :people_settings do
   collection do
     get  :autocomplete_for_user
+    get  :autocomplete_for_user_skynet
     post :skynet
     delete :destroy_observer
   end
