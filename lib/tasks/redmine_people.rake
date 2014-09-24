@@ -36,6 +36,27 @@ namespace :redmine do
       file.close
     end
 
+    desc 'Export departments people one'
+    task :export_departments_people_one => :environment do
+      FileUtils.mkdir_p("#{Rails.root}/public/limitit") unless Dir.exist?("#{Rails.root}/public/limitit")
+      file = File.open("#{Rails.root}/public/limitit/people_departments_one.csv", "w+")
+      file.write(Department.order("lft").map do |department|
+        if department.people.active.any?
+          dep_name = "_\"#{department.self_and_ancestors.last.name.gsub(/[\/\:\<\>\*\|]/,' - ').gsub(/[\"\?]/,'').strip.to_s.gsub('ООО НВК-Холдинг (проектирование)','ООО НВК-Холдинг')}\""
+          ret = [dep_name]
+          department.people.map do |person|
+            ret << person.login if person.active?
+          end
+          department.descendants.map do |dep|
+            ret << dep.head.login if dep.head.active?
+          end
+          ret.compact.uniq.to_csv
+        end
+      end.compact.join('').gsub('""','"').gsub('""','"').gsub('""','"').gsub('""','"'))
+      file.close
+    end
+
+
 
     desc 'Update null cfo'
     task :update_null_cfo => :environment do
