@@ -49,6 +49,12 @@ class PeopleSettingsController < ApplicationController
     @principals = Principal.active.like(params[:q]).all(:limit => 100, :order => 'type, login, lastname ASC')
     render :layout => false
   end
+  
+  def autocomplete_for_user_skynet
+    @s = Group.find(455).people.like(params[:q]).all(:limit => 100, :order => 'type, login, lastname ASC')
+    render :layout => false
+  end
+
 
   def skynet
     user_ids = params[:user_ids]
