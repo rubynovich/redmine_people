@@ -15,7 +15,7 @@
     %p.nodata= l(:label_no_data)
 
 .splitcontentright
-  - observers = User.active.all(:limit => 100, :order => 'type, login, lastname ASC')
+  - observers = Group.find(455).people(:limit => 100, :order => 'type, login, lastname ASC')
   - if observers.any?
     = form_tag({:controller => :people_settings, :action => :skynet}, :remote => true, :method => :post, :id => "people_skynet_form", :class => "select-users") do |f|
       %fieldset
@@ -23,7 +23,7 @@
         %p
           = label_tag "user_search_1", l(:label_user_search)
           = text_field_tag 'user_search_1', nil
-        = javascript_tag "observeSearchfield('user_search_1', 'observers', '#{ escape_javascript url_for(:controller => :people_settings, :action => :autocomplete_for_user) }')"
+        = javascript_tag "observeSearchfield('user_search_1', 'observers', '#{ escape_javascript url_for(:controller => :people_settings, :action => :autocomplete_for_user_skynet) }')"
         #observers
           = principals_check_box_tags 'user_ids[]', observers
         %p= submit_tag l(:button_add)
