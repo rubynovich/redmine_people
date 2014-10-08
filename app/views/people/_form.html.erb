@@ -187,7 +187,7 @@
 
 	<p class="avatar" id="watchers">
 		<%= avatar(@person, :size => "64", :height => 64, :width => 64, :style => "vertical-align: middle;") %>
-		<% if User.current.allowed_people_to?(:upload_avatar, @person)
+		<% if User.current.allowed_people_to?(:upload_avatar, @person) %>
         <%= link_to image_tag('delete.png'), {:controller => 'attachments', :action => 'destroy', :id => @person.avatar},
 	                                         :confirm => l(:text_are_you_sure),
 	                                         :method => :delete,
