@@ -82,7 +82,7 @@ class PeopleController < ApplicationController
     
     if @person.update_attributes(params[:person])      
       flash[:notice] = l(:notice_successful_update)
-      attach_avatar
+      attach_avatar if User.current.allowed_people_to?(:upload_avatar, @person)
       attachments = Attachment.attach_files(@person, params[:attachments])
       render_attachment_warning_if_needed(@person)
       respond_to do |format|

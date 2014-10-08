@@ -187,15 +187,19 @@
 
 	<p class="avatar" id="watchers">
 		<%= avatar(@person, :size => "64", :height => 64, :width => 64, :style => "vertical-align: middle;") %>
-		<%= link_to image_tag('delete.png'), {:controller => 'attachments', :action => 'destroy', :id => @person.avatar},
+		<% if User.current.allowed_people_to?(:upload_avatar, @person)
+        <%= link_to image_tag('delete.png'), {:controller => 'attachments', :action => 'destroy', :id => @person.avatar},
 	                                         :confirm => l(:text_are_you_sure),
 	                                         :method => :delete,
 	                                         :class => 'delete',
 						 :style => "vertical-align: middle;",
 	                                         :title => l(:button_delete) unless @person.avatar.blank? %>
-	</p> 
+        <% end %>
+	</p>
 
+    <% if User.current.allowed_people_to?(:upload_avatar, @person)
 	<p><%= label_tag l(:field_people_avatar) %> <%= file_field_tag 'person_avatar[file]', :size => 30, :id => nil  -%> </p>
+    <% end %>
 	<p><%= f.text_field :firstname, :required => true %></p>    
 	<p><%= f.text_field :middlename, :label => l(:field_people_middlename) %></p>
 	<p><%= f.text_field :lastname, :required => true %></p>
