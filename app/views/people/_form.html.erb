@@ -197,7 +197,7 @@
         <% end %>
 	</p>
 
-    <% if User.current.allowed_people_to?(:upload_avatar, @person)
+    <% if User.current.allowed_people_to?(:upload_avatar, @person) %>
 	<p><%= label_tag l(:field_people_avatar) %> <%= file_field_tag 'person_avatar[file]', :size => 30, :id => nil  -%> </p>
     <% end %>
 	<p><%= f.text_field :firstname, :required => true %></p>    
