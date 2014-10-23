@@ -53,8 +53,6 @@ namespace :redmine do
     end
 
 
-
-
     desc 'Update null cfo'
     task :update_null_cfo => :environment do
       Person.where(cfo_id: nil).update_all(:cfo_id => 0)

@@ -227,7 +227,10 @@
 		<p><%= f.select :time_confirm, options_for_select(Person.time_confirmation, @person[:time_confirm]), :label => l(:field_people_time_confirm)%></p>
 	<% elsif User.current.id == @person.id %>
 	    <p><%= f.check_box :no_planning, :label => l(:field_people_no_planning), :disabled => true %></p>
-		<p><label for="person_time_confirm"><%= l(:field_people_time_confirm) %></label><%= Person.time_confirmation[@person.time_confirm.nil? ? 1 : @person.time_confirm][0] %></p>
+		<p>
+          <label for="person_time_confirm"><%= l(:field_people_time_confirm) %></label>
+          <%= Person.time_confirmation[@person.time_confirm.nil? ? 1 : @person.time_confirm][0] %>
+        </p>
     <% end %>
 
 
