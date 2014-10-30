@@ -17,6 +17,8 @@ ru:
   label_people_city_spb: 'Санкт-Петербург'
   label_people_settings: Настройки сотрудников
   label_people_department: 'Подразделения'
+  field_people_must_kgip_confirm: 'Время подтверждает КГИП'
+  field_people_must_head_confirm: 'Время подтверждает Руководитель'
 
   label_cfo: 'ЦФО'
   field_cfo: 'Наименование'

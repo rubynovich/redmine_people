@@ -46,7 +46,7 @@ class Person < User
   safe_attributes 'cfo_id', :if =>  Proc.new{|person, user| user.allowed_people_to?(:edit_cfos, person) || user.admin?}
   safe_attributes 'leader_id', :if =>  Proc.new{|person, user| user.allowed_people_to?(:edit_people, person) || user.admin? }
   safe_attributes 'no_planning', :if =>  Proc.new{|person, user| user.allowed_people_to?(:edit_planning, person) || user.admin? }
-  safe_attributes 'time_confirm', :if =>  Proc.new{|person, user| user.allowed_people_to?(:edit_planning, person) || user.admin? }
+  safe_attributes 'must_kgip_confirm','must_head_confirm', :if =>  Proc.new{|person, user| user.allowed_people_to?(:edit_planning, person) || user.admin? }
 
   def self.genders
     [[l(:label_people_male), 0], [l(:label_people_female), 1]]
@@ -182,7 +182,7 @@ class Person < User
   end
 
   def validate_planning_settings
-    if no_planning == true && time_confirm == 1
+    if no_planning == true && (must_kgip_confirm || must_head_confirm)
       errors.add :base, :label_planning_settings_error 
       return false
     end
