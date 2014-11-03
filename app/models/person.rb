@@ -75,14 +75,17 @@ class Person < User
 
   scope :seach_by_name, lambda {|search|
 
-    {:conditions =>   ["(LOWER(#{Person.table_name}.firstname) LIKE ? OR
-                         LOWER(#{Person.table_name}.lastname) LIKE ? OR
-                         LOWER(#{Person.table_name}.middlename) LIKE ? OR
-                         LOWER(#{Person.table_name}.login) LIKE ? )",
-                       search.mb_chars.downcase.to_s + "%",
-                       search.mb_chars.downcase.to_s + "%",
-                       search.mb_chars.downcase.to_s + "%",
-                       search.mb_chars.downcase.to_s + "%"
+    mask = search.mb_chars.downcase.to_s
+    mask.gsub!(/\(|\)/, '')
+
+    {:conditions =>   [%Q[(LOWER(#{Person.table_name}.firstname) LIKE ? OR
+                           LOWER(#{Person.table_name}.lastname) LIKE ? OR
+                           LOWER(#{Person.table_name}.middlename) LIKE ? OR
+                           LOWER(#{Person.table_name}.login) LIKE ? )],
+                           mask+"%",
+                       "%"+mask+"%",
+                           mask+"%",
+                           mask+"%"
                       ]
     }
   }
